@@ -6,7 +6,7 @@
 package com.ufpr.tads.tcc.beans;
 //
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  *
