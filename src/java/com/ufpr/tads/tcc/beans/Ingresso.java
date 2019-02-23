@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package com.ufpr.tads.tcc.beans;
-
+//
 import java.io.Serializable;
 
 /**

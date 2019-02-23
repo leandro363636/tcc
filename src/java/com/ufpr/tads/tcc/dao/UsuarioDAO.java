@@ -1,5 +1,5 @@
 package com.ufpr.tads.tcc.dao;
-
+//
 import com.ufpr.tads.tcc.beans.Usuario;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

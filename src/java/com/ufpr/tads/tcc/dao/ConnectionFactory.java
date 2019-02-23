@@ -1,4 +1,5 @@
 package com.ufpr.tads.tcc.dao;
+//
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -6,7 +7,6 @@ import java.sql.SQLException;
 /**
  * @author Ronaldo
  */
-
 public class ConnectionFactory {
     public static Connection getConnection() {
         
