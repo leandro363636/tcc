@@ -1,8 +1,3 @@
-<%-- 
-    Document   : clientesVisualizar
-    Created on : 07/04/2018, 21:45:00
-    Author     : mateus
---%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.ufpr.tads.tcc.beans.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

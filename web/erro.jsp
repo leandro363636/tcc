@@ -1,9 +1,3 @@
-<%-- 
-    Document   : erro
-    Created on : 23/03/2018, 21:43:47
-    Author     : mateus
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

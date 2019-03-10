@@ -1,8 +1,3 @@
-<%-- 
-    Document   : index
-    Created on : 07/04/2018, 11:41:36
-    Author     : mateus
---%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
