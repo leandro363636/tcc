@@ -38,7 +38,7 @@
                 <form action="LoginServlet?action=login" method="POST">
                     <div class="form-group row">
                         <div class="col-sm-5"></div>
-                            <input class="form-control col-sm-2 login" id="email" type="mail" name="email" value="" placeholder="E-mail" onfocus="this.placeholder = ''"
+                            <input class="form-control col-sm-2 login" id="email" type="email" name="email" value="" placeholder="E-mail" onfocus="this.placeholder = ''"
 onblur="this.placeholder = 'Login'" maxlength="50"><br/>
                     </div>
                     <div class="form-group row">
