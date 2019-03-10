@@ -56,9 +56,9 @@ onblur="this.placeholder = 'Senha'" maxlength="50"/><br><br>
             </div>
         </div>
         
-        <footer>
+        <!--<footer>
             <p class="small font-weight-light">Em caso de problemas contactar o administrador: <strong><c:out value="${configuracao.email}" /></strong></p> 
-        </footer>
+        </footer>-->
         
     </body>
 </html>

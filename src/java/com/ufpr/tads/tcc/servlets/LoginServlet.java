@@ -81,7 +81,7 @@ public class LoginServlet extends HttpServlet {
                     rd.forward(request, response);
                 }
                 try{    
-                    System.out.println(hexString.toString());
+                    //System.out.println(hexString.toString());
                     //System.out.println(usuario.getSenha());
                     if (usuario != null && usuario.getEmail().equals(email) && usuario.getSenha().equals(hexString.toString())) {
                         Usuario us = new Usuario();
@@ -89,7 +89,8 @@ public class LoginServlet extends HttpServlet {
                         us.setNome(usuario.getNome());
                         HttpSession session = request.getSession();
                         session.setAttribute("usuario", us);
-                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/portal.jsp");
+                        //RequestDispatcher rd = getServletContext().getRequestDispatcher("/portal.jsp");
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/UsuarioServlet?action=list");
                         rd.forward(request, response);
 
                     } else {

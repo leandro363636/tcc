@@ -181,7 +181,7 @@ public class UsuarioDAO {
     }
     
     public void removeUsuarioById(int id) throws SQLException {
-        String sql = "DELETE FROM tb_usuario where id_cliente=(?);";
+        String sql = "DELETE FROM tb_usuario where id_usuario=(?);";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1,id);
@@ -189,7 +189,7 @@ public class UsuarioDAO {
    }
     
     public void updateUsuarioById(Usuario usuario) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
-        String sql = "UPDATE tb_usuario SET nome_cliente=(?), cpf_cliente=(?), email_cliente=(?), data_cliente=(?), cep_cliente=(?), rua_cliente=(?), nr_cliente=(?), id_cidade=(?) where id_cliente=(?);";
+        String sql = "UPDATE tb_usuario SET nome_usuario=(?), sobrenome_usuario=(?), email_usuario=(?), senha_usuario=(?) where id_usuario=(?);";
 
         StringBuffer hexString = new StringBuffer();
         MessageDigest md;
@@ -210,6 +210,17 @@ public class UsuarioDAO {
         stmt.setString(3, usuario.getEmail());
         stmt.setString(4, hexString.toString());
         stmt.setInt(5, usuario.getId());
+        stmt.executeUpdate();
+    }
+    
+    public void updateUsuarioByIdWithoutSenha(Usuario usuario) throws SQLException {
+        String sql = "UPDATE tb_usuario SET nome_usuario=(?), sobrenome_usuario=(?), email_usuario=(?) where id_usuario=(?);";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, usuario.getNome());
+        stmt.setString(2, usuario.getSobrenome());
+        stmt.setString(3, usuario.getEmail());
+        stmt.setInt(4, usuario.getId());
         stmt.executeUpdate();
     }
 

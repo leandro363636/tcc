@@ -12,7 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="UTF-8">
-        <title>Clientes Listar</title>
+        <title>Usuários Listar</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/clienteListar.css">
         <link rel="stylesheet" type="text/css" href="css/ionicons.css">
@@ -35,9 +35,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a class="nav-link" href="ClientesServlet">Cadastro de  Clientes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="AtendimentoServlet?action=formNew">Efetuar Atendimento</a></li>
-                    <li class="nav-item"><a class="nav-link" href="AtendimentoServlet">Mostrar Atendimentos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="ClientesServlet">Cadastro de Usuários</a></li>
                 </ul>
             </div>
             <div class="navbar-collapse collapse w-100 order-2 dual-collapse2">
@@ -63,7 +61,7 @@
                         </div>
                     </c:if>
                     
-        <a class="btn btn-outline-success" href="ClientesServlet?action=formNew">Novo</a>
+        <a class="btn btn-outline-success" href="UsuarioServlet?action=formNew">Novo</a>
         <table class="table table-striped"><tr><th>Nome</th><th>E-mail</th><th>Visualizar</th><th>Alterar</th><th>Remover</th></tr>
 
         <c:forEach items="${usuarios}" var="us">
@@ -79,8 +77,8 @@
         </table>
        
         
-        <footer>
+        <!--<footer>
             <p class="small font-weight-light">Em caso de problemas contactar o administrador: <strong><c:out value="${configuracao.email}" /></strong></p>  
-        </footer>
+        </footer>-->
     </body>
 </html>

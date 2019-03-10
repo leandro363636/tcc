@@ -25,9 +25,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a class="nav-link" href="ClientesServlet">Cadastro de  Clientes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="AtendimentoServlet?action=formNew">Efetuar Atendimento</a></li>
-                    <li class="nav-item"><a class="nav-link" href="AtendimentoServlet">Mostrar Atendimentos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="UsuarioServlet">Cadastro de Usuários</a></li>
                 </ul>
             </div>
             <div class="navbar-collapse collapse w-100 order-2 dual-collapse2">
@@ -45,8 +43,8 @@
                 </div>
             </div>
         </div>
-        <footer>
+        <!--<footer>
             <p class="small font-weight-light">Em caso de problemas contactar o administrador: <strong><c:out value="${configuracao.email}" /></strong></p> 
-        </footer>
+        </footer>-->
         </body>
 </html>

@@ -71,7 +71,7 @@ public class UsuarioServlet extends HttpServlet {
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
                 rd.forward(request, response);
             }
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/clientesListar.jsp");
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/usuariosListar.jsp");
             rd.forward(request, response);
         } else {
             if (acao.equals("show")) {
@@ -92,7 +92,7 @@ public class UsuarioServlet extends HttpServlet {
                     try {
                         int id = Integer.parseInt(request.getParameter("id"));
                         Usuario usuario = UsuarioFacade.buscar(id);
-                        request.setAttribute("alterarcliente", usuario);
+                        request.setAttribute("alterarusuario", usuario);
                     } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
                         request.setAttribute("javax.servlet.jsp.jspException", ex);
                         request.setAttribute("javax.servlet.error.status_code", 500);
@@ -100,7 +100,7 @@ public class UsuarioServlet extends HttpServlet {
                         rd.forward(request, response);
                     }
                     
-                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/clientesForm.jsp?form=alterar");
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/usuariosForm.jsp?form=alterar");
                     rd.forward(request, response);
                 } else {
                     if (acao.equals("remove")) {
@@ -113,7 +113,7 @@ public class UsuarioServlet extends HttpServlet {
                             RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
                             rd.forward(request, response);
                         }
-                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/ClientesServlet?action=list");
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/UsuarioServlet?action=list");
                         rd.forward(request, response);
                     } else {
                         if (acao.equals("update")) {
@@ -131,7 +131,7 @@ public class UsuarioServlet extends HttpServlet {
                                 } catch (EmailDuplicadoException ex) {
                                     request.setAttribute("msg", ex.getMessage());
 
-                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/ClientesServlet?action=list");
+                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/UsuarioServlet?action=list");
                                     rd.forward(request, response);
                                 }
                                 
@@ -144,23 +144,27 @@ public class UsuarioServlet extends HttpServlet {
                             }
                             
                             usuario.setNome(request.getParameter("nome"));
-                            usuario.setNome(request.getParameter("sobrenome"));
-                            usuario.setNome(request.getParameter("senha"));
+                            usuario.setSobrenome(request.getParameter("sobrenome"));
+                            usuario.setSenha(request.getParameter("senha"));
                                                
                             try {
-                                UsuarioFacade.alterar(usuario);
+                                if (usuario.getSenha() != null || usuario.getSenha().equals("")) {
+                                    UsuarioFacade.alterarSemSenha(usuario);
+                                } else {
+                                    UsuarioFacade.alterar(usuario);
+                                }
                             } catch (SQLException | ClassNotFoundException | NoSuchAlgorithmException | UnsupportedEncodingException  ex) {
                                 request.setAttribute("javax.servlet.jsp.jspException", ex);
                                 request.setAttribute("javax.servlet.error.status_code", 500);
                                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
                                 rd.forward(request, response);
                             }
-                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/ClientesServlet?action=list");
+                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/UsuarioServlet?action=list");
                             rd.forward(request, response);
                         } else {
                             if (acao.equals("formNew")) {
                                 
-                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/clientesForm.jsp");
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/usuariosForm.jsp");
                                 rd.forward(request, response);
                             } else {
                                 if (acao.equals("new")) {
@@ -176,7 +180,7 @@ public class UsuarioServlet extends HttpServlet {
                                         } catch (EmailDuplicadoException ex) {
                                             request.setAttribute("msg", ex.getMessage());
 
-                                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/ClientesServlet?action=list");
+                                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/UsuarioServlet?action=list");
                                             rd.forward(request, response);
                                         }
 
@@ -189,8 +193,8 @@ public class UsuarioServlet extends HttpServlet {
                                     }
 
                                     usuario.setNome(request.getParameter("nome"));
-                                    usuario.setNome(request.getParameter("sobrenome"));
-                                    usuario.setNome(request.getParameter("senha"));
+                                    usuario.setSobrenome(request.getParameter("sobrenome"));
+                                    usuario.setSenha(request.getParameter("senha"));
                                     try {
                                         UsuarioFacade.inserir(usuario);
                                     } catch (SQLException | ClassNotFoundException | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
@@ -199,7 +203,7 @@ public class UsuarioServlet extends HttpServlet {
                                         RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
                                         rd.forward(request, response);
                                     }
-                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/ClientesServlet?action=list");
+                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/UsuarioServlet?action=list");
                                     rd.forward(request, response);
                                 }
                             }
