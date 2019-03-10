@@ -98,6 +98,33 @@ public class EventoDAO {
         return resultado;
     }
     
+    public List<Evento> selectEventosByIdUsuario(int id) throws SQLException {
+        
+        String sql = "SELECT * "
+                + "FROM tb_evento "
+                + "WHERE id_usuario = (?) "
+                + "ORDER BY id_evento DESC;";
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setInt(1, id);
+        ResultSet rs = st.executeQuery();
+        List<Evento> resultado = new ArrayList<>();
+        
+        while (rs.next()) {
+            Evento evento = new Evento();
+            evento.setId(rs.getInt("id_evento"));
+            evento.setNome(rs.getString("id_evento"));
+            evento.setDataInicio(rs.getDate("inicio_evento"));
+            evento.setDataFim(rs.getDate("fim_evento"));
+            evento.setData(rs.getDate("data_evento"));
+            evento.setEndereco(rs.getString("endereco_evento"));
+            evento.setDesc(rs.getString("desc_evento"));
+            evento.setAprovado(rs.getBoolean("aprovado"));
+            
+            resultado.add(evento);
+        }
+        return resultado;
+    }
+    
     public Evento selectEventoById(int id) throws SQLException {
         
         String sql = "SELECT * "

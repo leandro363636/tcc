@@ -15,3 +15,11 @@ CREATE TABLE tb_usuario (
     nome_usuario VARCHAR(50),
     sobrenome_usuario VARCHAR(150)
 );
+
+CREATE TABLE tb_usuario (
+    id_usuario SERIAL,
+    email_usuario VARCHAR(100),
+    senha_usuario VARCHAR(200),
+    nome_usuario VARCHAR(50),
+    sobrenome_usuario VARCHAR(150)
+);
