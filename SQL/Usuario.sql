@@ -7,7 +7,7 @@
  * Author:  matri
  * Created: 23/02/2019
  */
-
+/* MYSQL */
 CREATE TABLE tb_usuario (
     id_usuario INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     email_usuario VARCHAR(100),
@@ -15,7 +15,7 @@ CREATE TABLE tb_usuario (
     nome_usuario VARCHAR(50),
     sobrenome_usuario VARCHAR(150)
 );
-
+/* POSTGRES */
 CREATE TABLE tb_usuario (
     id_usuario SERIAL,
     email_usuario VARCHAR(100),
@@ -23,3 +23,5 @@ CREATE TABLE tb_usuario (
     nome_usuario VARCHAR(50),
     sobrenome_usuario VARCHAR(150)
 );
+/*A senha é admin*/
+INSERT INTO tb_usuario (email_usuario, senha_usuario, nome_usuario, sobrenome_usuario) VALUES ('admin@admin.com', '21232f297a57a5a743894a0e4a801fc3', 'Admin', 'Admin');
