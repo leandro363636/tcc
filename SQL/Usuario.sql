@@ -17,7 +17,7 @@ CREATE TABLE tb_usuario (
 );
 /* POSTGRES */
 CREATE TABLE tb_usuario (
-    id_usuario SERIAL,
+    id_usuario SERIAL PRIMARY KEY,
     email_usuario VARCHAR(100),
     senha_usuario VARCHAR(200),
     nome_usuario VARCHAR(50),

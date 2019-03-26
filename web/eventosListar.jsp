@@ -4,7 +4,7 @@
     Author     : mateus
 --%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="com.ufpr.tads.tcc.beans.Usuario"%>
+<%@page import="com.ufpr.tads.tcc.beans.Evento"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -12,7 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="UTF-8">
-        <title>Usuários Listar</title>
+        <title>Eventos Listar</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/clienteListar.css">
         <link rel="stylesheet" type="text/css" href="css/ionicons.css">
@@ -62,24 +62,19 @@
                         </div>
                     </c:if>
                     
-        <a class="btn btn-outline-success" href="UsuarioServlet?action=formNew">Novo</a>
-        <table class="table table-striped"><tr><th>Nome</th><th>E-mail</th><th>Visualizar</th><th>Alterar</th><th>Remover</th></tr>
+        <a class="btn btn-outline-success" href="EventoServlet?action=formNew">Novo</a>
+        <table class="table table-striped"><tr><th>Nome</th><th>Descrição</th><th>Visualizar</th><th>Alterar</th><th>Remover</th></tr>
 
-        <c:forEach items="${usuarios}" var="us">
+        <c:forEach items="${eventos}" var="evento">
             <tr>
-                <td><c:out value="${us.nome}"/></td>
-                <td><c:out value="${us.email}"/></td>
-                <td><a href="UsuarioServlet?action=show&id=<c:out value="${us.id}"/>"><i class="ion-person"></i></a></td>
-                <td><a href="UsuarioServlet?action=formUpdate&id=<c:out value="${us.id}"/>"><i class="ion-edit"></i></a></td>
-                <td><a href="UsuarioServlet?action=remove&id=<c:out value="${us.id}"/>"><i class="ion-trash-a"></i></a></td>
+                <td><c:out value="${evento.nome}"/></td>
+                <td><c:out value="${evento.desc}"/></td>
+                <td><a href="EventoServlet?action=show&id=<c:out value="${evento.id}"/>"><i class="ion-person"></i></a></td>
+                <td><a href="EventoServlet?action=formUpdate&id=<c:out value="${evento.id}"/>"><i class="ion-edit"></i></a></td>
+                <td><a href="EventoServlet?action=remove&id=<c:out value="${evento.id}"/>"><i class="ion-trash-a"></i></a></td>
             </tr>
         </c:forEach>
 
         </table>
-       
-        
-        <!--<footer>
-            <p class="small font-weight-light">Em caso de problemas contactar o administrador: <strong><c:out value="${configuracao.email}" /></strong></p>  
-        </footer>-->
     </body>
 </html>

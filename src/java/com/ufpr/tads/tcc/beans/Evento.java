@@ -7,6 +7,7 @@ package com.ufpr.tads.tcc.beans;
 //
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -18,10 +19,12 @@ public class Evento implements Serializable{
     private String nome;
     private Date dataInicio;
     private Date dataFim;
-    private Date data;
     private String endereco;
     private String desc;
     private boolean aprovado;
+    private String imagem;
+    private List<Lote> lotes;
+    private Usuario usuario;
     
     public Evento() {
         
@@ -59,14 +62,6 @@ public class Evento implements Serializable{
         this.dataFim = dataFim;
     }
 
-    public Date getData() {
-        return data;
-    }
-
-    public void setData(Date data) {
-        this.data = data;
-    }
-
     public String getEndereco() {
         return endereco;
     }
@@ -90,6 +85,29 @@ public class Evento implements Serializable{
     public void setAprovado(boolean aprovado) {
         this.aprovado = aprovado;
     }
-    
-    
+
+    public List<Lote> getLotes() {
+        return lotes;
+    }
+
+    public void setLotes(List<Lote> lotes) {
+        this.lotes = lotes;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
 }
