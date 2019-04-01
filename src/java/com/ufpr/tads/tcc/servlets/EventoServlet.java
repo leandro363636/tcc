@@ -5,26 +5,37 @@
  */
 package com.ufpr.tads.tcc.servlets;
 
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import com.ufpr.tads.tcc.beans.Evento;
 import com.ufpr.tads.tcc.beans.Usuario;
 import com.ufpr.tads.tcc.facade.EventoFacade;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -34,6 +45,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  * @author mateus
  */
 @WebServlet(name = "EventoServlet", urlPatterns = {"/EventoServlet"})
+@MultipartConfig
 public class EventoServlet extends HttpServlet {
 
     /**
@@ -47,6 +59,7 @@ public class EventoServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String acao = request.getParameter("action");
         
@@ -119,68 +132,61 @@ public class EventoServlet extends HttpServlet {
                             try {
                                 int id = Integer.parseInt(request.getParameter("id"));
                                 evento.setId(id);
-                            } catch (NumberFormatException ex) {
-                                request.setAttribute("exception", ex);
-                                request.setAttribute("javax.servlet.error.status_code", 500);
-                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                                rd.forward(request, response);
-                            }
-                            
-                            /*Identifica se o formulario é do tipo multipart/form-data*/
-                            if (ServletFileUpload.isMultipartContent(request)) {
-                                try {
-                                    /*Faz o parse do request*/
-                                    List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+                                String currentPath = "";
+                                final Part filePart = request.getPart("img");
+                                final String fileName = getFileName(filePart);
+                                if (filePart.getSize() > 0 ) {
+                                    String path = request.getServletContext().getRealPath("img")+ File.separator;
+                                    String totalPath = path + fileName;
+                                    currentPath = "/tcc/img/" + fileName;
+                                    OutputStream out = null;
+                                    InputStream filecontent = null;
+                                    final PrintWriter writer = response.getWriter();
 
-                                    /*Escreve a o arquivo na pasta img*/
-                                    for (FileItem item : multiparts) {
-                                        if (!item.isFormField()) {
-                                            byte[] array = new byte[7]; // length is bounded by 7
-                                            new Random().nextBytes(array);
-                                            String generatedString = new String(array, Charset.forName("UTF-8"));
-                                            String[] fileName = item.getContentType().split("/");
-                                            //System.out.println(fileName[fileName.length - 1]);
-                                            item.write(new File(request.getServletContext().getRealPath("img")+ File.separator + item.getName()));
+                                    try {
+                                        out = new FileOutputStream(new File(totalPath));
+                                        filecontent = filePart.getInputStream();
+
+                                        int read = 0;
+                                        final byte[] bytes = new byte[1024];
+
+                                        while ((read = filecontent.read(bytes)) != -1) {
+                                            out.write(bytes, 0, read);
                                         }
+                                    } catch (FileNotFoundException ex) {
+                                        request.setAttribute("exception", ex);
+                                        request.setAttribute("javax.servlet.error.status_code", 500);
+                                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                        rd.forward(request, response);
                                     }
-
-                                    System.out.println("Arquivo carregado com sucesso");
-                                } catch (Exception ex) {
-                                    System.out.println("Upload de arquivo falhou devido a "+ ex);
                                 }
+                                
+                                evento.setImagem(currentPath);
+                                evento.setNome(request.getParameter("nome"));
+                                evento.setDescrição(request.getParameter("desc"));
+                                evento.setEndereco(request.getParameter("endereco"));
 
-                            } else {
-                                System.out.println("Desculpe este Servlet lida apenas com pedido de upload de arquivos");
-                            }
-                            
-                            evento.setNome(request.getParameter("nome"));
-                            evento.setDesc(request.getParameter("desc"));
-                            evento.setEndereco(request.getParameter("endereco"));
-                            
-                            String dataInicioString = request.getParameter("dataInicio");
-                            String dataFimString = request.getParameter("dataFim");
-                            DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                            try {
+                                String dataInicioString = request.getParameter("dataInicio");
+                                String dataFimString = request.getParameter("dataFim");
+                                DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                                 Date data = new Date(fmt.parse(dataInicioString).getTime());
                                 evento.setDataInicio(data);
                                 data = new Date(fmt.parse(dataFimString).getTime());
                                 evento.setDataFim(data);
-                            } catch (ParseException ex) {
-                                request.setAttribute("exception", ex);
-                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                if (evento.getImagem() != null && evento.getImagem() != "") {
+                                    EventoFacade.alterar(evento);
+                                } else {
+                                    EventoFacade.alterarSemImagem(evento);
+                                }
+                                
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/EventoServlet?action=list");
                                 rd.forward(request, response);
-                            }
-                                               
-                            try {
-                                EventoFacade.alterar(evento);
-                            } catch (SQLException | ClassNotFoundException  ex) {
+                            } catch (NumberFormatException | ParseException | SQLException | ClassNotFoundException ex) {
                                 request.setAttribute("exception", ex);
                                 request.setAttribute("javax.servlet.error.status_code", 500);
                                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
                                 rd.forward(request, response);
                             }
-                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/EventoServlet?action=list");
-                            rd.forward(request, response);
                         } else {
                             if (acao.equals("formNew")) {
                                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/eventosForm.jsp");
@@ -188,8 +194,37 @@ public class EventoServlet extends HttpServlet {
                             } else {
                                 if (acao.equals("new")) {
                                     Evento evento = new Evento();
+                                    String currentPath = "";
+                                    final Part filePart = request.getPart("img");
+                                    final String fileName = getFileName(filePart);
+                                    if (filePart.getSize() > 0 ) {
+                                        String path = request.getServletContext().getRealPath("img")+ File.separator;
+                                        String totalPath = path + fileName;
+                                        currentPath = "/tcc/img/" + fileName;
+                                        OutputStream out = null;
+                                        InputStream filecontent = null;
+                                        final PrintWriter writer = response.getWriter();
+
+                                        try {
+                                            out = new FileOutputStream(new File(totalPath));
+                                            filecontent = filePart.getInputStream();
+
+                                            int read = 0;
+                                            final byte[] bytes = new byte[1024];
+
+                                            while ((read = filecontent.read(bytes)) != -1) {
+                                                out.write(bytes, 0, read);
+                                            }
+                                        } catch (FileNotFoundException ex) {
+                                            request.setAttribute("exception", ex);
+                                            request.setAttribute("javax.servlet.error.status_code", 500);
+                                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                            rd.forward(request, response);
+                                        }
+                                    }
+                                    evento.setImagem(currentPath);
                                     evento.setNome(request.getParameter("nome"));
-                                    evento.setDesc(request.getParameter("desc"));
+                                    evento.setDescrição(request.getParameter("desc"));
                                     evento.setEndereco(request.getParameter("endereco"));
                                     evento.setAprovado(false);
                                     evento.setUsuario(lb);
@@ -226,6 +261,18 @@ public class EventoServlet extends HttpServlet {
             }
         }
     }
+    
+    private String getFileName(final Part part) {
+    final String partHeader = part.getHeader("content-disposition");
+    LOGGER.log(Level.INFO, "Part Header = {0}", partHeader);
+    for (String content : part.getHeader("content-disposition").split(";")) {
+        if (content.trim().startsWith("filename")) {
+            return content.substring(
+                    content.indexOf('=') + 1).trim().replace("\"", "");
+        }
+    }
+    return null;
+}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

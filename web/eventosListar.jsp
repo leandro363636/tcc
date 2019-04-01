@@ -68,7 +68,7 @@
         <c:forEach items="${eventos}" var="evento">
             <tr>
                 <td><c:out value="${evento.nome}"/></td>
-                <td><c:out value="${evento.desc}"/></td>
+                <td><c:out value="${evento.descrição}"/></td>
                 <td><a href="EventoServlet?action=show&id=<c:out value="${evento.id}"/>"><i class="ion-person"></i></a></td>
                 <td><a href="EventoServlet?action=formUpdate&id=<c:out value="${evento.id}"/>"><i class="ion-edit"></i></a></td>
                 <td><a href="EventoServlet?action=remove&id=<c:out value="${evento.id}"/>"><i class="ion-trash-a"></i></a></td>

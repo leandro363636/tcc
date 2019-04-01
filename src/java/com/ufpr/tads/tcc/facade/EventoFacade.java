@@ -40,6 +40,11 @@ public class EventoFacade {
         eventodao.updateEventoById(evento);
     }
     
+    public static void alterarSemImagem(Evento evento) throws SQLException, ClassNotFoundException {
+        EventoDAO eventodao = new EventoDAO();
+        eventodao.updateEventoByIdWithoutImagem(evento);
+    }
+    
     public static void inserir(Evento evento) throws ClassNotFoundException, SQLException {
         EventoDAO eventodao = new EventoDAO();
         eventodao.insertEvento(evento);

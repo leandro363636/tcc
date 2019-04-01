@@ -53,7 +53,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="desc">Descrição:</label>
-                    <textarea name="desc" disabled><c:out value="${visualizarevento.desc}"/></textarea>
+                    <textarea name="desc" disabled><c:out value="${visualizarevento.descrição}"/></textarea>
                 </div>
                 <div class="form-group col-md-4">
                     <label for="aprovado">Aprovado:</label>

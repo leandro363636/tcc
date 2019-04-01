@@ -20,7 +20,7 @@ public class Evento implements Serializable{
     private Date dataInicio;
     private Date dataFim;
     private String endereco;
-    private String desc;
+    private String descrição;
     private boolean aprovado;
     private String imagem;
     private List<Lote> lotes;
@@ -70,12 +70,12 @@ public class Evento implements Serializable{
         this.endereco = endereco;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescrição() {
+        return descrição;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescrição(String descrição) {
+        this.descrição = descrição;
     }
 
     public boolean isAprovado() {

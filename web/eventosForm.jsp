@@ -37,7 +37,7 @@
             <form action="<c:out value="${(!(empty param.form) || param.form == \"alterar\") ? \"EventoServlet?action=update\" : \"EventoServlet?action=new\"}"/>" method="POST" enctype="multipart/form-data">
                 <c:if test="${(!(empty param.form) || param.form == \"alterar\")}" >
                     <div class="form-row">
-                        <input type="hidden" name="id" value="<c:out value="${alterarevento.id}"/>">
+                        <input type="hidden" name="id" value="<c:out value="${(!(empty param.form) || param.form == \"alterar\") ? alterarevento.id : \"\"}"/>">
                     </div>
                 </c:if>
                 <div class="form-row">
@@ -61,11 +61,14 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="desc">Descrição:</label>
-                        <textarea name="desc"><c:out value="${(!(empty param.form) || param.form == \"alterar\") ? alterarevento.desc : \"\"}"/></textarea>
+                        <textarea name="desc"><c:out value="${(!(empty param.form) || param.form == \"alterar\") ? alterarevento.descrição : \"\"}"/></textarea>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="img">Banner:</label>
                         <input class="form-control" type="file" name="img"/><br/>
+                        <c:if test="${((!(empty param.form) || param.form == \"alterar\")) && (alterarevento.imagem != \"\" && alterarevento.imagem != null) }" >
+                            <img src="${alterarevento.imagem}">
+                        </c:if>
                     </div>
                 </div>
                 <input class="btn btn-outline-success" type="submit" value="<c:out value="${(!(empty param.form) || param.form == \"alterar\") ? \"Alterar\" : \"Salvar\"}"/>"/>

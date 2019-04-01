@@ -29,22 +29,42 @@ public class EventoDAO {
     public void insertEvento(Evento evento) throws SQLException {
 
         String sql = "INSERT INTO tb_evento "
-                + "(nome_evento, data_inicio_evento, data_fim_evento, endereco_evento, descricao_evento, aprovacao_evento, id_usuario) "
-                + "VALUES ((?), (?), (?), (?), (?), (?), (?));";
+                + "(nome_evento, data_inicio_evento, data_fim_evento, endereco_evento, descricao_evento, imagem_evento, aprovacao_evento, id_usuario) "
+                + "VALUES ((?), (?), (?), (?), (?), (?), (?), (?));";
         PreparedStatement st = conn.prepareStatement(sql);
         
         st.setString(1, evento.getNome());
         st.setTimestamp(2, new java.sql.Timestamp(evento.getDataInicio().getTime()));
         st.setTimestamp(3, new java.sql.Timestamp(evento.getDataFim().getTime()));
         st.setString(4, evento.getEndereco());
-        st.setString(5, evento.getDesc());
-        st.setBoolean(6, evento.isAprovado());
-        st.setInt(7, evento.getUsuario().getId());
+        st.setString(5, evento.getDescrição());
+        st.setString(6, evento.getImagem());
+        st.setBoolean(7, evento.isAprovado());
+        st.setInt(8, evento.getUsuario().getId());
         
         st.executeUpdate();
     }
     
     public void updateEventoById(Evento evento) throws SQLException {
+        
+        String sql = "UPDATE tb_evento "
+                + "SET nome_evento = (?), data_inicio_evento = (?), data_fim_evento = (?), endereco_evento = (?), descricao_evento = (?), imagem_evento = (?), aprovacao_evento = (?) "
+                + "WHERE id_evento = (?);";
+        PreparedStatement st = conn.prepareCall(sql);
+        
+        st.setString(1, evento.getNome());
+        st.setTimestamp(2, new java.sql.Timestamp(evento.getDataInicio().getTime()));
+        st.setTimestamp(3, new java.sql.Timestamp(evento.getDataFim().getTime()));
+        st.setString(4, evento.getEndereco());
+        st.setString(5, evento.getDescrição());
+        st.setString(6, evento.getImagem());
+        st.setBoolean(7, evento.isAprovado());
+        st.setInt(8, evento.getId());
+        
+        st.executeUpdate();
+    }
+    
+    public void updateEventoByIdWithoutImagem(Evento evento) throws SQLException {
         
         String sql = "UPDATE tb_evento "
                 + "SET nome_evento = (?), data_inicio_evento = (?), data_fim_evento = (?), endereco_evento = (?), descricao_evento = (?), aprovacao_evento = (?) "
@@ -55,7 +75,7 @@ public class EventoDAO {
         st.setTimestamp(2, new java.sql.Timestamp(evento.getDataInicio().getTime()));
         st.setTimestamp(3, new java.sql.Timestamp(evento.getDataFim().getTime()));
         st.setString(4, evento.getEndereco());
-        st.setString(5, evento.getDesc());
+        st.setString(5, evento.getDescrição());
         st.setBoolean(6, evento.isAprovado());
         st.setInt(7, evento.getId());
         
@@ -89,7 +109,8 @@ public class EventoDAO {
             evento.setDataInicio(rs.getTimestamp("data_inicio_evento"));
             evento.setDataFim(rs.getTimestamp("data_fim_evento"));
             evento.setEndereco(rs.getString("endereco_evento"));
-            evento.setDesc(rs.getString("descricao_evento"));
+            evento.setDescrição(rs.getString("descricao_evento"));
+            evento.setImagem(rs.getString("imagem_evento"));
             evento.setAprovado(rs.getBoolean("aprovacao_evento"));
             
             resultado.add(evento);
@@ -115,7 +136,8 @@ public class EventoDAO {
             evento.setDataInicio(rs.getTimestamp("data_inicio_evento"));
             evento.setDataFim(rs.getTimestamp("data_fim_evento"));
             evento.setEndereco(rs.getString("endereco_evento"));
-            evento.setDesc(rs.getString("descricao_evento"));
+            evento.setDescrição(rs.getString("descricao_evento"));
+            evento.setImagem(rs.getString("imagem_evento"));
             evento.setAprovado(rs.getBoolean("aprovacao_evento"));
             
             resultado.add(evento);
@@ -139,7 +161,8 @@ public class EventoDAO {
             evento.setDataInicio(rs.getTimestamp("data_inicio_evento"));
             evento.setDataFim(rs.getTimestamp("data_fim_evento"));
             evento.setEndereco(rs.getString("endereco_evento"));
-            evento.setDesc(rs.getString("descricao_evento"));
+            evento.setDescrição(rs.getString("descricao_evento"));
+            evento.setImagem(rs.getString("imagem_evento"));
             evento.setAprovado(rs.getBoolean("aprovacao_evento"));
         }
         return evento;

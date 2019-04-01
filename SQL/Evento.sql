@@ -15,6 +15,7 @@ CREATE TABLE tb_evento (
     data_fim_evento TIMESTAMP,
     endereco_evento VARCHAR(200),
     descricao_evento TEXT,
+    imagem_evento TEXT,
     aprovacao_evento BOOLEAN,
     id_usuario INT,
     CONSTRAINT fk_evento_usuario FOREIGN KEY (id_usuario) REFERENCES tb_usuario(id_usuario)
