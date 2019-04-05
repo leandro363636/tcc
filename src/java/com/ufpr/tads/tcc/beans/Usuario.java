@@ -1,5 +1,6 @@
 package com.ufpr.tads.tcc.beans;
 //
+
 import java.io.Serializable;
 
 /**
@@ -12,7 +13,8 @@ public class Usuario implements Serializable {
     private String senha;
     private String nome;
     private String sobrenome;
-    private String tipo;
+    private String rg;
+    private String cpf;
 
     public Usuario() {
 
@@ -56,6 +58,22 @@ public class Usuario implements Serializable {
 
     public void setSobrenome(String sobrenome) {
         this.sobrenome = sobrenome;
+    }
+
+    public String getRg() {
+        return rg;
+    }
+
+    public void setRg(String rg) {
+        this.rg = rg;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
 }

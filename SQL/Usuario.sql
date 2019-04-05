@@ -21,7 +21,9 @@ CREATE TABLE tb_usuario (
     email_usuario VARCHAR(100),
     senha_usuario VARCHAR(200),
     nome_usuario VARCHAR(50),
-    sobrenome_usuario VARCHAR(150)
+    sobrenome_usuario VARCHAR(150),
+	rg_usuario VARCHAR(9),
+    cpf_usuario VARCHAR(11)
 );
 /*A senha é admin*/
 INSERT INTO tb_usuario (email_usuario, senha_usuario, nome_usuario, sobrenome_usuario) VALUES ('admin@admin.com', '21232f297a57a5a743894a0e4a801fc3', 'Admin', 'Admin');

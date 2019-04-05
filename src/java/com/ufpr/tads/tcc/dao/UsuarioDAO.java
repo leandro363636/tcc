@@ -98,7 +98,7 @@ public class UsuarioDAO {
             usuario.setEmail(res.getString(2));
             usuario.setSenha(res.getString(3));
             usuario.setNome(res.getString(4));
-            usuario.setSobrenome(res.getString(4));
+            usuario.setSobrenome(res.getString(5));
             return usuario;
         }
         //System.out.println("Executed: "+ usuario.toString());
@@ -120,7 +120,7 @@ public class UsuarioDAO {
             usuario.setEmail(res.getString(2));
             usuario.setSenha(res.getString(3));
             usuario.setNome(res.getString(4));
-            usuario.setSobrenome(res.getString(4));
+            usuario.setSobrenome(res.getString(5));
             return usuario;
         }
         //System.out.println("Executed: "+ usuario.toString());
@@ -150,7 +150,7 @@ public class UsuarioDAO {
     }
     
     public void insertUsuario (Usuario usuario) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
-        String sql = "INSERT INTO tb_usuario (nome_usuario, sobrenome_usuario, email_usuario, senha_usuario) VALUES ((?), (?), (?), (?))";
+        String sql = "INSERT INTO tb_usuario (nome_usuario, sobrenome_usuario, email_usuario, senha_usuario, rg_usuario, cpf_usuario) VALUES ((?), (?), (?), (?), (?), (?))";
         PreparedStatement st = conn.prepareStatement(sql);
 
         StringBuffer hexString = new StringBuffer();
@@ -177,6 +177,8 @@ public class UsuarioDAO {
         st.setString(2, usuario.getSobrenome());
         st.setString(3, usuario.getEmail());
         st.setString(4, hexString.toString());
+        st.setString(5, usuario.getRg());
+        st.setString(6, usuario.getCpf());
         st.executeUpdate();
     }
     
