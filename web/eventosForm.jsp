@@ -11,6 +11,7 @@
         <title><c:out value="${(!(empty param.form) || param.form == \"alterar\") ? \"Alterar Evento\" : \"Novo Evento\"}"/></title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/clientesAlterar.css">
+        <link rel="stylesheet" type="text/css" href="css/ionicons.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -70,6 +71,24 @@
                             <img src="${alterarevento.imagem}">
                         </c:if>
                     </div>
+                    <c:if test="${(!(empty param.form) || param.form == \"alterar\") }" >
+                        <div id="nomeLoteForm" class="form-group col-md-4">
+                            <label for="nomeLote">Lote:</label>
+                            <input class="form-control" type="text" name="nomeLote"/><br/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="qtdLote">Quantidade Lote:</label>
+                            <input class="form-control" type="number" name="qtdLote"/><br/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="preçoLote">Preço Lote:</label>
+                            <input class="form-control" type="number" name="preçoLote"/><br/>
+                            <button class="btn btn-outline-success" id="adicionar-lote" type="button">Adicionar Lote</button>
+                        </div>
+                        <div class="col-md-4" id="lotesDiv">
+                            <ul class="list-group" id="lotesList"></ul>
+                        </div>
+                    </c:if>
                 </div>
                 <input class="btn btn-outline-success" type="submit" value="<c:out value="${(!(empty param.form) || param.form == \"alterar\") ? \"Alterar\" : \"Salvar\"}"/>"/>
                 <a class="btn btn-outline-danger" href="EventoServlet">Cancelar</a>

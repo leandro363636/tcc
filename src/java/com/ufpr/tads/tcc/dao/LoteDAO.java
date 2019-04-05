@@ -44,7 +44,7 @@ public class LoteDAO {
     public void updateLoteById(Lote lote) throws SQLException {
         
         String sql = "UPDATE tb_lote "
-                + "SET nome_lote = (?), quantidade_lote = (?), preco_lote = (?), id_evento = (?), desc_evento = (?), aprovado = (?) "
+                + "SET nome_lote = (?), quantidade_lote = (?), preco_lote = (?), id_evento = (?)"
                 + "WHERE id_lote = (?);";
         PreparedStatement st = conn.prepareCall(sql);
         

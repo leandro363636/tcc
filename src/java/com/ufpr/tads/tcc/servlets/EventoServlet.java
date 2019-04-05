@@ -5,10 +5,12 @@
  */
 package com.ufpr.tads.tcc.servlets;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+//import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import com.ufpr.tads.tcc.beans.Evento;
+import com.ufpr.tads.tcc.beans.Lote;
 import com.ufpr.tads.tcc.beans.Usuario;
 import com.ufpr.tads.tcc.facade.EventoFacade;
+import com.ufpr.tads.tcc.facade.LoteFacade;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -23,6 +25,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
@@ -89,8 +92,12 @@ public class EventoServlet extends HttpServlet {
                 try {
                     int id = Integer.parseInt(request.getParameter("id"));
                     Evento evento = EventoFacade.buscar(id);
+                    List<Lote> lotes = new ArrayList();
+                    lotes = LoteFacade.buscarTodosLotesPorIdEvento(id);
                     request.setAttribute("visualizarevento", evento);
+                    request.setAttribute("lotes", lotes);
                 } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
+                    System.out.println(ex.getMessage());
                     request.setAttribute("exception", ex);
                     request.setAttribute("javax.servlet.error.status_code", 500);
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
@@ -264,7 +271,7 @@ public class EventoServlet extends HttpServlet {
     
     private String getFileName(final Part part) {
     final String partHeader = part.getHeader("content-disposition");
-    LOGGER.log(Level.INFO, "Part Header = {0}", partHeader);
+    //LOGGER.log(Level.INFO, "Part Header = {0}", partHeader);
     for (String content : part.getHeader("content-disposition").split(";")) {
         if (content.trim().startsWith("filename")) {
             return content.substring(

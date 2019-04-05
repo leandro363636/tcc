@@ -59,6 +59,13 @@
                     <label for="aprovado">Aprovado:</label>
                     <input class="form-control" type="text" name="aprovado" value="<c:out value="${(visualizarevento.aprovado == true) ? \"Sim\" : \"Não\"}"/>" disabled/><br/>
                 </div>
+                <c:if test="${!(empty lotes)}" >
+                    <ul class="list-group" id="lotesList">
+                        <c:forEach items="${lotes}" var="lote">
+                            <li class="list-group-item">${lote.nome}</li>
+                        </c:forEach>
+                    </ul>
+                </c:if>
             </div>
             <a class="btn btn-outline-danger" href="EventoServlet">Cancelar</a>
         </div>
