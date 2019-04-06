@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/eventosListar.css"/>
+	<link rel="stylesheet" type="text/css" href="js/slick/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="js/slick/slick-theme.css"/>
+
+	<title>Pesquisar Evento | fastTicket</title>
+</head>
+<body>
+
+	<div id="pesquisaevento">
+		
+		<!-- NAVBAR TOPO -->
+		<div class="row1">
+			<div class="container-fluid">
+				<div class="row align-items-center">
+					<div class="col-12">
+						<nav class="navbar navbar-expand-sm navbar-light bg-light">
+							<a href="#" class="navbar-brand">fastTicket</a>
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTopo" aria-controls="navbarSupportedContent" aria-expanded="false">
+								<span class="navbar-toggler-icon"></span>
+							</button>
+							<div class="collapse navbar-collapse" id="navbarTopo">
+								<ul class="navbar-nav mr-auto">
+									<li class="nav-item">
+										<a class="nav-link right" href="#">Criar Evento</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">Meus Eventos</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">Meus Ingressos</a>
+									</li>
+								</ul>
+								<span class="nav-item dropdown">
+									<span class="nav-link dropdown-toggle" href="#" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+										Bem vindo, Ronaldo <span class="caret"></span>
+									</span>
+									<div class="dropdown-menu dropdown-menu-top" aria-labelledby="navbarDropdown">
+										<button class="dropdown-item" href="#">Minha Conta</button>
+										<button class="dropdown-item" href="#">Meus Ingressos</button>
+										<button class="dropdown-item" href="#">Login</button>
+										<button class="dropdown-item" href="#">Criar Conta</button>
+										<div class="dropdown-divider"></div>
+										<button class="dropdown-item" href="#">Logout</button>
+										<form id="form-logout" action="" method="" style="display: none;"></form>
+									</div>
+								</span>
+							</div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- TOPO -->
+		<div class="row2">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-12">
+						<h2 class="center">Uma pausa para a diversão</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- PESQUISA -->
+		<div class="row3">
+			<div class="container">
+				<form action="" method="">
+					<div class="row align-items-center">
+						<div class="col-12">
+							<div class="input-group grupo-1 mb-5">
+								<input type="text" id="nomeEvento" class="form-control" placeholder="Pesquisar por evento" name="">
+								<input type="text" id="cidadeEvento" class="form-control" placeholder="Pesquisar por cidade" name="">
+							</div>
+							<div class="input-group grupo-2 mb-5">
+								<input type="date" id="dataEvento" class="form-control" name="">
+								<div class="input-group-append">
+									<a href="#">
+										<button class="btn btn-danger bt-pesquisar" type="button">Pesquisar</button>
+									</a>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<!-- SLIDER DE BANNERS DE EVENTOS -->
+			<div class="rowslider pb-3">
+				<div class="container">
+					<div class="slider">
+						<div class="slide">
+							<div class="row">
+								<div class="col-12 col-md-8 offset-md-2 align-items-center">
+									<a href="#">
+										<img src="img/slider-img.jpg" alt="">
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="slide">
+							<div class="row">
+								<div class="col-12 col-md-8 offset-md-2 align-items-center">
+									<a href="#">
+										<img src="img/slider-img.jpg" alt="">
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="slide">
+							<div class="row">
+								<div class="col-12 col-md-8 offset-md-2 align-items-center">
+									<a href="#">
+										<img src="img/slider-img.jpg" alt="">
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<hr class="pb-3">
+
+			<!-- LISTA DE EVENTOS -->
+			<div class="row3">
+				<div class="container">
+					<div class="row align-items-center">
+						<div class="col-12">
+							<h3 class="center mb-4">37 eventos encontrados</h3>
+						</div>
+						<div class="col-12 col-md-4 mb-4">
+							<span class="nome-evento offset-1">Nome Evento</span>
+							<img src="img/evento.jpg" class="eventos-lista" alt="">
+							<div class="row align-items-center">
+								<div class="offset-1 col-5">
+									<i class="fas fa-calendar-day"></i> <span class="data-evento">06/04/2019</span>
+								</div>
+								<div class="col-5">
+									<i class="fas fa-clock"></i> <span class="horario-evento">22:00 - 04:00</span>
+								</div>
+							</div>
+							<div class="row align-items-center">
+								<div class="offset-1 col-11">
+									<i class="fas fa-map-marker-alt"></i> <span class="local-evento">Local</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-12 col-md-4 mb-4">
+							<span class="nome-evento offset-1">Nome Evento</span>
+							<img src="img/evento.jpg" class="eventos-lista" alt="">
+							<div class="row align-items-center">
+								<div class="offset-1 col-5">
+									<i class="fas fa-calendar-day"></i> <span class="data-evento">06/04/2019</span>
+								</div>
+								<div class="col-5">
+									<i class="fas fa-clock"></i> <span class="horario-evento">22:00 - 04:00</span>
+								</div>
+							</div>
+							<div class="row align-items-center">
+								<div class="offset-1 col-11">
+									<i class="fas fa-map-marker-alt"></i> <span class="local-evento">Local</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-md-4 mb-4">
+							<span class="nome-evento offset-1">Nome Evento</span>
+							<img src="img/evento.jpg" class="eventos-lista" alt="">
+							<div class="row align-items-center">
+								<div class="offset-1 col-5">
+									<i class="fas fa-calendar-day"></i> <span class="data-evento">06/04/2019</span>
+								</div>
+								<div class="col-5">
+									<i class="fas fa-clock"></i> <span class="horario-evento">22:00 - 04:00</span>
+								</div>
+							</div>
+							<div class="row align-items-center">
+								<div class="offset-1 col-11">
+									<i class="fas fa-map-marker-alt"></i> <span class="local-evento">Local</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-md-4 mb-4">
+							<span class="nome-evento offset-1">Nome Evento</span>
+							<img src="img/evento.jpg" class="eventos-lista" alt="">
+							<div class="row align-items-center">
+								<div class="offset-1 col-5">
+									<i class="fas fa-calendar-day"></i> <span class="data-evento">06/04/2019</span>
+								</div>
+								<div class="col-5">
+									<i class="fas fa-clock"></i> <span class="horario-evento">22:00 - 04:00</span>
+								</div>
+							</div>
+							<div class="row align-items-center">
+								<div class="offset-1 col-11">
+									<i class="fas fa-map-marker-alt"></i> <span class="local-evento">Local</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-md-4 mb-4">
+							<span class="nome-evento offset-1">Nome Evento</span>
+							<img src="img/evento.jpg" class="eventos-lista" alt="">
+							<div class="row align-items-center">
+								<div class="offset-1 col-5">
+									<i class="fas fa-calendar-day"></i> <span class="data-evento">06/04/2019</span>
+								</div>
+								<div class="col-5">
+									<i class="fas fa-clock"></i> <span class="horario-evento">22:00 - 04:00</span>
+								</div>
+							</div>
+							<div class="row align-items-center">
+								<div class="offset-1 col-11">
+									<i class="fas fa-map-marker-alt"></i> <span class="local-evento">Local</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-md-4 mb-4">
+							<span class="nome-evento offset-1">Nome Evento</span>
+							<img src="img/evento.jpg" class="eventos-lista" alt="">
+							<div class="row align-items-center">
+								<div class="offset-1 col-5">
+									<i class="fas fa-calendar-day"></i> <span class="data-evento">06/04/2019</span>
+								</div>
+								<div class="col-5">
+									<i class="fas fa-clock"></i> <span class="horario-evento">22:00 - 04:00</span>
+								</div>
+							</div>
+							<div class="row align-items-center">
+								<div class="offset-1 col-11">
+									<i class="fas fa-map-marker-alt"></i> <span class="local-evento">Local</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- PAGINAÇÃO -->
+			<div class="row4">
+				<div class="container">
+					<div class="row align-items-center">
+						<div class="col-12">
+							<nav aria-label="Navegação pelos eventos">
+								<ul class="pagination">
+									<li class="page-item disabled">
+										<a class="page-link" href="#" aria-label="Previous">
+											<span aria-hidden="true">&laquo;</span>
+										</a>
+									</li>
+									<li class="page-item"><a class="page-link" href="#">1</a></li>
+									<li class="page-item"><a class="page-link" href="#">2</a></li>
+									<li class="page-item"><a class="page-link" href="#">3</a></li>
+									<li class="page-item"><a class="page-link" href="#">4</a></li>
+									<li class="page-item">
+										<a class="page-link" href="#" aria-label="Previous">
+											<span aria-hidden="true">&raquo;</span>
+										</a>
+									</li>
+								</ul>
+							</nav>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- RODAPÉ -->
+			<div class="rowfooter">
+				<div class="row align-items-center">
+					<div class="col-11 offset-1">
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- SCRIPTS -->
+		<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="js/popper/popper.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/slick/slick.min.js"></script>
+		<script type="text/javascript" src="js/eventosListar.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery.datetimepicker.full.min.js"></script>
+	</body>
+	</html>

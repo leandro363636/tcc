@@ -1,0 +1,53 @@
+@font-face {
+	font-family: 'opensans';
+	src: url('fonts/opensans/OpenSans-Regular.tff') format('tff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+#pesquisaevento {
+	font-family: 'opensans', sans-serif;
+}
+
+#pesquisaevento .center {
+    text-align: center;
+}
+
+#pesquisaevento img {
+	width: 100%;
+}
+
+#pesquisaevento label {
+	display: none;
+}
+
+#pesquisaevento .bt-pesquisar {
+	text-transform: uppercase;
+	font-size: 100%;
+}
+
+#pesquisaaevento span .data-evento {
+	font-size: 30px;
+}
+
+#pesquisaevento .campo-pesquisa {
+	width: 100%;
+}
+
+#pesquisaevento .grupo-1 {
+	width: 70%;
+	float: left;
+}
+
+#pesquisaevento .grupo-2 {
+	width: 30%;
+	float: left
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 576px) {
+
+}
