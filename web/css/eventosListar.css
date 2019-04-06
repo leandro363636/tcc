@@ -13,6 +13,17 @@
     text-align: center;
 }
 
+#pesquisaevento a > span{
+    color: #000;
+    text-decoration: none;
+}
+
+#pesquisaevento a:hover {
+     color: #000; 
+     text-decoration: none; 
+     cursor: pointer;  
+}
+
 #pesquisaevento img {
 	width: 100%;
 }
