@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/eventosVisualizar.css"/>
+
+	<title>Nome Evento | fastTicket</title>
+</head>
+<body>
+
+	<div id="visualizaevento">
+		
+		<!-- NAVBAR TOPO -->
+		<div class="row1">
+			<div class="container-fluid">
+				<div class="row align-items-center">
+					<div class="col-12">
+						<nav class="navbar navbar-expand-sm navbar-light bg-light">
+							<a href="#" class="navbar-brand">fastTicket</a>
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTopo" aria-controls="navbarSupportedContent" aria-expanded="false">
+								<span class="navbar-toggler-icon"></span>
+							</button>
+							<div class="collapse navbar-collapse" id="navbarTopo">
+								<ul class="navbar-nav mr-auto">
+									<li class="nav-item">
+										<a class="nav-link right" href="#">Criar Evento</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">Meus Eventos</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">Meus Ingressos</a>
+									</li>
+								</ul>
+								<span class="nav-item dropdown">
+									<span class="nav-link dropdown-toggle" href="#" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+										Bem vindo, Ronaldo <span class="caret"></span>
+									</span>
+									<div class="dropdown-menu dropdown-menu-top" aria-labelledby="navbarDropdown">
+										<button class="dropdown-item" href="#">Minha Conta</button>
+										<button class="dropdown-item" href="#">Meus Ingressos</button>
+										<button class="dropdown-item" href="#">Login</button>
+										<button class="dropdown-item" href="#">Criar Conta</button>
+										<div class="dropdown-divider"></div>
+										<button class="dropdown-item" href="#">Logout</button>
+										<form id="form-logout" action="" method="" style="display: none;"></form>
+									</div>
+								</span>
+							</div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row2 mb-2">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-12" id="divNome">
+						<h1 class="center" id="nomeEvento">Nome do Evento</h1>
+						<h1 class="center"><i class="fas fa-edit" id="editaNomeEvento"></i></h1>
+					</div>
+					<div class="col-12 esconde" id="divForm">
+						<form id="formNome" class="formNome center" action="#">
+							<input type="text" name="" id="inputNome" class="inputNome center" value="Nome do Evento">
+							<h1 class="center"><i class="fas fa-save" id="salvaNomeEvento"></i></h1>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row3">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-12 col-md-7 order-2 order-md-1">
+						<h2 class="center" id="nomeEvento">Informações</h2>
+						<div class="row align-items-center">
+							<div class="col-12" id="divForm">
+								<form id="formNome" class="formNome center" action="#">
+									<input type="text" name="" id="inputNome" class="inputNome center" value="Nome do Evento">
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-md-4 offset-md-1 order-1 order-md-2">
+						<div class="row align-items-center">
+							<div class="col-12">
+								<input type="radio" id="lote1" name="lote" value="lote1"
+								checked>
+								<label for="lote1"><span>Lote 1 </span><span>R$ 100,00</span></label>
+							</div>
+							<div class="col-12">
+								<input type="radio" id="lote2" name="lote" value="lote2">
+								<label for="lote2"><span>Lote 2 </span><span>R$ 100,00</span></label>
+							</div>
+							<div class="col-12">
+								<input type="radio" id="lote3" name="lote" value="lote3">
+								<label for="lote3"><span>Lote 3 </span><span>R$ 100,00</span></label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+
+	<!-- SCRIPTS -->
+	<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="js/popper/popper.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/eventosVisualizar.js"></script>
+</body>
+</html>

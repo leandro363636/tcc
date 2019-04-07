@@ -1,0 +1,37 @@
+@font-face {
+	font-family: 'opensans';
+	src: url('fonts/opensans/OpenSans-Regular.tff') format('tff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+#visualizaevento {
+	font-family: 'opensans', sans-serif;
+}
+
+#visualizaevento .inputNome {
+	border: none;
+	width: 100%;
+}
+
+#visualizaevento input:focus {
+	border-color: #fff;
+	outline: none;
+	background-color: #c6c6b4;
+}
+
+#visualizaevento .center {
+    text-align: center;
+}
+
+#visualizaevento .valor {
+    text-align: left;
+}
+
+#visualizaevento .esconde {
+  display: none;
+}
+
+#visualizaevento .inputNome {
+	font-size: 1.5em;
+}
