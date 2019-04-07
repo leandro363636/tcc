@@ -13,26 +13,23 @@
     text-align: center;
 }
 
-#pesquisaevento a > span{
+#pesquisaevento .row3 a{
     color: #000;
     text-decoration: none;
 }
 
-#pesquisaevento a:hover {
+#pesquisaevento .row3 a:hover {
      color: #000; 
      text-decoration: none; 
      cursor: pointer;  
 }
 
-#pesquisaevento img {
+#pesquisaevento .rowslider img,
+#pesquisaevento .row3 img {
 	width: 100%;
 }
 
-#pesquisaevento label {
-	display: none;
-}
-
-#pesquisaevento .bt-pesquisar {
+#pesquisaevento .row3 .bt-pesquisar {
 	text-transform: uppercase;
 	font-size: 100%;
 }
