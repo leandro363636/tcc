@@ -99,6 +99,7 @@ public class UsuarioDAO {
             usuario.setSenha(res.getString(3));
             usuario.setNome(res.getString(4));
             usuario.setSobrenome(res.getString(5));
+            usuario.setCpf(res.getString(6));
             return usuario;
         }
         //System.out.println("Executed: "+ usuario.toString());
@@ -150,7 +151,7 @@ public class UsuarioDAO {
     }
     
     public void insertUsuario (Usuario usuario) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
-        String sql = "INSERT INTO tb_usuario (nome_usuario, sobrenome_usuario, email_usuario, senha_usuario, rg_usuario, cpf_usuario) VALUES ((?), (?), (?), (?), (?), (?))";
+        String sql = "INSERT INTO tb_usuario (nome_usuario, sobrenome_usuario, email_usuario, senha_usuario, cpf_usuario) VALUES ((?), (?), (?), (?), (?))";
         PreparedStatement st = conn.prepareStatement(sql);
 
         StringBuffer hexString = new StringBuffer();
@@ -177,8 +178,7 @@ public class UsuarioDAO {
         st.setString(2, usuario.getSobrenome());
         st.setString(3, usuario.getEmail());
         st.setString(4, hexString.toString());
-        st.setString(5, usuario.getRg());
-        st.setString(6, usuario.getCpf());
+        st.setString(5, usuario.getCpf());
         st.executeUpdate();
     }
     
@@ -223,6 +223,29 @@ public class UsuarioDAO {
         stmt.setString(2, usuario.getSobrenome());
         stmt.setString(3, usuario.getEmail());
         stmt.setInt(4, usuario.getId());
+        stmt.executeUpdate();
+    }
+    
+    
+        public void updateSenhaById(Usuario usuario) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        String sql = "UPDATE tb_usuario SET senha_usuario=(?) where id_usuario=(?);";
+
+        StringBuffer hexString = new StringBuffer();
+        MessageDigest md;
+        md = MessageDigest.getInstance("MD5");
+        byte[] hash = md.digest(usuario.getSenha().getBytes("UTF-8"));
+        for (int i = 0; i < hash.length; i++) {
+            if ((0xff & hash[i]) < 0x10) {
+                hexString.append("0"
+                        + Integer.toHexString((0xFF & hash[i])));
+            } else {
+                hexString.append(Integer.toHexString(0xFF & hash[i]));
+            }
+        }
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, hexString.toString());
+        stmt.setInt(2, usuario.getId());
         stmt.executeUpdate();
     }
 

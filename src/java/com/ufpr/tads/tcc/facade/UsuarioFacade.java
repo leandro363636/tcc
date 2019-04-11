@@ -47,6 +47,12 @@ public class UsuarioFacade {
         usuariodao.updateUsuarioByIdWithoutSenha(usuario);
     }
     
+        public static void alterarSenha(Usuario usuario) throws SQLException, ClassNotFoundException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        UsuarioDAO usuariodao = new UsuarioDAO();
+        usuariodao.updateSenhaById(usuario);
+    }
+    
+    
     public static void inserir(Usuario usuario) throws ClassNotFoundException, SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         UsuarioDAO usuariodao = new UsuarioDAO();
         usuariodao.insertUsuario(usuario);

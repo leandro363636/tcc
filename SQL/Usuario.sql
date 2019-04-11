@@ -22,7 +22,6 @@ CREATE TABLE tb_usuario (
     senha_usuario VARCHAR(200),
     nome_usuario VARCHAR(50),
     sobrenome_usuario VARCHAR(150),
-	rg_usuario VARCHAR(9),
     cpf_usuario VARCHAR(11)
 );
 /*A senha é admin*/

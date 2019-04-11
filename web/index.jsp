@@ -188,8 +188,9 @@
                     <div class="form-group row">
                         <div class="col-sm-5"></div>
                         <input class="form-control col-sm-2 senha" id="senha" type="password" name="senha" value="" placeholder="Senha" onfocus="this.placeholder = ''"
-                               onblur="this.placeholder = 'Senha'" maxlength="50"/><br><br>
+                               onblur="this.placeholder = 'Senha'" maxlength="50"/>
                     </div>
+                    <a href="RecuperarSenhaServlet?action=formNew">Esqueceu sua senha?</a><br/>
                     <button type="submit" class="btn btn-outline-secondary">Login</button>
 
                 </form>
