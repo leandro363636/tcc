@@ -13,7 +13,6 @@ CREATE TABLE tb_evento (
     nome_evento VARCHAR(200),
     data_inicio_evento TIMESTAMP,
     data_fim_evento TIMESTAMP,
-    endereco_evento VARCHAR(200),
     descricao_evento TEXT,
     imagem_evento TEXT,
     aprovacao_evento BOOLEAN,

@@ -6,9 +6,15 @@
 package com.ufpr.tads.tcc.servlets;
 
 //import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import com.ufpr.tads.tcc.beans.Cidade;
+import com.ufpr.tads.tcc.beans.Endereço;
+import com.ufpr.tads.tcc.beans.Estado;
 import com.ufpr.tads.tcc.beans.Evento;
 import com.ufpr.tads.tcc.beans.Lote;
 import com.ufpr.tads.tcc.beans.Usuario;
+import com.ufpr.tads.tcc.facade.CidadeFacade;
+import com.ufpr.tads.tcc.facade.EndereçoFacade;
+import com.ufpr.tads.tcc.facade.EstadoFacade;
 import com.ufpr.tads.tcc.facade.EventoFacade;
 import com.ufpr.tads.tcc.facade.LoteFacade;
 import java.io.File;
@@ -77,9 +83,13 @@ public class EventoServlet extends HttpServlet {
         
         if (acao == null || acao.equals("list")) {
             List<Evento> eventos;
+            List<Evento> carrousel;
             try {
-                eventos = EventoFacade.buscarTodosEventosPorIdUsuario(lb.getId());
+                //eventos = EventoFacade.buscarTodosEventosPorIdUsuario(lb.getId());
+                eventos = EventoFacade.buscarTodosEventos();
+                carrousel = EventoFacade.buscarUltimosTresEventos();
                 request.setAttribute("eventos", eventos);
+                request.setAttribute("carrousel", carrousel);
             } catch (SQLException | ClassNotFoundException ex) {
                 request.setAttribute("exception", ex);
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
@@ -110,7 +120,13 @@ public class EventoServlet extends HttpServlet {
                     try {
                         int id = Integer.parseInt(request.getParameter("id"));
                         Evento evento = EventoFacade.buscar(id);
+                        Endereço endereço = EndereçoFacade.buscarPorReferencia(id, "evento");
+                        endereço.setCidade(CidadeFacade.buscarCidade(endereço.getCidade().getId()));
+                        evento.setEndereco(endereço);
+                        List<Estado> estados = new ArrayList<>();
+                        estados = EstadoFacade.buscarTodosEstados();
                         request.setAttribute("alterarevento", evento);
+                        request.setAttribute("estados", estados);
                     } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
                         request.setAttribute("exception", ex);
                         request.setAttribute("javax.servlet.error.status_code", 500);
@@ -171,7 +187,21 @@ public class EventoServlet extends HttpServlet {
                                 evento.setImagem(currentPath);
                                 evento.setNome(request.getParameter("nome"));
                                 evento.setDescrição(request.getParameter("desc"));
-                                evento.setEndereco(request.getParameter("endereco"));
+                                evento.setDescrição(request.getParameter("desc"));
+                                Endereço endereço = new Endereço();
+                                endereço.setRua(request.getParameter("rua"));
+                                endereço.setCep(request.getParameter("cep"));
+                                endereço.setReferencia("evento");
+                                try {
+                                    endereço.setNumero(Integer.parseInt(request.getParameter("numero")));
+                                    Cidade cidade = new Cidade();
+                                    cidade.setId(Integer.parseInt(request.getParameter("cidade")));
+                                    endereço.setCidade(cidade);
+                                } catch (NumberFormatException ex) {
+                                    request.setAttribute("exception", ex);
+                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                    rd.forward(request, response);
+                                }
 
                                 String dataInicioString = request.getParameter("dataInicio");
                                 String dataFimString = request.getParameter("dataFim");
@@ -182,20 +212,32 @@ public class EventoServlet extends HttpServlet {
                                 evento.setDataFim(data);
                                 if (evento.getImagem() != null && evento.getImagem() != "") {
                                     EventoFacade.alterar(evento);
+                                    endereço.setIdReferencia(evento.getId());
+                                    EndereçoFacade.alterarPorIdReferencia(endereço);
                                 } else {
                                     EventoFacade.alterarSemImagem(evento);
+                                    endereço.setIdReferencia(evento.getId());
+                                    EndereçoFacade.alterarPorIdReferencia(endereço);
                                 }
                                 
                                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/EventoServlet?action=list");
                                 rd.forward(request, response);
                             } catch (NumberFormatException | ParseException | SQLException | ClassNotFoundException ex) {
                                 request.setAttribute("exception", ex);
-                                request.setAttribute("javax.servlet.error.status_code", 500);
                                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
                                 rd.forward(request, response);
                             }
                         } else {
                             if (acao.equals("formNew")) {
+                                try {
+                                    List<Estado> estados = new ArrayList<>();
+                                    estados = EstadoFacade.buscarTodosEstados();
+                                    request.setAttribute("estados", estados);
+                                } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
+                                    request.setAttribute("exception", ex);
+                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                    rd.forward(request, response);
+                                }
                                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/eventosForm.jsp");
                                 rd.forward(request, response);
                             } else {
@@ -232,7 +274,20 @@ public class EventoServlet extends HttpServlet {
                                     evento.setImagem(currentPath);
                                     evento.setNome(request.getParameter("nome"));
                                     evento.setDescrição(request.getParameter("desc"));
-                                    evento.setEndereco(request.getParameter("endereco"));
+                                    Endereço endereço = new Endereço();
+                                    endereço.setRua(request.getParameter("rua"));
+                                    endereço.setCep(request.getParameter("cep"));
+                                    endereço.setReferencia("evento");
+                                    try {
+                                        endereço.setNumero(Integer.parseInt(request.getParameter("numero")));
+                                        Cidade cidade = new Cidade();
+                                        cidade.setId(Integer.parseInt(request.getParameter("cidade")));
+                                        endereço.setCidade(cidade);
+                                    } catch (NumberFormatException ex) {
+                                        request.setAttribute("exception", ex);
+                                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                        rd.forward(request, response);
+                                    }
                                     evento.setAprovado(false);
                                     evento.setUsuario(lb);
 
@@ -252,6 +307,9 @@ public class EventoServlet extends HttpServlet {
 
                                     try {
                                         EventoFacade.inserir(evento);
+                                        evento = EventoFacade.buscarPorDadosEvento(evento);
+                                        endereço.setIdReferencia(evento.getId());
+                                        EndereçoFacade.inserir(endereço);
                                     } catch (SQLException | ClassNotFoundException  ex) {
                                         request.setAttribute("exception", ex);
                                         request.setAttribute("javax.servlet.error.status_code", 500);

@@ -25,9 +25,19 @@ public class EventoFacade {
         return eventodao.selectEventosByIdUsuario(id);
     }
     
+    public static List<Evento> buscarUltimosTresEventos() throws SQLException, ClassNotFoundException {
+        EventoDAO eventodao = new EventoDAO();
+        return eventodao.selectLastThreeEventos();
+    }
+    
     public static Evento buscar(int id) throws SQLException, ClassNotFoundException {
         EventoDAO eventodao = new EventoDAO();
         return eventodao.selectEventoById(id);
+    }
+    
+    public static Evento buscarPorDadosEvento(Evento evento) throws SQLException, ClassNotFoundException {
+        EventoDAO eventodao = new EventoDAO();
+        return eventodao.selectEventoByEventoData(evento);
     }
     
     public static void remover(int id) throws SQLException, ClassNotFoundException {

@@ -9,6 +9,10 @@ jQuery(document).ready(function () {
     jQuery('#filter-date, #search-from-date, #search-to-date').datetimepicker();
 });
 $(document).ready(function () {
+    $("#estado").change(function () {
+        getCidades();
+    });
+    
     $(document).on('click', '#adicionar-lote', function() {
         inserirLote();
     });
@@ -17,6 +21,30 @@ $(document).ready(function () {
     });
     listarLote();
 });
+
+function getCidades() {
+    var estadoId = $("#estado").val();
+    var url = "CidadeServlet";
+    $.ajax({
+        url: url, // URL da sua Servlet
+        data: {
+            estadoId: estadoId
+        }, // Parâmetro passado para a Servlet
+        dataType: 'json',
+        success: function (data) {
+            // Se sucesso, limpa e preenche a combo de cidade
+            // alert(JSON.stringify(data));
+            $("#cidade").empty();
+            $.each(data, function (i, obj) {
+                $("#cidade").append('<option value=' + obj.id + '>' + obj.nome + '</option>');
+            });
+        },
+        error: function (request, textStatus, errorThrown) {
+            alert(request.status + ', Error: ' + request.statusText);
+            // Erro
+        }
+    });
+}
 
 function inserirLote() {
     var nomeLote = $('input[name="nomeLote"]').val();

@@ -19,7 +19,7 @@ public class Evento implements Serializable{
     private String nome;
     private Date dataInicio;
     private Date dataFim;
-    private String endereco;
+    private Endereço endereço;
     private String descrição;
     private boolean aprovado;
     private String imagem;
@@ -62,12 +62,12 @@ public class Evento implements Serializable{
         this.dataFim = dataFim;
     }
 
-    public String getEndereco() {
-        return endereco;
+    public Endereço getEndereco() {
+        return endereço;
     }
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    public void setEndereco(Endereço endereço) {
+        this.endereço = endereço;
     }
 
     public String getDescrição() {

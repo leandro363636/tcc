@@ -57,8 +57,32 @@
                         <input class="form-control datetimepicker" type="text" name="dataFim" value="<c:out value="${dataFim}"/>"/><br/>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="endereco">Endereço:</label>
-                        <input class="form-control" type="text" name="endereco" value="<c:out value="${(!(empty param.form) || param.form == \"alterar\") ? alterarevento.endereco : \"\"}"/>"/><br/>
+                        <label for="rua">Rua:</label>
+                        <input class="form-control" type="text" name="rua" value="<c:out value="${(!(empty param.form) || param.form == \"alterar\") ? alterarevento.endereco.rua : \"\"}"/>"/><br/>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="numero">Número:</label>
+                        <input class="form-control" type="number" name="numero" value="<c:out value="${(!(empty param.form) || param.form == \"alterar\") ? alterarevento.endereco.numero : \"\"}"/>"/><br/>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="cep">CEP:</label>
+                        <input class="form-control" type="text" name="cep" value="<c:out value="${(!(empty param.form) || param.form == \"alterar\") ? alterarevento.endereco.cep : \"\"}"/>"/><br/>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for="uf">UF:</label>
+                        <select id="estado" name="uf" class="custom-select" required>
+                        <c:forEach items="${estados}" var="estado">
+                            <option <c:out value="${(alterarevento.endereco.cidade.estado.id == estado.id) ? \"selected\" : \"\" }"/> value="<c:out value="${estado.id}"/>"><c:out value="${estado.sigla}"/></option>
+                        </c:forEach>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-9">  
+                        <label for="cidade">Cidade:</label>
+                        <select id="cidade" name="cidade" class="custom-select" required>
+                            <c:if test="${(!(empty param.form) || param.form == \"alterar\")}" >
+                            <option selected value="<c:out value="${alterarevento.endereco.cidade.id}"/>"><c:out value="${alterarevento.endereco.cidade.nome}"/></option>
+                            </c:if>
+                        </select>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="desc">Descrição:</label>
