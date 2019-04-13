@@ -7,8 +7,12 @@ package com.ufpr.tads.tcc.servlets;
 
 import com.ufpr.tads.tcc.beans.Admin;
 import com.ufpr.tads.tcc.beans.Usuario;
+import com.ufpr.tads.tcc.exceptions.EmailDuplicadoException;
 import com.ufpr.tads.tcc.facade.AdminFacade;
+import com.ufpr.tads.tcc.facade.UsuarioFacade;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -24,6 +28,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import static javax.xml.bind.DatatypeConverter.parseString;
+import java.util.*;
 
 /**
  *
@@ -61,19 +67,50 @@ public class AdminServlet extends HttpServlet {
             if (acao == null || acao.equals("list")) {
             List<Admin> adm;
             try {             
-              adm = AdminFacade.buscarListaAdmin(lb.getId());
+                adm = AdminFacade.buscarTodosUsuarios();
                 request.setAttribute("admin", adm);
             } catch (SQLException | ClassNotFoundException ex) {
                 request.setAttribute("exception", ex);
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
                 rd.forward(request, response);
             }
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/admForm.jsp");
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/admList.jsp");
             rd.forward(request, response);
-        } else { if (acao.equals("formUpdate")) {
+        }else{
+            if (acao.equals("show")) {
+               /* try {
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    Admin adm  = AdminFacade.selectAdminById(id);
+                    request.setAttribute("visualizaradm", adm);
+                } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
+                    request.setAttribute("javax.servlet.jsp.jspException", ex);
+                    request.setAttribute("javax.servlet.error.status_code", 500);
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                    rd.forward(request, response);
+                }
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/admVisualizar.jsp");
+                rd.forward(request, response);*/
+                
+                try{
+                  int id = Integer.parseInt(request.getParameter("id"));
+                    Admin adm;
+                
+                    adm = AdminFacade.buscar(id);
+                    request.setAttribute("visualizaradm", adm);
+                } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
+                    request.setAttribute("javax.servlet.jsp.jspException", ex);
+                    request.setAttribute("javax.servlet.error.status_code", 500);
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                    rd.forward(request, response);
+                }
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/admVisualizar.jsp");
+                rd.forward(request, response);
+                
+            } else { 
+              if (acao.equals("formUpdate")) {
                     try {
                         int id = Integer.parseInt(request.getParameter("id"));
-                        Admin adm = AdminFacade.selectAdminById(id);
+                        Admin adm = AdminFacade.buscarDados(id);
                         request.setAttribute("alterarAdm", adm);
                     } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
                         request.setAttribute("exception", ex);
@@ -84,7 +121,64 @@ public class AdminServlet extends HttpServlet {
                     
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/admForm.jsp?form=alterar");
                     rd.forward(request, response);
-                } else { if (acao.equals("formNew")) {
+              
+                      } else {
+                        if (acao.equals("update")) {
+                            Admin adm = new Admin();
+                            try {
+                                int id = Integer.parseInt(request.getParameter("id"));
+                                adm.setId(id);
+                                
+                             /*   String email = request.getParameter("email");*/
+                                     
+                                Admin us = AdminFacade.buscarAdminByEmail(request.getParameter("email"));
+                                try {
+                                    if (us != null && us.getId() != adm.getId()) {
+                                        throw new EmailDuplicadoException("E-mail já cadastrado no sistema.");
+                                    }
+                                } catch (EmailDuplicadoException ex) {
+                                    request.setAttribute("msg", ex.getMessage());
+
+                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/UsuarioServlet?action=list");
+                                    rd.forward(request, response);
+                                }
+                                
+                                adm.setEmail(email);
+                            } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
+                                request.setAttribute("javax.servlet.jsp.jspException", ex);
+                                request.setAttribute("javax.servlet.error.status_code", 500);
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                rd.forward(request, response);
+                            }
+                            
+                                    adm.setNome(request.getParameter("nome"));
+                                    adm.setSobrenome(request.getParameter("sobrenome"));
+                                    adm.setRg(request.getParameter("rg"));
+                                    adm.setCpf(request.getParameter("cpf"));
+                             String dataString = request.getParameter("data");
+                                    DateFormat frmt = new SimpleDateFormat("yyyy-MM-dd");
+                                    try {
+                                        Date data = new Date(frmt.parse(dataString).getTime());
+                                        adm.setDataNascimento(data);
+                                    } catch (ParseException ex) {
+                                        Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                            try {
+                                if (adm.getSenha() != null || adm.getSenha().equals("")) {
+                                    AdminFacade.alterarSemSenha(adm);
+                                } else {
+                                    AdminFacade.alterar(adm);
+                                }
+                            } catch (SQLException | ClassNotFoundException | NoSuchAlgorithmException | UnsupportedEncodingException  ex) {
+                                request.setAttribute("javax.servlet.jsp.jspException", ex);
+                                request.setAttribute("javax.servlet.error.status_code", 500);
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                rd.forward(request, response);
+                            }
+                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/AdminServlet?action=list");
+                            rd.forward(request, response);
+                       
+                    } else { if (acao.equals("formNew")) {
                                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/admForm.jsp");
                                 rd.forward(request, response);
                             } else {
@@ -117,18 +211,20 @@ public class AdminServlet extends HttpServlet {
                                         rd.forward(request, response);
                                     }
                                     
-                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/usuariosListar.jsp");
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/admList.jsp");
                                 rd.forward(request, response);  
                                 }
         
-        
-                   }
-    
-        }
+                         
+                            }
+                        }
+                    }
+                }
+            }
         }
     
 
-   }
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

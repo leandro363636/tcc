@@ -1,16 +1,14 @@
 <%-- 
-        Document   : clientesListar
-        Created on : 07/04/2018, 15:55:25
-        Author     : mateus
-    --%>
+    Document   : admList
+    Created on : 13/04/2019, 12:39:05
+    Author     : Gabriel
+--%>
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@page import="com.ufpr.tads.tcc.beans.Usuario"%>
-    <%@page import="java.util.List"%>
-    <%@page contentType="text/html" pageEncoding="UTF-8"%>
-    <!DOCTYPE html>
-    <html>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
         <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+              <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <meta charset="UTF-8">
             <title>Usuários Listar</title>
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -26,47 +24,14 @@
 
         </head>
         <body>
-            <script>
-
-                  window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '{306218993286443}',
-          cookie     : true,
-          xfbml      : true,
-          version    : '{3.2}'
-        });
-
-        FB.AppEvents.logPageView();   
-
-      };
-
-
-            (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "https://connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-
-
-         function checkLoginState() {
-        FB.logout(function(response) {
-           var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut();
-    });
-
-        });
-
-       </script>
-            <%@ page errorPage="erro.jsp" %>
+         <%@ page errorPage="erro.jsp" %>
             <c:if test="${empty sessionScope.usuario}">
                 <jsp:forward page="index.jsp">
                     <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
                 </jsp:forward>
             </c:if>
 
-            <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
                 <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item"><a class="nav-link" href="UsuarioServlet">Cadastro de Usuários</a></li>
@@ -76,7 +41,7 @@
                 </div>
                 <div class="navbar-collapse collapse w-100 order-2 dual-collapse2">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item"><p class="nav-link active">Nome: <c:out value="${admin.nome}"/></p></li>
+                        <li class="nav-item"><p class="nav-link active">Nome: <c:out value="${usuario.nome}"/></p></li>
                         <li class="nav-item" onclick="checkLoginState()"><a class="nav-link" href="LoginServlet?action=logout"  >Sair</a></li>
                     </ul>
                 </div>
@@ -100,16 +65,15 @@
             <a class="btn btn-outline-success" href="AdminServlet?action=formNew">Novo</a>
             <table class="table table-striped"><tr><th>Nome</th><th>E-mail</th><th>Visualizar</th><th>Alterar</th><th>Remover</th></tr>
 
-            <c:forEach items="${usuarios}" var="us">
+            <c:forEach items="${admin}" var="admin">
                 <tr>
-                    <td><c:out value="${us.nome}"/></td>
-                    <td><c:out value="${us.email}"/></td>
-                    <td><a href="UsuarioServlet?action=show&id=<c:out value="${us.id}"/>"><i class="ion-person"></i></a></td>
-                    <td><a href="UsuarioServlet?action=formUpdate&id=<c:out value="${us.id}"/>"><i class="ion-edit"></i></a></td>
-                    <td><a href="UsuarioServlet?action=remove&id=<c:out value="${us.id}"/>"><i class="ion-trash-a"></i></a></td>
+                    <td><c:out value="${admin.nome}"/></td>
+                    <td><c:out value="${admin.email}"/></td>
+                    <td><a href="AdminServlet?action=show&id=<c:out value="${admin.id}"/>"><i class="ion-person"></i></a></td>
+                    <td><a href="AdminServlet?action=formUpdate&id=<c:out value="${admin.id}"/>"><i class="ion-edit"></i></a></td>
+                    <td><a href="AdminServlet?action=remove&id=<c:out value="${admin.id}"/>"><i class="ion-trash-a"></i></a></td>
                 </tr>
             </c:forEach>
-
             </table>
 
 
