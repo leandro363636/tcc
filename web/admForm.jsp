@@ -96,10 +96,8 @@
                     
                     
                     
-                <input class="btn btn-outline-success" type="submit" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? 'Alterar' : 'Salvar'}"/>"/>
-                    <a class="btn btn-outline-danger" href="AdmServlet">Cancelar</a>
-                    
-                    <a type="submit" onclick="inserirAmin()">TEste</a>
+                <input class="btn btn-outline-success" type="AdminServlet?action=new" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? 'Alterar' : 'Salvar'}"/>"/>
+                    <a class="btn btn-outline-danger" href="AdminServlet">Cancelar</a>
             </form>
         </div>
     </body>  

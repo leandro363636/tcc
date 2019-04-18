@@ -21,3 +21,4 @@ CREATE TABLE tb_evento (
 );
 
 INSERT INTO tb_evento(nome_evento, id_usuario) values ('Evento teste', 1);
+INSERT INTO tb_endereco(rua_endereco, numero_endereco, cep_endereco, id_cidade, referencia_endereco, id_referencia) values ('Rua teste', 1, '12345678', 2878, 'evento', 1);

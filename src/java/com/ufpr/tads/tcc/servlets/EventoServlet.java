@@ -34,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 import java.util.logging.Level;
 import javax.servlet.RequestDispatcher;
@@ -86,8 +87,56 @@ public class EventoServlet extends HttpServlet {
             List<Evento> carrousel;
             try {
                 //eventos = EventoFacade.buscarTodosEventosPorIdUsuario(lb.getId());
+                String nomeEvento = request.getParameter("nomeEvento");
+                System.out.println(nomeEvento);
+                String idCidade = request.getParameter("cidade");
+                System.out.println(idCidade);
+                
+                if (idCidade != null && !idCidade.equals("")) {
+                    try {
+                        int cidade = Integer.parseInt(request.getParameter("cidade"));
+                    } catch (NumberFormatException ex) {
+                        request.setAttribute("exception", ex);
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                        rd.forward(request, response);
+                    }
+                    
+                }
+                String dataEvento = request.getParameter("dataEvento");
+                System.out.println(dataEvento);
+                if (dataEvento != null && !dataEvento.equals("")) {
+                    try {
+                        DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                        Date data = new Date(fmt.parse(dataEvento).getTime());
+                    } catch (ParseException ex) {
+                        request.setAttribute("exception", ex);
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                        rd.forward(request, response);
+                    }
+                }
+                
+                if ( (nomeEvento != null && !nomeEvento.equals("")) || (idCidade != null && !idCidade.equals("")) || (dataEvento != null && !dataEvento.equals(""))) {
+                    
+                }
+                
                 eventos = EventoFacade.buscarTodosEventos();
                 carrousel = EventoFacade.buscarUltimosTresEventos();
+                ListIterator<Evento> eventoIterator = eventos.listIterator();
+
+                while (eventoIterator.hasNext()) {
+                  // Need to call next, before set.
+                  Evento evento = eventoIterator.next();
+                  Endereço endereço = EndereçoFacade.buscarPorReferencia(evento.getId(), "evento");
+                  endereço.setCidade(CidadeFacade.buscarCidade(endereço.getCidade().getId()));
+                  evento.setEndereco(endereço);
+                  // Replace item returned from next()
+                  eventoIterator.set(evento);
+                }
+                /*for (Evento evento : eventos) {
+                    Endereço endereço = EndereçoFacade.buscarPorReferencia(evento.getId(), "evento");
+                    endereço.setCidade(CidadeFacade.buscarCidade(endereço.getCidade().getId()));
+                    evento.setEndereco(endereço);
+                }*/
                 request.setAttribute("eventos", eventos);
                 request.setAttribute("carrousel", carrousel);
             } catch (SQLException | ClassNotFoundException ex) {
