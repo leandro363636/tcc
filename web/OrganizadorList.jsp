@@ -1,18 +1,20 @@
 <%-- 
-        Document   : clientesListar
-        Created on : 07/04/2018, 15:55:25
-        Author     : mateus
-    --%>
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@page import="com.ufpr.tads.tcc.beans.Usuario"%>
-    <%@page import="java.util.List"%>
-    <%@page contentType="text/html" pageEncoding="UTF-8"%>
-    <!DOCTYPE html>
-    <html>
-        <head>
+    Document   : OrganizadorList
+    Created on : 20/04/2019, 12:21:52
+    Author     : Gabriel
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@page import="com.ufpr.tads.tcc.beans.Organizador"%>
+<%@page import="com.ufpr.tads.tcc.beans.Usuario"%>
+<!DOCTYPE html>
+<html>
+            <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <meta charset="UTF-8">
-            <title>Usuários Listar</title>
+            <title>Organizador Listar</title>
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
             <link rel="stylesheet" type="text/css" href="css/clienteListar.css">
             <link rel="stylesheet" type="text/css" href="css/ionicons.css">
@@ -25,59 +27,26 @@
             <script src="https://apis.google.com/js/platform.js" async defer></script>
 
         </head>
-        <body>
-            <script>
-
-                  window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '{306218993286443}',
-          cookie     : true,
-          xfbml      : true,
-          version    : '{3.2}'
-        });
-
-        FB.AppEvents.logPageView();   
-
-      };
-
-
-            (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "https://connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-
-
-         function checkLoginState() {
-        FB.logout(function(response) {
-           var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut();
-    });
-
-        });
-
-       </script>
-            <%@ page errorPage="erro.jsp" %>
+<body>
+         <%@ page errorPage="erro.jsp" %>
             <c:if test="${empty sessionScope.usuario}">
                 <jsp:forward page="index.jsp">
                     <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
                 </jsp:forward>
             </c:if>
 
-            <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
                 <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item"><a class="nav-link" href="UsuarioServlet">Cadastro de Usuários</a></li>
                         <li class="nav-item"><a class="nav-link" href="EventoServlet">Cadastro de Eventos</a></li>
                          <li class="nav-item"><a class="nav-link" href="AdminServlet">Cadastro de Admin</a></li>
-                          <li class="nav-item"><a class="nav-link" href="OrganizadorServlet">Cadastro de Organizador</a></li>
+                         <li class="nav-item"><a class="nav-link" href="OrganizadorServlet">Cadastro de Organizador</a></li>                         
                     </ul>
                 </div>
                 <div class="navbar-collapse collapse w-100 order-2 dual-collapse2">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item"><p class="nav-link active">Nome: <c:out value="${admin.nome}"/></p></li>
+                        <li class="nav-item"><p class="nav-link active">Nome: <c:out value="${usuario.nome}"/></p></li>
                         <li class="nav-item" onclick="checkLoginState()"><a class="nav-link" href="LoginServlet?action=logout"  >Sair</a></li>
                     </ul>
                 </div>
@@ -98,19 +67,18 @@
                             </div>
                         </c:if>
 
-            <a class="btn btn-outline-success" href="AdminServlet?action=formNew">Novo</a>
+            <a class="btn btn-outline-success" href="OrganizadorServlet?action=formNew">Novo</a>
             <table class="table table-striped"><tr><th>Nome</th><th>E-mail</th><th>Visualizar</th><th>Alterar</th><th>Remover</th></tr>
 
-            <c:forEach items="${usuarios}" var="us">
+            <c:forEach items="${organizador}" var="organizador">
                 <tr>
-                    <td><c:out value="${us.nome}"/></td>
-                    <td><c:out value="${us.email}"/></td>
-                    <td><a href="UsuarioServlet?action=show&id=<c:out value="${us.id}"/>"><i class="ion-person"></i></a></td>
-                    <td><a href="UsuarioServlet?action=formUpdate&id=<c:out value="${us.id}"/>"><i class="ion-edit"></i></a></td>
-                    <td><a href="UsuarioServlet?action=remove&id=<c:out value="${us.id}"/>"><i class="ion-trash-a"></i></a></td>
+                    <td><c:out value="${organizador.nomeDaOrganizacao}"/></td>
+                    <td><c:out value="${organizador.email}"/></td>
+                    <td><a href="OrganizadorServlet?action=show&id=<c:out value="${organizador.idOrganizador}"/>"><i class="ion-person"></i></a></td>
+                    <td><a href="OrganizadorServlet?action=formUpdate&id=<c:out value="${organizador.idOrganizador}"/>"><i class="ion-edit"></i></a></td>
+                    <td><a href="OrganizadorServlet?action=remove&id=<c:out value="${organizador.idOrganizador}"/>"><i class="ion-trash-a"></i></a></td>
                 </tr>
             </c:forEach>
-
             </table>
 
 
@@ -118,4 +86,4 @@
                 <p class="small font-weight-light">Em caso de problemas contactar o administrador: <strong><c:out value="${configuracao.email}" /></strong></p>  
             </footer>-->
         </body>
-    </html>
+</html>

@@ -117,7 +117,7 @@ public class AdminDAO {
     }
         
             
-    public List<Admin> getUsuarios() throws SQLException {;;
+    public List<Admin> getUsuarios() throws SQLException {
 
         List<Admin> resultados = new ArrayList<>();
 
