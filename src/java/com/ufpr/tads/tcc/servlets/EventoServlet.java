@@ -83,45 +83,89 @@ public class EventoServlet extends HttpServlet {
         }
         
         if (acao == null || acao.equals("list")) {
+            String filtroNome = null;
+            if ( session.getAttribute("filtroNome") != null ) {
+                filtroNome = (String) session.getAttribute("filtroNome");
+            }
+            int filtroCidade = 0;
+            if ( session.getAttribute("filtroCidade") != null ) {
+                filtroCidade = (int) session.getAttribute("filtroCidade");
+            }
+            Date filtroData = null;
+            if ( session.getAttribute("filtroData") != null ) {
+                filtroData = (Date) session.getAttribute("filtroData");
+            }
+            
             List<Evento> eventos;
             List<Evento> carrousel;
             try {
                 //eventos = EventoFacade.buscarTodosEventosPorIdUsuario(lb.getId());
-                String nomeEvento = request.getParameter("nomeEvento");
-                System.out.println(nomeEvento);
-                String idCidade = request.getParameter("cidade");
-                System.out.println(idCidade);
-                
-                if (idCidade != null && !idCidade.equals("")) {
+                String pagina = request.getParameter("pagina");
+                int pg = 1;
+                if ( pagina != null && !pagina.equals("") ) {
                     try {
-                        int cidade = Integer.parseInt(request.getParameter("cidade"));
+                        pg = Integer.parseInt(pagina);
                     } catch (NumberFormatException ex) {
                         request.setAttribute("exception", ex);
                         RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
                         rd.forward(request, response);
                     }
-                    
                 }
+                
+                String nomeEvento = request.getParameter("nomeEvento");
+                if ( (nomeEvento != null && !nomeEvento.equals("")) ) {
+                    nomeEvento = "%" + nomeEvento + "%";
+                }
+                
+                String idCidade = request.getParameter("cidade");
+                int cidade = 0;
+                if (idCidade != null && !idCidade.equals("")) {
+                    try {
+                        cidade = Integer.parseInt(idCidade);
+                    } catch (NumberFormatException ex) {
+                        request.setAttribute("exception", ex);
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                        rd.forward(request, response);
+                    }
+                }
+                
                 String dataEvento = request.getParameter("dataEvento");
-                System.out.println(dataEvento);
+                Date data = null;
                 if (dataEvento != null && !dataEvento.equals("")) {
                     try {
                         DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                        Date data = new Date(fmt.parse(dataEvento).getTime());
+                        data = new Date(fmt.parse(dataEvento).getTime());
                     } catch (ParseException ex) {
                         request.setAttribute("exception", ex);
                         RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
                         rd.forward(request, response);
                     }
                 }
+                int total = 0;
                 
-                if ( (nomeEvento != null && !nomeEvento.equals("")) || (idCidade != null && !idCidade.equals("")) || (dataEvento != null && !dataEvento.equals(""))) {
+                if ( (nomeEvento != null && !nomeEvento.equals("")) || (cidade != 0) || (data != null)) {
+                    session.setAttribute("filtroNome", nomeEvento);
+                    session.setAttribute("filtroCidade", cidade);
+                    session.setAttribute("filtroData", data);
                     
+                    total = EventoFacade.buscarTotalComFiltros(nomeEvento, cidade, data);
+                    eventos = EventoFacade.buscarTodosEventosPorComFiltros(pg, nomeEvento, cidade, data);
+                } else if ( acao != null && acao.equals("list") && request.getMethod().equals("GET") && ((filtroNome != null && !filtroNome.equals("")) || (filtroCidade != 0) || (filtroData != null)) ) {
+                    total = EventoFacade.buscarTotalComFiltros(filtroNome, filtroCidade, filtroData);
+                    eventos = EventoFacade.buscarTodosEventosPorComFiltros(pg, filtroNome, filtroCidade, filtroData);
+                } else {
+                    session.removeAttribute("filtroNome");
+                    session.removeAttribute("filtroCidade");
+                    session.removeAttribute("filtroData");
+                    total = EventoFacade.buscarTotal();
+                    eventos = EventoFacade.buscarTodosEventos(pg);
                 }
                 
-                eventos = EventoFacade.buscarTodosEventos();
+                int numeroPaginas = (int) Math.ceil(total * 1.0 / 9);
+                
                 carrousel = EventoFacade.buscarUltimosTresEventos();
                 ListIterator<Evento> eventoIterator = eventos.listIterator();
+                
 
                 while (eventoIterator.hasNext()) {
                   // Need to call next, before set.
@@ -132,11 +176,14 @@ public class EventoServlet extends HttpServlet {
                   // Replace item returned from next()
                   eventoIterator.set(evento);
                 }
-                /*for (Evento evento : eventos) {
-                    Endereço endereço = EndereçoFacade.buscarPorReferencia(evento.getId(), "evento");
-                    endereço.setCidade(CidadeFacade.buscarCidade(endereço.getCidade().getId()));
-                    evento.setEndereco(endereço);
-                }*/
+                
+                List<Estado> estados = new ArrayList<>();
+                estados = EstadoFacade.buscarTodosEstados();
+                
+                request.setAttribute("total", total);
+                request.setAttribute("numeroPaginas", numeroPaginas);
+                request.setAttribute("pagina", pg);
+                request.setAttribute("estados", estados);
                 request.setAttribute("eventos", eventos);
                 request.setAttribute("carrousel", carrousel);
             } catch (SQLException | ClassNotFoundException ex) {

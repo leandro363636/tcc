@@ -8,6 +8,7 @@ package com.ufpr.tads.tcc.facade;
 import com.ufpr.tads.tcc.beans.Evento;
 import com.ufpr.tads.tcc.dao.EventoDAO;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,9 +16,14 @@ import java.util.List;
  * @author mateus
  */
 public class EventoFacade {
-    public static List<Evento> buscarTodosEventos() throws SQLException, ClassNotFoundException {
+    public static List<Evento> buscarTodosEventos(int pagina) throws SQLException, ClassNotFoundException {
         EventoDAO eventodao = new EventoDAO();
-        return eventodao.selectEventos();
+        return eventodao.selectEventos(pagina);
+    }
+    
+    public static List<Evento> buscarTodosEventosPorComFiltros(int pagina, String nomeEvento, int cidade, Date data) throws SQLException, ClassNotFoundException {
+        EventoDAO eventodao = new EventoDAO();
+        return eventodao.selectEventosWithFilters(pagina, nomeEvento, cidade, data);
     }
     
     public static List<Evento> buscarTodosEventosPorIdUsuario(int id) throws SQLException, ClassNotFoundException {
@@ -38,6 +44,21 @@ public class EventoFacade {
     public static Evento buscarPorDadosEvento(Evento evento) throws SQLException, ClassNotFoundException {
         EventoDAO eventodao = new EventoDAO();
         return eventodao.selectEventoByEventoData(evento);
+    }
+    
+    public static int buscarTotal() throws SQLException, ClassNotFoundException {
+        EventoDAO eventodao = new EventoDAO();
+        return eventodao.selectCountEventos();
+    }
+    
+    public static int buscarTotalComFiltros(String nomeEvento, int cidade, Date data) throws SQLException, ClassNotFoundException {
+        EventoDAO eventodao = new EventoDAO();
+        return eventodao.selectCountEventos(nomeEvento, cidade, data);
+    }
+    
+    public static int buscarTotalPorIdUsuario(int id) throws SQLException, ClassNotFoundException {
+        EventoDAO eventodao = new EventoDAO();
+        return eventodao.selectCountEventos(id);
     }
     
     public static void remover(int id) throws SQLException, ClassNotFoundException {

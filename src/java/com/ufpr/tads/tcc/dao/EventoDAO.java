@@ -7,7 +7,7 @@ package com.ufpr.tads.tcc.dao;
 //
 import com.ufpr.tads.tcc.beans.Evento;
 import java.sql.Connection;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -90,12 +90,86 @@ public class EventoDAO {
         st.executeUpdate();
     }
     
-    public List<Evento> selectEventos() throws SQLException {
+    public List<Evento> selectEventos(int pagina) throws SQLException {
         
         String sql = "SELECT * "
                 + "FROM tb_evento "
-                + "ORDER BY data_fim_evento;";
+                + "ORDER BY data_fim_evento "
+                + "LIMIT 9 OFFSET (?);";
         PreparedStatement st = conn.prepareStatement(sql);
+        int start = (pagina - 1) * 9; 
+        st.setInt(1, start);
+        ResultSet rs = st.executeQuery();
+        List<Evento> resultado = new ArrayList<>();
+        
+        while (rs.next()) {
+            Evento evento = new Evento();
+            evento.setId(rs.getInt("id_evento"));
+            evento.setNome(rs.getString("nome_evento"));
+            evento.setDataInicio(rs.getTimestamp("data_inicio_evento"));
+            evento.setDataFim(rs.getTimestamp("data_fim_evento"));
+            evento.setDescrição(rs.getString("descricao_evento"));
+            evento.setImagem(rs.getString("imagem_evento"));
+            evento.setAprovado(rs.getBoolean("aprovacao_evento"));
+            
+            resultado.add(evento);
+        }
+        return resultado;
+    }
+    
+    public List<Evento> selectEventosWithFilters(int pagina, String nomeEvento, int cidade, Date data) throws SQLException {
+        String where = "";
+        if ( (nomeEvento != null && !nomeEvento.equals("")) ) {
+            where += "WHERE e.nome_evento LIKE (?) ";
+        }
+        
+        if ( cidade != 0 ) {
+            if ( where.equals("") ) {
+                where += "WHERE c.id_cidade = (?) ";
+            } else {
+                where += "AND c.id_cidade = (?) ";
+            }
+        }
+        
+        if ( data != null ) {
+            if ( where.equals("") ) {
+                where += "WHERE e.data_inicio_evento <= (?) AND e.data_fim_evento >= (?) ";
+            } else {
+                where += "AND e.data_inicio_evento <= (?) AND e.data_fim_evento >= (?) ";
+            }
+        }
+                
+        String sql = "SELECT e.* "
+                + "FROM tb_evento e "
+                + "INNER JOIN tb_endereco en ON e.id_evento = en.id_referencia AND en.referencia_endereco = 'evento' "
+                + "INNER JOIN tb_cidade c ON c.id_cidade = en.id_cidade "
+                + where
+                + "ORDER BY e.data_fim_evento "
+                + "LIMIT 9 OFFSET (?);";
+                
+        PreparedStatement st = conn.prepareStatement(sql);
+        
+        int id = 1;
+        if ( (nomeEvento != null && !nomeEvento.equals("")) || (cidade != 0) || (data != null)) {
+            
+            if ( (nomeEvento != null && !nomeEvento.equals("")) ) {
+                st.setString(id, nomeEvento);
+                ++id;
+            }
+            if ( cidade != 0) {
+                st.setInt(id, cidade);
+                ++id;
+            }
+            if (data != null) {
+                st.setTimestamp(id, new java.sql.Timestamp(data.getTime()));
+                ++id;
+                st.setTimestamp(id, new java.sql.Timestamp(data.getTime()));
+                ++id;
+            }
+        }
+        int start = (pagina - 1) * 9; 
+        st.setInt(id, start);
+        
         ResultSet rs = st.executeQuery();
         List<Evento> resultado = new ArrayList<>();
         
@@ -210,5 +284,85 @@ public class EventoDAO {
             resultado.add(evento);
         }
         return resultado;
+    }
+    
+    public int selectCountEventos(String nomeEvento, int cidade, Date data) throws SQLException {
+        String where = "";
+        if ( (nomeEvento != null && !nomeEvento.equals("")) ) {
+            where += "WHERE e.nome_evento LIKE (?) ";
+        }
+        
+        if ( cidade != 0 ) {
+            if ( where.equals("") ) {
+                where += "WHERE c.id_cidade = (?) ";
+            } else {
+                where += "AND c.id_cidade = (?) ";
+            }
+        }
+        
+        if ( data != null ) {
+            if ( where.equals("") ) {
+                where += "WHERE e.data_inicio_evento <= (?) AND e.data_fim_evento >= (?) ";
+            } else {
+                where += "AND e.data_inicio_evento <= (?) AND e.data_fim_evento >= (?) ";
+            }
+        }
+        
+        String sql = "SELECT COUNT(e.*) "
+                + "FROM tb_evento e "
+                + "INNER JOIN tb_endereco en ON e.id_evento = en.id_referencia AND en.referencia_endereco = 'evento' "
+                + "INNER JOIN tb_cidade c ON c.id_cidade = en.id_cidade "
+                + where + ";";
+        
+        PreparedStatement st = conn.prepareStatement(sql);
+        if ( (nomeEvento != null && !nomeEvento.equals("")) || (cidade != 0) || (data != null)) {
+            int id = 1;
+            if ( (nomeEvento != null && !nomeEvento.equals("")) ) {
+                st.setString(id, nomeEvento);
+                ++id;
+            }
+            if ( cidade != 0) {
+                st.setInt(id, cidade);
+                ++id;
+            }
+            if (data != null) {
+                st.setTimestamp(id, new java.sql.Timestamp(data.getTime()));
+                ++id;
+                st.setTimestamp(id, new java.sql.Timestamp(data.getTime()));
+            }
+        }
+        
+        ResultSet rs = st.executeQuery();
+        int total = 0;
+        while (rs.next()) {
+            total = rs.getInt(1);
+        }
+        return total;
+    }
+    
+    public int selectCountEventos(int id) throws SQLException {
+        String sql = "SELECT COUNT(*) "
+                + "FROM tb_evento "
+                + "WHERE id_usuario = (?);";
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setInt(1, id);
+        ResultSet rs = st.executeQuery();
+        int total = 0;
+        while (rs.next()) {
+            total = rs.getInt(1);
+        }
+        return total;
+    }
+    
+    public int selectCountEventos() throws SQLException {
+        String sql = "SELECT COUNT(*) "
+                + "FROM tb_evento;";
+        PreparedStatement st = conn.prepareStatement(sql);
+        ResultSet rs = st.executeQuery();
+        int total = 0;
+        while (rs.next()) {
+            total = rs.getInt(1);
+        }
+        return total;
     }
 }

@@ -11,18 +11,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta charset="UTF-8">
-        <title>Eventos Listar</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/clienteListar.css">
-        <link rel="stylesheet" type="text/css" href="css/ionicons.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.js"></script>
-        <script src="js/clientesListar.js"></script>-->
         <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
@@ -30,6 +18,7 @@
 	<link rel="stylesheet" type="text/css" href="css/eventosListar.css"/>
 	<link rel="stylesheet" type="text/css" href="js/slick/slick.css"/>
 	<link rel="stylesheet" type="text/css" href="js/slick/slick-theme.css"/>
+        <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.min.css">
 
 	<title>Pesquisar Evento | fastTicket</title>
     </head>
@@ -104,8 +93,17 @@
 					<div class="row align-items-center">
 						<div class="col-12">
 							<div class="input-group grupo-1 mb-5">
-								<input type="text" id="nomeEvento" class="form-control" placeholder="Pesquisar por evento" name="nomeEvento">
-								<input type="text" id="cidadeEvento" class="form-control" placeholder="Pesquisar por cidade" name="cidadeEvento">
+                                                                <input type="text" id="nomeEvento" class="form-control" placeholder="Pesquisar por evento" name="nomeEvento">
+								<select id="estado" name="estado" class="custom-select">
+                                                                <c:forEach items="${estados}" var="estado">
+                                                                    <option value="<c:out value="${estado.id}"/>"><c:out value="${estado.sigla}"/></option>
+                                                                </c:forEach>
+                                                                </select>
+                                                                <select id="cidade" name="cidade" class="custom-select">
+                                                                    <option value="">Selecione um estado</option>
+                                                                </select>
+                                                                <!--<input type="text" id="estado" class="form-control" placeholder="Pesquisar por cidade" name="cidadeEvento">
+								<input type="text" id="cidadeEvento" class="form-control" placeholder="Pesquisar por cidade" name="cidadeEvento">-->
 							</div>
 							<div class="input-group grupo-2 mb-5">
 								<input type="text" id="dataEvento" class="form-control datetimepicker" name="dataEvento">
@@ -142,6 +140,9 @@
 
                 <hr class="pb-3">
                 
+                
+        <c:choose>
+            <c:when test="${eventos.size() gt 0}">
                 <!-- LISTA DE EVENTOS -->
                 <div class="row3">
                         <div class="container">
@@ -175,44 +176,77 @@
                                 </div>
                         </div>
                 </div>
-        </div>
-                    
-                    <!--<c:if test="${!(empty param.msg)}" >
-                        <c:set var="mensagem" value="${param.msg}" />
-                    </c:if>
-                    <c:if test="${!(empty requestScope.msg)}">
-                        <c:set var="mensagem" value="${requestScope.msg}" />
-                    </c:if>
-                    <c:if test="${!(empty mensagem)}" >
-                        <div class="row">
-                            <div class="col-sm-4"></div>
-                            <div class="col-sm-4 alert alert-danger" role="alert">
-                                <p><c:out value="${mensagem}" /></p>
+                                        
+                <!-- PAGINAÇÃO -->
+                <div class="row4">
+                        <div class="container">
+                                <div class="row align-items-center">
+                                        <div class="col-12">
+                                                <nav aria-label="Navegação pelos eventos">
+                                                        <ul class="pagination">
+                                                            <li class="page-item <c:out value="${(pagina == 1) ? \"disabled\" : \"\"}"/>">
+                                                                <a class="page-link" href="EventoServlet?action=list&pagina=<c:out value="${pagina - 1}"/>" aria-label="Previous">
+                                                                                <span aria-hidden="true">&laquo;</span>
+                                                                        </a>
+                                                                </li>
+                                                                <c:forEach begin="1" end="${numeroPaginas}" var="i">
+                                                                    <c:choose>
+                                                                        <c:when test="${pagina eq i}">
+                                                                            <li class="page-item active"><a class="page-link" href="#"><c:out value="${i}"/></a></li>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                        <li class="page-item"><a class="page-link" href="EventoServlet?action=list&pagina=<c:out value="${i}"/>"><c:out value="${i}"/></a></li>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </c:forEach>
+                                                                <li class="page-item <c:out value="${(pagina == numeroPaginas) ? \"disabled\" : \"\"}"/>">
+                                                                        <a class="page-link" href="EventoServlet?action=list&pagina=<c:out value="${pagina + 1}"/>" aria-label="Previous">
+                                                                                <span aria-hidden="true">&raquo;</span>
+                                                                        </a>
+                                                                </li>
+                                                        </ul>
+                                                </nav>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <!-- NÃO ENCONTRADO -->
+                <div class="row3">
+                    <div class="col-md-6 offset-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                Nenhum evento encontrado.
                             </div>
                         </div>
-                    </c:if>
-                    
-        <a class="btn btn-outline-success" href="EventoServlet?action=formNew">Novo</a>
-        <table class="table table-striped"><tr><th>Nome</th><th>Descrição</th><th>Visualizar</th><th>Alterar</th><th>Remover</th></tr>
-
-        <c:forEach items="${eventos}" var="evento">
-            <tr>
-                <td><c:out value="${evento.nome}"/></td>
-                <td><c:out value="${evento.descrição}"/></td>
-                <td><a href="EventoServlet?action=show&id=<c:out value="${evento.id}"/>"><i class="ion-person"></i></a></td>
-                <td><a href="EventoServlet?action=formUpdate&id=<c:out value="${evento.id}"/>"><i class="ion-edit"></i></a></td>
-                <td><a href="EventoServlet?action=remove&id=<c:out value="${evento.id}"/>"><i class="ion-trash-a"></i></a></td>
-            </tr>
-        </c:forEach>
-
-        </table>-->
-        
+                    </div>
+                </div>
+            </c:otherwise>
+        </c:choose>
+                
+        </div>
+       
         <!-- SCRIPTS -->
         <script type="text/javascript" src="js/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="js/popper/popper.min.js"></script>
         <script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/slick/slick.min.js"></script>
         <script type="text/javascript" src="js/eventosListar.js"></script>
-        <script type="text/javascript" src="js/jquery/jquery.datetimepicker.full.min.js"></script>
+        <script type="text/javascript" src="js/eventos.js"></script>
+        <script src="js/jquery.datetimepicker.full.js" type="text/javascript"></script>
+
+    <script>
+        /*jslint browser:true*/
+        /*global jQuery, document*/
+            
+        $(document).ready(function () {
+            $.datetimepicker.setLocale('pt');
+            $('.datetimepicker').datetimepicker({
+                format:'d/m/Y H:m'
+            });
+        });
+    </script>
+        
     </body>
 </html>
