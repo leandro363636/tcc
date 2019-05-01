@@ -1,0 +1,14 @@
+.center {
+	text-align: center;
+	align-content: center;
+	align-items: center;
+}
+
+#mantercomprador input {
+	width: 100%;
+}
+
+#mantercomprador fieldset {
+	border: 1px solid black;
+	border-radius: 10px;
+}
