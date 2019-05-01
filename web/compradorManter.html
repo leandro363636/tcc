@@ -1,0 +1,157 @@
+	<!doctype html>
+	<html lang="pt-br">
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+		<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/compradorManter.css"/>
+		<link rel="stylesheet" type="text/css" href="css/datepicker/jquery-ui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/datepicker/datepicker.min.css"/>
+
+		<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery.mask.js"></script>
+		<script type="text/javascript" src="js/compradorManter.js"></script>
+		<script type="text/javascript" src="js/datepicker/datepicker.min.js"></script>
+		<script type="text/javascript" src="js/cidadeestado.js"></script>
+
+		<title>Manter Comprador | fastTicket</title>
+	</head>
+	<body>
+
+		<div id="mantercomprador">
+			
+			<!-- NAVBAR TOPO -->
+			<div class="row1">
+				<div class="container-fluid">
+					<div class="row align-items-center">
+						<div class="col-12">
+							<nav class="navbar navbar-expand-sm navbar-light bg-light">
+								<a href="#" class="navbar-brand">fastTicket</a>
+								<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTopo" aria-controls="navbarSupportedContent" aria-expanded="false">
+									<span class="navbar-toggler-icon"></span>
+								</button>
+								<div class="collapse navbar-collapse" id="navbarTopo">
+									<ul class="navbar-nav mr-auto">
+										<li class="nav-item">
+											<a class="nav-link right" href="#">Criar Evento</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="#">Meus Eventos</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="#">Meus Ingressos</a>
+										</li>
+									</ul>
+									<span class="nav-item dropdown">
+										<span class="nav-link dropdown-toggle" href="#" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+											Bem vindo, Ronaldo <span class="caret"></span>
+										</span>
+										<div class="dropdown-menu dropdown-menu-top" aria-labelledby="navbarDropdown">
+											<button class="dropdown-item" href="#">Minha Conta</button>
+											<button class="dropdown-item" href="#">Meus Ingressos</button>
+											<button class="dropdown-item" href="#">Login</button>
+											<button class="dropdown-item" href="#">Criar Conta</button>
+											<div class="dropdown-divider"></div>
+											<button class="dropdown-item" href="#">Logout</button>
+											<form id="form-logout" action="" method="" style="display: none;"></form>
+										</div>
+									</span>
+								</div>
+							</nav>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row2">
+				<div class="container">
+					<form action="#" method="POST">
+						<fieldset>
+							<div class="row align-items-center">
+								<div class="col-12 col-md-3 offset-md-1">
+									<legend class="mb-5">Informações Cadastrais</legend>
+								</div>
+							</div>
+							<div class="row align-items-center">
+								<div class="col-2 text-right">
+									<label for="cNome">Nome</label>
+								</div>
+								<div class="col-10 col-md-8">
+									<input type="text" id="cNome" class="my-2">
+								</div>
+							</div>
+							<div class="row align-items-center">
+								<div class="col-2 text-right">
+									<label for="cEmail">Email</label>
+								</div>
+								<div class="col-10 col-md-4">
+									<input type="email" id="cEmail" class="my-2">
+								</div>
+								<div class="col-2 col-md-1 text-right">
+									<label for="cSenha">Senha</label>
+								</div>
+								<div class="col-10 col-md-3">
+									<input type="password" id="cSenha" class="my-2">
+								</div>
+							</div>
+							<div class="row align-items-center">
+								<div class="col-2 text-right">
+									<label for="cNasc">Nascimento</label>
+								</div>
+								<div class="col-12 col-md-2">
+									<input type="date" id="cNasc" class="my-2">
+								</div>
+								<div class="col-2 col-md-1 text-right">
+									<label for="cRG">RG</label>
+								</div>
+								<div class="col-10 col-md-2">
+									<input type="text" id="cRG" class="my-2">
+								</div>
+								<div class="col-2 col-md-1 text-right">
+									<label for="cCPF">CPF</label>
+								</div>
+								<div class="col-10 col-md-2">
+									<input type="text" id="cCPF" class="my-2">
+								</div>
+							</div>
+							<div class="row align-items-center">
+								<div class="col-2 text-right">
+									<label for="cCEP">CEP</label>
+								</div>
+								<div class="col-12 col-md-2">
+									<input type="text" id="cCEP" class="my-2">
+								</div>
+								<div class="col-2 col-md-1 text-right">
+									<label for="cEstado">Estado</label>
+								</div>
+								<div class="col-10 col-md-2">
+									<select type="text" id="cEstado" class="my-2">
+										<option value=""></option>
+									</select>
+								</div>
+								<div class="col-2 col-md-1 text-right">
+									<label for="cCidade	">Cidade</label>
+								</div>
+								<div class="col-10 col-md-2">
+									<select type="text" id="cCidade	" class="my-2">
+										<option value=""></option>
+									</select>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- SCRIPTS -->
+		<script type="text/javascript" src="js/popper/popper.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+		<!-- <script type="text/javascript" src="js/slick/slick.min.js"></script> -->
+	</body>
+	</html>
