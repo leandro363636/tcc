@@ -1,3 +1,14 @@
+@font-face {
+	font-family: 'opensans';
+	src: url('fonts/opensans/OpenSans-Regular.tff') format('tff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body {
+	font-family: 'opensans', sans-serif;
+}
+
 .center {
 	text-align: center;
 	align-content: center;
