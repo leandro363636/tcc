@@ -4,11 +4,15 @@
 	align-items: center;
 }
 
-#mantercomprador input {
+#cadastroComprador input {
 	width: 100%;
 }
 
-#mantercomprador fieldset {
+#cadastroComprador fieldset {
 	border: 1px solid black;
 	border-radius: 10px;
+}
+
+#cadastroComprador label {
+	margin-bottom: 0;
 }
