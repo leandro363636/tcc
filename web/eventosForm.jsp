@@ -30,6 +30,11 @@
                 <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
             </jsp:forward>
         </c:if>
+        <c:if test="${sessionScope.usuario.tipo.equals(\"c\")}">
+            <jsp:forward page="EventoServlet?action=list">
+                <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
+            </jsp:forward>
+        </c:if>
         <div class="container">
             <jsp:useBean id="now" class="java.util.Date" />
             <fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${alterarevento.dataInicio}" var="dataInicio" />

@@ -24,7 +24,7 @@ public class Evento implements Serializable{
     private boolean aprovado;
     private String imagem;
     private List<Lote> lotes;
-    private Usuario usuario;
+    private Comprador usuario;
     
     public Evento() {
         
@@ -94,11 +94,11 @@ public class Evento implements Serializable{
         this.lotes = lotes;
     }
 
-    public Usuario getUsuario() {
+    public Comprador getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(Comprador usuario) {
         this.usuario = usuario;
     }
 

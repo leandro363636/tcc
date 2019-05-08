@@ -1,23 +1,34 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.ufpr.tads.tcc.beans;
-//
 
 import java.io.Serializable;
 
 /**
- * @author Ronaldo
+ *
+ * @author mateus
  */
 public class Usuario implements Serializable {
-
     private int id;
     private String email;
     private String senha;
-    private String nome;
-    private String sobrenome;
-    private String rg;
-    private String cpf;
+    private String tipo;
+    private boolean ativo;
+    private int idReferencia;
+    private Endereço endereco;
 
     public Usuario() {
+    }
 
+    public Usuario(int id, String email, String senha, String tipo, Endereço endereco) {
+        this.id = id;
+        this.email = email;
+        this.senha = senha;
+        this.tipo = tipo;
+        this.endereco = endereco;
     }
 
     public int getId() {
@@ -44,36 +55,37 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    public String getNome() {
-        return nome;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    public String getSobrenome() {
-        return sobrenome;
+    public Endereço getEndereco() {
+        return endereco;
     }
 
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
+    public int getIdReferencia() {
+        return idReferencia;
     }
 
-    public String getRg() {
-        return rg;
+    public void setIdReferencia(int idReferencia) {
+        this.idReferencia = idReferencia;
+    }
+    
+    public void setEndereco(Endereço endereco) {
+        this.endereco = endereco;
     }
 
-    public void setRg(String rg) {
-        this.rg = rg;
+    public boolean isAtivo() {
+        return ativo;
     }
 
-    public String getCpf() {
-        return cpf;
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
+    
+    
 }

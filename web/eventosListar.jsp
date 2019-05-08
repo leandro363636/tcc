@@ -23,13 +23,8 @@
 	<title>Pesquisar Evento | fastTicket</title>
     </head>
     <body>
-        <!--<%@ page errorPage="erro.jsp" %>
-        <c:if test="${empty sessionScope.usuario}">
-            <jsp:forward page="index.jsp">
-                <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
-            </jsp:forward>
-        </c:if>-->
-        
+        <%@ page errorPage="erro.jsp" %>
+
         <div id="pesquisaevento">
             
             <!-- NAVBAR TOPO -->
@@ -44,27 +39,31 @@
 							</button>
 							<div class="collapse navbar-collapse" id="navbarTopo">
 								<ul class="navbar-nav mr-auto">
-									<li class="nav-item">
+									<c:if test="${sessionScope.usuario.tipo.equals(\"a\") || sessionScope.usuario.tipo.equals(\"o\")}">
+                                                                            <li class="nav-item">
 										<a class="nav-link right" href="EventoServlet?action=formNew">Criar Evento</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="EventoServlet?action=listSelf">Meus Eventos</a>
-									</li>
+                                                                            </li>
+                                                                        </c:if>
+                                                                        <c:if test="${sessionScope.usuario.tipo.equals(\"a\") || sessionScope.usuario.tipo.equals(\"o\")}">
+                                                                            <li class="nav-item">
+                                                                                    <a class="nav-link" href="EventoServlet?action=listSelf">Meus Eventos</a>
+                                                                            </li>
+                                                                        </c:if>
 									<li class="nav-item">
 										<a class="nav-link" href="#">Meus Ingressos</a>
 									</li>
 								</ul>
 								<span class="nav-item dropdown">
 									<span class="nav-link dropdown-toggle" href="#" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-										Bem vindo, <c:out value="${usuario.nome}"/> <span class="caret"></span>
+										Bem vindo, <c:out value="${nome}"/> <span class="caret"></span>
 									</span>
 									<div class="dropdown-menu dropdown-menu-top" aria-labelledby="navbarDropdown">
-										<button class="dropdown-item" href="UsuarioServlet?action=formUpdate&id=<c:out value="${usuario.id}"/>">Minha Conta</button>
-										<button class="dropdown-item" href="#">Meus Ingressos</button>
-										<button class="dropdown-item" href="index.jsp">Login</button>
-										<button class="dropdown-item" href="UsuarioServlet?action=formNew">Criar Conta</button>
-										<div class="dropdown-divider"></div>
-										<button class="dropdown-item" href="LoginServlet?action=logout">Logout</button>
+										<a class="dropdown-item" href="UsuarioServlet?action=formUpdate&id=<c:out value="${usuario.id}"/>">Minha Conta</a>
+										<a class="dropdown-item" href="#">Meus Ingressos</a>
+										<a class="dropdown-item" href="index.jsp">Login</a>
+										<a class="dropdown-item" href="CadastrarServlet?action=formNew">Criar Conta</a>
+										<a class="dropdown-divider"></a>
+										<a class="dropdown-item" href="LoginServlet?action=logout">Logout</a>
 										<form id="form-logout" action="" method="" style="display: none;"></form>
 									</div>
 								</span>

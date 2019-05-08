@@ -11,16 +11,14 @@ import java.io.Serializable;
  *
  * @author Gabriel
  */
-public class Organizador implements Serializable {
-   private int idOrganizador; 
-   private String cnpj;
-   private String nomeDaOrganizacao;
-   private String nomeDoResponsavel;
-   private String rgDoResponsavel;
-   private String email;
-   private String senha;
-   private String endereco;
-   private int tipo;
+public class Organizador extends Usuario implements Serializable {
+
+    private int idOrganizador;
+    private String cnpj;
+    private String rg;
+    private String nomeOrganizador;
+    private String nomeResponsavel;
+    private String sobrenome;
 
     public Organizador() {
     }
@@ -29,8 +27,8 @@ public class Organizador implements Serializable {
         return idOrganizador;
     }
 
-    public void setIdOrganizador(int idOrganizador) {
-        this.idOrganizador = idOrganizador;
+    public void setIdOrganizador(int id) {
+        this.idOrganizador = id;
     }
 
     public String getCnpj() {
@@ -41,62 +39,35 @@ public class Organizador implements Serializable {
         this.cnpj = cnpj;
     }
 
-    public String getNomeDaOrganizacao() {
-        return nomeDaOrganizacao;
+    public String getNomeOrganizador() {
+        return nomeOrganizador;
     }
 
-    public void setNomeDaOrganizacao(String nomeDaOrganizacao) {
-        this.nomeDaOrganizacao = nomeDaOrganizacao;
+    public void setNomeOrganizador(String nomeOrganizador) {
+        this.nomeOrganizador = nomeOrganizador;
     }
 
-    public String getNomeDoResponsavel() {
-        return nomeDoResponsavel;
+    public String getNomeResponsavel() {
+        return nomeResponsavel;
     }
 
-    public void setNomeDoResponsavel(String nomeDoResponsavel) {
-        this.nomeDoResponsavel = nomeDoResponsavel;
+    public void setNomeResponsavel(String nomeResponsavel) {
+        this.nomeResponsavel = nomeResponsavel;
     }
 
-    public String getRgDoResponsavel() {
-        return rgDoResponsavel;
+    public String getRg() {
+        return rg;
     }
 
-    public void setRgDoResponsavel(String rgDoResponsavel) {
-        this.rgDoResponsavel = rgDoResponsavel;
+    public void setRg(String rg) {
+        this.rg = rg;
     }
 
-    public String getEmail() {
-        return email;
+    public String getSobrenome() {
+        return sobrenome;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
     }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public int getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-   
-    
-   
 }

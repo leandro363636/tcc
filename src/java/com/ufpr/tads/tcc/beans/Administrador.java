@@ -12,43 +12,24 @@ import java.util.Date;
  *
  * @author Gabriel
  */
-public class Admin implements Serializable{
-    private int id;
-    private String email;
-    private String senha;
+public class Administrador extends Usuario implements Serializable {
+
+    private int idAdministrador;
     private String nome;
     private String sobrenome;
     private String rg;
     private String cpf;
     private Date dataNascimento;
-    private String tipo;
-    private String endereco;
-    
-    public Admin() {
+
+    public Administrador() {
     }
 
-    public int getId() {
-        return id;
+    public int getIdAdministrador() {
+        return idAdministrador;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setIdAdministrador(int id) {
+        this.idAdministrador = id;
     }
 
     public String getNome() {
@@ -57,14 +38,6 @@ public class Admin implements Serializable{
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
     }
 
     public String getSobrenome() {
@@ -98,16 +71,4 @@ public class Admin implements Serializable{
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-    
-    
-    
-
 }

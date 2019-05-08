@@ -34,19 +34,25 @@
                     <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
                 </jsp:forward>
             </c:if>
+            
+            <c:if test="${sessionScope.usuario.tipo.equals(\"c\") || sessionScope.usuario.tipo.equals(\"o\")}">
+                <jsp:forward page="EventoServlet?action=list">
+                    <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
+                </jsp:forward>
+            </c:if>
 
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
                 <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item"><a class="nav-link" href="UsuarioServlet">Cadastro de Usuários</a></li>
+                        <li class="nav-item"><a class="nav-link" href="CompradorServlet">Cadastro de Usuários</a></li>
                         <li class="nav-item"><a class="nav-link" href="EventoServlet">Cadastro de Eventos</a></li>
-                         <li class="nav-item"><a class="nav-link" href="AdminServlet">Cadastro de Admin</a></li>
+                         <li class="nav-item"><a class="nav-link" href="AdministradorServlet">Cadastro de Admin</a></li>
                          <li class="nav-item"><a class="nav-link" href="OrganizadorServlet">Cadastro de Organizador</a></li>                         
                     </ul>
                 </div>
                 <div class="navbar-collapse collapse w-100 order-2 dual-collapse2">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item"><p class="nav-link active">Nome: <c:out value="${usuario.nome}"/></p></li>
+                        <li class="nav-item"><p class="nav-link active">Nome: <c:out value="${nome}"/></p></li>
                         <li class="nav-item" onclick="checkLoginState()"><a class="nav-link" href="LoginServlet?action=logout"  >Sair</a></li>
                     </ul>
                 </div>
@@ -72,11 +78,11 @@
 
             <c:forEach items="${organizador}" var="organizador">
                 <tr>
-                    <td><c:out value="${organizador.nomeDaOrganizacao}"/></td>
+                    <td><c:out value="${organizador.nomeOrganizador}"/></td>
                     <td><c:out value="${organizador.email}"/></td>
-                    <td><a href="OrganizadorServlet?action=show&id=<c:out value="${organizador.idOrganizador}"/>"><i class="ion-person"></i></a></td>
-                    <td><a href="OrganizadorServlet?action=formUpdate&id=<c:out value="${organizador.idOrganizador}"/>"><i class="ion-edit"></i></a></td>
-                    <td><a href="OrganizadorServlet?action=remove&id=<c:out value="${organizador.idOrganizador}"/>"><i class="ion-trash-a"></i></a></td>
+                    <td><a href="OrganizadorServlet?action=show&id=<c:out value="${organizador.idOrganizador}"/>">Visualizar</a></td>
+                    <td><a href="OrganizadorServlet?action=formUpdate&id=<c:out value="${organizador.idOrganizador}"/>">Atualizar</a></td>
+                    <td><a href="OrganizadorServlet?action=<c:out value="${organizador.ativo == true ? \"suspend\" : \"active\" }"/>&id=<c:out value="${organizador.idOrganizador}"/>"><c:out value="${organizador.ativo == true ? \"Suspender\" : \"Ativar\" }"/></i></a></td>
                 </tr>
             </c:forEach>
             </table>

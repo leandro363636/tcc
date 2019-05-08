@@ -11,6 +11,7 @@ import com.ufpr.tads.tcc.beans.Endereço;
 import com.ufpr.tads.tcc.beans.Estado;
 import com.ufpr.tads.tcc.beans.Evento;
 import com.ufpr.tads.tcc.beans.Lote;
+import com.ufpr.tads.tcc.beans.Comprador;
 import com.ufpr.tads.tcc.beans.Usuario;
 import com.ufpr.tads.tcc.facade.CidadeFacade;
 import com.ufpr.tads.tcc.facade.EndereçoFacade;
@@ -73,15 +74,7 @@ public class EventoServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String acao = request.getParameter("action");
         
-        Usuario lb = (Usuario) session.getAttribute("usuario");
-        if (lb == null) {
-            request.setAttribute("msg", "Usuário deve se autenticar para acessar o sistema.");
-
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
-            rd.forward(request, response);
-            return;
-        }
-        
+       
         if (acao == null || acao.equals("list")) {
             String filtroNome = null;
             if ( session.getAttribute("filtroNome") != null ) {
@@ -306,15 +299,14 @@ public class EventoServlet extends HttpServlet {
                                 evento.setDataInicio(data);
                                 data = new Date(fmt.parse(dataFimString).getTime());
                                 evento.setDataFim(data);
-                                if (evento.getImagem() != null && evento.getImagem() != "") {
+                                if (evento.getImagem() != null && !evento.getImagem().equals("")) {
                                     EventoFacade.alterar(evento);
-                                    endereço.setIdReferencia(evento.getId());
-                                    EndereçoFacade.alterarPorIdReferencia(endereço);
                                 } else {
                                     EventoFacade.alterarSemImagem(evento);
-                                    endereço.setIdReferencia(evento.getId());
-                                    EndereçoFacade.alterarPorIdReferencia(endereço);
                                 }
+                                
+                                endereço.setIdReferencia(evento.getId());
+                                EndereçoFacade.alterarPorIdReferencia(endereço);
                                 
                                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/EventoServlet?action=list");
                                 rd.forward(request, response);
@@ -385,7 +377,9 @@ public class EventoServlet extends HttpServlet {
                                         rd.forward(request, response);
                                     }
                                     evento.setAprovado(false);
-                                    evento.setUsuario(lb);
+                                    Comprador comprador = new Comprador ();
+                                    comprador.setId(1);
+                                    evento.setUsuario(comprador);
 
                                     String dataInicioString = request.getParameter("dataInicio");
                                     String dataFimString = request.getParameter("dataFim");

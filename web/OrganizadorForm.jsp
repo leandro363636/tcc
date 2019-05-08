@@ -13,30 +13,27 @@
 <!DOCTYPE html>
 <html>
     <head>
-     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta charset="UTF-8">
-        <title><c:out value="${(!(empty param.form) || param.form == 'alterar') ? 'Alterar Evento' : 'Novo Evento'}"/></title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/clientesAlterar.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/clientesAlterar.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="js/jquery.mask.js" type="text/javascript"></script>
-        <script src="js/datepicker.js" type="text/javascript"></script>
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <link rel="stylesheet" href="/resources/demos/style.css">
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <title><c:out value="${(!(empty param.form) || param.form == 'alterar') ? 'Alterar Organizador' : 'Novo Organizador'}"/></title>
+        <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="js/slick/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="js/slick/slick-theme.css"/>
+        <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.min.css">
     </head>
     <body>
         <%@ page errorPage="erro.jsp" %>
-           <c:if test="${empty sessionScope.usuario}">
-            <jsp:forward page="index.jsp">
-                <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
-            </jsp:forward>
-        </c:if>
+            <c:if test="${empty sessionScope.usuario}">
+                <jsp:forward page="index.jsp">
+                    <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
+                </jsp:forward>
+            </c:if>
+            <c:if test="${sessionScope.usuario.tipo.equals(\"c\")}">
+                <jsp:forward page="EventoServlet?action=list">
+                    <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
+                </jsp:forward>
+            </c:if>
           <div class="container">
             <h1><c:out value="${(!(empty param.form) || param.form == 'alterar') ? 'Alterar Organizador' : 'Novo Organizador'}"/></h1>
             <form action="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? 'OrganizadorServlet?action=update' : 'OrganizadorServlet?action=new'}"/>" method="POST">
@@ -48,20 +45,23 @@
                 <div class="form-row">
                    <div class="form-group col-md-9">
                         <label for="cnpj">CNPJ</label>
-                        <input class="form-control" type="text" name="cnpj" maxlength="100" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? alterarOrg.cnpj : ''}"/>" required/><br/>
+                        <input class="form-control" type="text" name="cnpj" maxlength="14" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? alterarOrg.cnpj : ''}"/>" required/><br/>
+                    </div>
+                   <div class="form-group col-md-9">
+                        <label for="cnpj">RG</label>
+                        <input class="form-control" type="text" name="rg" maxlength="15" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? alterarOrg.rg : ''}"/>" required/><br/>
                     </div>
                     <div class="form-group col-md-9">
                         <label for="nomeDaOrganizacao">NOME DA ORGANIZAÇÃO</label>
-                        <input class="form-control" type="text" name="nomeDaOrganizacao" maxlength="100" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? alterarOrg.nomeDaOrganizacao : ''}"/>" required/><br/>
+                        <input class="form-control" type="text" name="nomeDaOrganizacao" maxlength="100" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? alterarOrg.nomeOrganizador : ''}"/>" required/><br/>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="nome">Nome do RESPONSAVEL</label>
-                        <input class="form-control" type="text" name="nomeDoResponsavel" maxlength="100" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? alterarOrg.nomeDoResponsavel : ''}"/>" required/><br/>
+                        <input class="form-control" type="text" name="nomeDoResponsavel" maxlength="100" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? alterarOrg.nomeResponsavel : ''}"/>" required/><br/>
                     </div>
-          
                     <div class="form-group col-md-4">
-                        <label for="rg">rg</label>
-                        <input class="form-control" type="text" name="rgDoResponsavel" maxlength="11" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? alterarOrg.rgDoResponsavel : ''}"/>" required/><br/>
+                        <label for="nome">Sobrenome do RESPONSAVEL</label>
+                        <input class="form-control" type="text" name="sobrenome" maxlength="100" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? alterarOrg.sobrenome : ''}"/>" required/><br/>
                     </div>
                     
                      <div class="form-group col-md-4">
@@ -71,24 +71,48 @@
                     
                     <div class="form-group col-md-4">
                         <label for="senha">SENHA</label>
-                        <input class="form-control" type="text" name="senha" maxlength="20" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? alterarOrg.senha : ''}"/>" required/><br/>
+                        <input class="form-control" type="text" name="senha" maxlength="100" <c:out value="${((empty param.form) || param.form != \"alterar\") ? \"required\" : \"\"}"/>/><br/>
                     </div>
          
-                    
                     <div class="form-group col-md-4">
-                        <label for="endereco">endereco</label>
-                        <input class="form-control" type="text" name="endereco" maxlength="100" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? alterarOrg.endereco : ''}"/>" required/><br/>
+                        <label for="rua">Rua:</label>
+                        <input class="form-control" type="text" name="rua" value="<c:out value="${(!(empty param.form) || param.form == \"alterar\") ? alterarOrg.endereco.rua : \"\"}"/>"/><br/>
                     </div>
-                    
-                     <div class="form-group col-md-4">
-                        <label for="tipo">Tipo:</label>
-                        <input class="form-control" type="int" name="tipo" maxlength="100" value="<c:out value="${(!(empty param.form) || param.form == 'alterar') ? alterarOrg.tipo : ''}"/>" required/><br/>
+                    <div class="form-group col-md-4">
+                        <label for="numero">Número:</label>
+                        <input class="form-control" type="number" name="numero" value="<c:out value="${(!(empty param.form) || param.form == \"alterar\") ? alterarOrg.endereco.numero : \"\"}"/>"/><br/>
                     </div>
-                    
+                    <div class="form-group col-md-4">
+                        <label for="cep">CEP:</label>
+                        <input class="form-control" type="text" name="cep" maxlength="8" value="<c:out value="${(!(empty param.form) || param.form == \"alterar\") ? alterarOrg.endereco.cep : \"\"}"/>"/><br/>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for="uf">UF:</label>
+                        <select id="estado" name="uf" class="custom-select" required>
+                        <c:forEach items="${estados}" var="estado">
+                            <option <c:out value="${(alterarOrg.endereco.cidade.estado.id == estado.id) ? \"selected\" : \"\" }"/> value="<c:out value="${estado.id}"/>"><c:out value="${estado.sigla}"/></option>
+                        </c:forEach>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-9">  
+                        <label for="cidade">Cidade:</label>
+                        <select id="cidade" name="cidade" class="custom-select" required>
+                            <c:if test="${(!(empty param.form) || param.form == \"alterar\")}" >
+                            <option selected value="<c:out value="${alterarOrg.endereco.cidade.id}"/>"><c:out value="${alterarOrg.endereco.cidade.nome}"/></option>
+                            </c:if>
+                        </select>
+                    </div>
+                                        
                 </div>
                     
-                  <input class="btn btn-outline-success" type="submit" value="<c:out value="${(!(empty param.form) || param.form == \"alterar\") ? \"Alterar\" : \"Salvar\"}"/>"/>
+                <input class="btn btn-outline-success" type="submit" value="<c:out value="${(!(empty param.form) || param.form == \"alterar\") ? \"Alterar\" : \"Salvar\"}"/>"/>
                 <a class="btn btn-outline-danger" href="OrganizadorServlet">Cancelar</a>
         </form>
+        <!-- SCRIPTS -->
+        <script type="text/javascript" src="js/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="js/popper/popper.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+        <script src="js/jquery.datetimepicker.full.js" type="text/javascript"></script>
+        <script type="text/javascript" src="js/organizadores.js"></script>
     </body>
 </html>
