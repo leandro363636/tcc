@@ -12,7 +12,7 @@ CREATE TABLE tb_usuario (
     email_usuario VARCHAR(100) UNIQUE,
     senha_usuario VARCHAR(200),
     id_referencia INT,
-    tipo_usuario CHAR(1) CHECK (tipo IN ('a', 'o', 'c')),
+    tipo_usuario CHAR(1) CHECK (tipo_usuario IN ('a', 'o', 'c')),
     ativo_usuario BOOLEAN DEFAULT true
 );
 
