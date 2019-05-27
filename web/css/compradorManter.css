@@ -5,11 +5,11 @@
 	font-style: normal;
 }
 
-body {
+#cadastroComprador body {
 	font-family: 'opensans', sans-serif;
 }
 
-.center {
+#cadastroComprador .center {
 	text-align: center;
 	align-content: center;
 	align-items: center;
