@@ -414,6 +414,20 @@ public class EventoServlet extends HttpServlet {
                                     }
                                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/EventoServlet?action=list");
                                     rd.forward(request, response);
+                                }else{
+                                    if(acao.equals("carrinho")){
+                                        try {
+                                            /* pegar id do lote, id do evento;
+                                            consultar preço do lote usando id lote
+                                            mandar essas informações todas para carrinho jsp via requestDispatcher*/
+                                        } catch (Exception ex) {
+                                            request.setAttribute("exception", ex);
+                                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                            rd.forward(request, response);
+                                        }
+                                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/carrinho.jsp");
+                                        rd.forward(request, response);
+                                    }
                                 }
                             }
                         }

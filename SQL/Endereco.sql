@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-/**
+/*
  * Author:  matri
  * Created: 11/04/2019
  */
-
+/*POSTGRES*/
 CREATE TABLE tb_endereco (
     id_endereco SERIAL PRIMARY KEY,
     rua_endereco VARCHAR(100),
