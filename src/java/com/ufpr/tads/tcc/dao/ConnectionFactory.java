@@ -13,7 +13,7 @@ public class ConnectionFactory {
         try {
             Class.forName("org.postgresql.Driver");
             //Class.forName("com.mysql.jdbc.Driver");
-            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/tcc", "postgres", "root");
+            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/tcc", "postgres", "admin");
             //return DriverManager.getConnection("jdbc:mysql://localhost:3306/tcc","root","root");
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException (e);

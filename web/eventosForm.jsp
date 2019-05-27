@@ -100,6 +100,7 @@
                             <img src="${alterarevento.imagem}">
                         </c:if>
                     </div>
+                    <div class="col-md-4"></div>
                     <c:if test="${(!(empty param.form) || param.form == \"alterar\") }" >
                         <div id="nomeLoteForm" class="form-group col-md-4">
                             <label for="nomeLote">Lote:</label>
