@@ -44,7 +44,7 @@ public class UsuarioDAO {
         return null;
     }
     
-    /*public Usuario getUsuarioById(int id) throws SQLException {
+    public Usuario selectUsuarioById(int id) throws SQLException {
         String sql = "SELECT * from tb_usuario where id_usuario=(?) LIMIT 1;";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -58,12 +58,13 @@ public class UsuarioDAO {
             usuario.setEmail(res.getString("email_usuario"));
             usuario.setSenha(res.getString("senha_usuario"));
             usuario.setTipo(res.getString("tipo_usuario"));
+            usuario.setIdReferencia(res.getInt("id_referencia"));
             return usuario;
         }
         return null;
     }
     
-    public void insertUsuario (Usuario usuario) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    /*public void insertUsuario (Usuario usuario) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         String sql = "INSERT INTO tb_usuario (email_usuario, senha_usuario, tipo_usuario) VALUES ((?), (?), (?))";
         PreparedStatement st = conn.prepareStatement(sql);
 

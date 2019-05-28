@@ -21,12 +21,12 @@ public class UsuarioFacade {
     /*public static List<Comprador> buscarTodosUsuarios() throws SQLException, ClassNotFoundException {
         UsuarioDAO usuariodao = new UsuarioDAO();
         return usuariodao.getUsuarios();
-    }
-    
-    public static Comprador buscar(int id) throws SQLException, ClassNotFoundException {
-        UsuarioDAO usuariodao = new UsuarioDAO();
-        return usuariodao.getUsuarioById(id);
     }*/
+    
+    public static Usuario buscar(int id) throws SQLException, ClassNotFoundException {
+        UsuarioDAO usuariodao = new UsuarioDAO();
+        return usuariodao.selectUsuarioById(id);
+    }
     
     public static Usuario buscarUsuarioByEmail(String email) throws SQLException, ClassNotFoundException {
         UsuarioDAO usuariodao = new UsuarioDAO();
