@@ -42,6 +42,7 @@ public class AdministradorDAO {
         while (rs.next()) {
             nome = rs.getString("nome_administrador");
         }
+        this.conn.close();
         return nome;
     }
     
@@ -85,9 +86,10 @@ public class AdministradorDAO {
             administrador.setCpf(res.getString("cpf_administrador"));
             administrador.setRg(res.getString("rg_administrador"));
             administrador.setDataNascimento(res.getDate("data_nascimento_administrador"));
+            this.conn.close();
             return administrador;
         }
-
+        this.conn.close();
         return null;
     }
 
@@ -115,6 +117,7 @@ public class AdministradorDAO {
             administrador.setDataNascimento(res.getDate("data_nascimento_administrador"));
             resultados.add(administrador);
         }
+        this.conn.close();
         return resultados;
     }
 
@@ -152,6 +155,7 @@ public class AdministradorDAO {
         st.setString(2, senha);
         st.setInt(3, administrador.getIdAdministrador());
         st.executeUpdate();
+        this.conn.close();
     }
 
     public void suspendAdministradorById(int id) throws SQLException {
@@ -160,6 +164,7 @@ public class AdministradorDAO {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, id);
         stmt.executeUpdate();
+        this.conn.close();
     }
 
     public void activeAdministradorById(int id) throws SQLException {
@@ -168,6 +173,7 @@ public class AdministradorDAO {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, id);
         stmt.executeUpdate();
+        this.conn.close();
     }
 
     public void updateAdministradorById(Administrador administrador) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -203,6 +209,7 @@ public class AdministradorDAO {
         stmt.setString(2, senha);
         stmt.setInt(3, administrador.getId());
         stmt.executeUpdate();
+        this.conn.close();
     }
 
     public void updateAdministradorByIdWithoutSenha(Administrador administrador) throws SQLException {
@@ -223,6 +230,7 @@ public class AdministradorDAO {
         stmt.setString(1, administrador.getEmail());
         stmt.setInt(2, administrador.getId());
         stmt.executeUpdate();
+        this.conn.close();
     }
 
     public void updateSenhaById(Administrador administrador) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -246,5 +254,6 @@ public class AdministradorDAO {
         stmt.setString(1, senha);
         stmt.setInt(2, administrador.getId());
         stmt.executeUpdate();
+        this.conn.close();
     }
 }

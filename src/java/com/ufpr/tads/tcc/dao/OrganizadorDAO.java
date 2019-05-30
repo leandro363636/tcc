@@ -55,6 +55,7 @@ public class OrganizadorDAO {
         while (rs.next()) {
             nome = rs.getString("nome_responsavel_organizador");
         }
+        this.conn.close();
         return nome;
     }
     
@@ -98,9 +99,10 @@ public class OrganizadorDAO {
             organizador.setSobrenome(res.getString("sobrenome_responsavel_organizador"));
             organizador.setCnpj(res.getString("cnpj_organizador"));
             organizador.setRg(res.getString("rg_responsavel_organizador"));
+            this.conn.close();
             return organizador;
         }
-
+        this.conn.close();
         return null;
     }
 
@@ -128,6 +130,7 @@ public class OrganizadorDAO {
             organizador.setRg(res.getString("rg_responsavel_organizador"));
             resultados.add(organizador);
         }
+        this.conn.close();
         return resultados;
     }
 
@@ -165,6 +168,7 @@ public class OrganizadorDAO {
         st.setString(2, senha);
         st.setInt(3, organizador.getIdOrganizador());
         st.executeUpdate();
+        this.conn.close();
     }
 
     public void suspendOrganizadorById(int id) throws SQLException {
@@ -173,6 +177,7 @@ public class OrganizadorDAO {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, id);
         stmt.executeUpdate();
+        this.conn.close();
     }
 
     public void activeOrganizdorById(int id) throws SQLException {
@@ -181,6 +186,7 @@ public class OrganizadorDAO {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, id);
         stmt.executeUpdate();
+        this.conn.close();
     }
 
     public void updateOrganizadorById(Organizador organizador) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -216,6 +222,7 @@ public class OrganizadorDAO {
         stmt.setString(2, senha);
         stmt.setInt(3, organizador.getIdOrganizador());
         stmt.executeUpdate();
+        this.conn.close();
     }
 
     public void updateOrganizadorByIdWithoutSenha(Organizador organizador) throws SQLException {
@@ -236,6 +243,7 @@ public class OrganizadorDAO {
         stmt.setString(1, organizador.getEmail());
         stmt.setInt(2, organizador.getIdOrganizador());
         stmt.executeUpdate();
+        this.conn.close();
     }
 
     public void updateSenhaById(Organizador organizador) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -259,6 +267,7 @@ public class OrganizadorDAO {
         stmt.setString(1, senha);
         stmt.setInt(2, organizador.getId());
         stmt.executeUpdate();
+        this.conn.close();
     }
     
     public List<Organizador> selectOrganizadores(int pagina) throws SQLException {		
@@ -289,7 +298,8 @@ public class OrganizadorDAO {
             resultado.add(organizador);		
             		
   		
-        }		
+        }
+        this.conn.close();
         return resultado;		
     }  		
              		
@@ -301,7 +311,8 @@ public class OrganizadorDAO {
         int total = 0;		
         while (rs.next()) {		
             total = rs.getInt(1);		
-        }		
+        }
+        this.conn.close();
         return total;		
     }		
     		
@@ -329,7 +340,7 @@ public class OrganizadorDAO {
         		
         st.executeUpdate();		
           		
-        		
+        this.conn.close();
     }		
         		
     public int selectCountCompradores() throws SQLException {		
@@ -340,7 +351,8 @@ public class OrganizadorDAO {
         int total = 0;		
         while (rs.next()) {		
             total = rs.getInt(1);		
-        }		
+        }
+        this.conn.close();
         return total;		
     }
 }

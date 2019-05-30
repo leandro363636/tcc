@@ -38,8 +38,8 @@ public class EndereçoDAO {
         st.setInt(4, endereço.getCidade().getId());
         st.setString(5, endereço.getReferencia());
         st.setInt(6, endereço.getIdReferencia());
-        
         st.executeUpdate();
+        this.conn.close();
     }
     
     public void updateEndereçoById(Endereço endereço) throws SQLException {
@@ -56,8 +56,8 @@ public class EndereçoDAO {
         st.setString(5, endereço.getReferencia());
         st.setInt(6, endereço.getIdReferencia());
         st.setInt(7, endereço.getId());
-        
         st.executeUpdate();
+        this.conn.close();
     }
     
     public void updateEndereçoByIdRefencia(Endereço endereço) throws SQLException {
@@ -73,8 +73,8 @@ public class EndereçoDAO {
         st.setInt(4, endereço.getCidade().getId());
         st.setInt(5, endereço.getIdReferencia());
         st.setString(6, endereço.getReferencia());
-        
         st.executeUpdate();
+        this.conn.close();
     }
     
     public void deleteEndereçoById(int id) throws SQLException {
@@ -84,8 +84,8 @@ public class EndereçoDAO {
         PreparedStatement st = conn.prepareStatement(sql);
         
         st.setInt(1, id);
-        
         st.executeUpdate();
+        this.conn.close();
     }
     
     public Endereço selectEndereçoById(int id) throws SQLException {
@@ -109,6 +109,7 @@ public class EndereçoDAO {
             endereço.setReferencia(rs.getString("referencia_endereco"));
             endereço.setIdReferencia(rs.getInt("id_referencia"));
         }
+        this.conn.close();
         return endereço;
     }
     
@@ -134,6 +135,7 @@ public class EndereçoDAO {
             endereço.setReferencia(rs.getString("referencia_endereco"));
             endereço.setIdReferencia(rs.getInt("id_referencia"));
         }
+        this.conn.close();
         return endereço;
     }
 }

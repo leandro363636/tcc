@@ -48,6 +48,7 @@ public class CidadeDAO {
             cidade.setEstado(estado);
             cidades.add(cidade);
         }
+        this.conn.close();
         return cidades;
     }
     
@@ -71,6 +72,7 @@ public class CidadeDAO {
             cidade.setNome(nomecid);
             cidades.add(cidade);
         }
+        this.conn.close();
         return cidades;
     }
     
@@ -97,8 +99,10 @@ public class CidadeDAO {
             estado.setNome(nomeest);
             estado.setSigla(sigla);
             cidade.setEstado(estado);
+            this.conn.close();
             return cidade;
         }
+        this.conn.close();
         return null;
     }
 }

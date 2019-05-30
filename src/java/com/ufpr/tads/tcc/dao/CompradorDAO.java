@@ -41,6 +41,7 @@ public class CompradorDAO {
         while (rs.next()) {
             nome = rs.getString("nome_comprador");
         }
+        this.conn.close();
         return nome;
     }
 
@@ -98,9 +99,10 @@ public class CompradorDAO {
             comprador.setCpf(res.getString("cpf_comprador"));
             comprador.setRg(res.getString("rg_comprador"));
             comprador.setDataNascimento(res.getDate("data_nascimento_comprador"));
+            this.conn.close();
             return comprador;
         }
-
+        this.conn.close();
         return null;
     }
 
@@ -130,6 +132,7 @@ public class CompradorDAO {
             comprador.setDataNascimento(res.getDate("data_nascimento_comprador"));
             resultados.add(comprador);
         }
+        this.conn.close();
         return resultados;
     }
 
@@ -167,6 +170,7 @@ public class CompradorDAO {
         st.setString(2, senha);
         st.setInt(3, comprador.getIdComprador());
         st.executeUpdate();
+        this.conn.close();
     }
     
     public void insertSocial(Comprador comprador) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -186,6 +190,7 @@ public class CompradorDAO {
         st.setString(2, comprador.getSenha());
         st.setInt(3, comprador.getIdComprador());
         st.executeUpdate();
+        this.conn.close();
     }
 
     public void suspendCompradorById(int id) throws SQLException {
@@ -194,6 +199,7 @@ public class CompradorDAO {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, id);
         stmt.executeUpdate();
+        this.conn.close();
     }
 
     public void activeCompradorById(int id) throws SQLException {
@@ -202,6 +208,7 @@ public class CompradorDAO {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, id);
         stmt.executeUpdate();
+        this.conn.close();
     }
 
     public void updateCompradorById(Comprador comprador) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -237,6 +244,7 @@ public class CompradorDAO {
         stmt.setString(2, senha);
         stmt.setInt(3, comprador.getId());
         stmt.executeUpdate();
+        this.conn.close();
     }
 
     public void updateCompradorByIdWithoutSenha(Comprador comprador) throws SQLException {
@@ -257,6 +265,7 @@ public class CompradorDAO {
         stmt.setString(1, comprador.getEmail());
         stmt.setInt(2, comprador.getId());
         stmt.executeUpdate();
+        this.conn.close();
     }
 
     public void updateSenhaById(Comprador comprador) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -280,6 +289,7 @@ public class CompradorDAO {
         stmt.setString(1, senha);
         stmt.setInt(2, comprador.getId());
         stmt.executeUpdate();
+        this.conn.close();
     }
     
     public void deleteCompradorById(int id) throws SQLException {		
@@ -306,10 +316,10 @@ public class CompradorDAO {
         		
         st.executeUpdate();		
           		
-        		
+        this.conn.close();
     }		
         		
-            public int selectCountCompradores() throws SQLException {		
+    public int selectCountCompradores() throws SQLException {		
         String sql = "SELECT COUNT(*) "		
                 + "FROM tb_comprador;";		
         PreparedStatement st = conn.prepareStatement(sql);		
@@ -317,7 +327,8 @@ public class CompradorDAO {
         int total = 0;		
         while (rs.next()) {		
             total = rs.getInt(1);		
-        }		
+        }
+        this.conn.close();
         return total;		
     }		
         		
@@ -349,7 +360,8 @@ public class CompradorDAO {
             resultado.add(comprador);		
             		
   		
-        }		
+        }
+        this.conn.close();
         return resultado;		
     }
 }

@@ -39,8 +39,10 @@ public class UsuarioDAO {
             usuario.setSenha(res.getString("senha_usuario"));
             usuario.setTipo(res.getString("tipo_usuario"));
             usuario.setIdReferencia(res.getInt("id_referencia"));
+            this.conn.close();
             return usuario;
         }
+        this.conn.close();
         return null;
     }
     
@@ -59,8 +61,10 @@ public class UsuarioDAO {
             usuario.setSenha(res.getString("senha_usuario"));
             usuario.setTipo(res.getString("tipo_usuario"));
             usuario.setIdReferencia(res.getInt("id_referencia"));
+            this.conn.close();
             return usuario;
         }
+        this.conn.close();
         return null;
     }
     
@@ -139,7 +143,7 @@ public class UsuarioDAO {
     }*/
     
     
-        public void updateSenhaById(Comprador usuario) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    public void updateSenhaById(Comprador usuario) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         String sql = "UPDATE tb_usuario SET senha_usuario=(?) where id_usuario=(?);";
 
         StringBuffer hexString = new StringBuffer();
@@ -159,6 +163,7 @@ public class UsuarioDAO {
         stmt.setString(1, hexString.toString());
         stmt.setInt(2, usuario.getId());
         stmt.executeUpdate();
+        this.conn.close();
     }
 
 }

@@ -42,6 +42,7 @@ public class EventoDAO {
         st.setInt(7, evento.getUsuario().getId());
         
         st.executeUpdate();
+        this.conn.close();
     }
     
     public void updateEventoById(Evento evento) throws SQLException {
@@ -60,6 +61,7 @@ public class EventoDAO {
         st.setInt(7, evento.getId());
         
         st.executeUpdate();
+        this.conn.close();
     }
     
     public void updateEventoByIdWithoutImagem(Evento evento) throws SQLException {
@@ -77,6 +79,7 @@ public class EventoDAO {
         st.setInt(6, evento.getId());
         
         st.executeUpdate();
+        this.conn.close();
     }
     
     public void deleteEventoById(int id) throws SQLException {
@@ -88,6 +91,7 @@ public class EventoDAO {
         st.setInt(1, id);
         
         st.executeUpdate();
+        this.conn.close();
     }
     
     public List<Evento> selectEventos(int pagina) throws SQLException {
@@ -114,6 +118,7 @@ public class EventoDAO {
             
             resultado.add(evento);
         }
+        this.conn.close();
         return resultado;
     }
     
@@ -185,6 +190,7 @@ public class EventoDAO {
             
             resultado.add(evento);
         }
+        this.conn.close();
         return resultado;
     }
     
@@ -211,6 +217,7 @@ public class EventoDAO {
             
             resultado.add(evento);
         }
+        this.conn.close();
         return resultado;
     }
     
@@ -233,6 +240,7 @@ public class EventoDAO {
             evento.setImagem(rs.getString("imagem_evento"));
             evento.setAprovado(rs.getBoolean("aprovacao_evento"));
         }
+        this.conn.close();
         return evento;
     }
     
@@ -258,6 +266,7 @@ public class EventoDAO {
             evento.setImagem(rs.getString("imagem_evento"));
             evento.setAprovado(rs.getBoolean("aprovacao_evento"));
         }
+        this.conn.close();
         return evento;
     }
     
@@ -283,6 +292,7 @@ public class EventoDAO {
             
             resultado.add(evento);
         }
+        this.conn.close();
         return resultado;
     }
     
@@ -337,6 +347,7 @@ public class EventoDAO {
         while (rs.next()) {
             total = rs.getInt(1);
         }
+        this.conn.close();
         return total;
     }
     
@@ -351,6 +362,7 @@ public class EventoDAO {
         while (rs.next()) {
             total = rs.getInt(1);
         }
+        this.conn.close();
         return total;
     }
     
@@ -363,6 +375,7 @@ public class EventoDAO {
         while (rs.next()) {
             total = rs.getInt(1);
         }
+        this.conn.close();
         return total;
     }
     
@@ -370,13 +383,15 @@ public class EventoDAO {
         String sql = "UPDATE tb_evento SET aprovacao_evento = FALSE where id_evento=(?);";		
         PreparedStatement stmt = conn.prepareStatement(sql);		
         stmt.setInt(1, id);		
-        stmt.executeUpdate();		
+        stmt.executeUpdate();
+        this.conn.close();
     }		
         		
     public void activeEventoById(int id) throws SQLException {		
         String sql = "UPDATE tb_evento SET aprovacao_evento = TRUE where id_evento=(?);";		
         PreparedStatement stmt = conn.prepareStatement(sql);		
         stmt.setInt(1, id);		
-        stmt.executeUpdate();		
+        stmt.executeUpdate();
+        this.conn.close();
     }
 }

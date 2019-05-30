@@ -59,6 +59,7 @@ public class CompraDAO {
             compra.setItems(items);
             return compra;
         }
+        this.conn.close();
         return null;
     }
 }
