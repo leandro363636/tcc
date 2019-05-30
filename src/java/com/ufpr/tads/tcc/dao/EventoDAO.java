@@ -365,4 +365,18 @@ public class EventoDAO {
         }
         return total;
     }
+    
+    public void suspendEventoById(int id) throws SQLException {		
+        String sql = "UPDATE tb_evento SET aprovacao_evento = FALSE where id_evento=(?);";		
+        PreparedStatement stmt = conn.prepareStatement(sql);		
+        stmt.setInt(1, id);		
+        stmt.executeUpdate();		
+    }		
+        		
+    public void activeEventoById(int id) throws SQLException {		
+        String sql = "UPDATE tb_evento SET aprovacao_evento = TRUE where id_evento=(?);";		
+        PreparedStatement stmt = conn.prepareStatement(sql);		
+        stmt.setInt(1, id);		
+        stmt.executeUpdate();		
+    }
 }

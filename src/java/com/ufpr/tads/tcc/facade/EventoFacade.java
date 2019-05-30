@@ -80,4 +80,21 @@ public class EventoFacade {
         EventoDAO eventodao = new EventoDAO();
         eventodao.insertEvento(evento);
     }
+    
+    public static List<Evento> selectEventos(int pagina) throws SQLException, ClassNotFoundException {		
+        EventoDAO comp = new EventoDAO();		
+        return comp.selectEventos(pagina);		
+    }		
+    public static void suspender(int id) throws SQLException, ClassNotFoundException {		
+        EventoDAO comp = new EventoDAO();		
+        comp.suspendEventoById(id);		
+    }		
+    public static void ativar(int id) throws SQLException, ClassNotFoundException {		
+        EventoDAO comp = new EventoDAO();		
+        comp.activeEventoById(id);		
+    }		
+    public static void deletar(int id) throws SQLException, ClassNotFoundException {		
+        EventoDAO comp = new EventoDAO();		
+        comp.deleteEventoById(id);		
+    }
 }

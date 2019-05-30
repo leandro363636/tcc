@@ -109,12 +109,14 @@ public class CompradorDAO {
         List<Comprador> resultados = new ArrayList<>();
 
         String sql = "SELECT * FROM tb_comprador "
-                + "INNER JOIN tb_usuario ON id_comprador = id_referencia AND tipo_usuario = 'c'";
+                + "INNER JOIN tb_usuario ON id_comprador = id_referencia AND tipo_usuario = 'c'"
+                + "ORDER BY nome_comprador;";
         PreparedStatement st = conn.prepareStatement(sql);
 
         ResultSet res = st.executeQuery();
 
         while (res.next()) {
+
             Comprador comprador = new Comprador();
             comprador.setIdComprador(res.getInt("id_comprador"));
             comprador.setId(res.getInt("id_usuario"));
@@ -278,5 +280,76 @@ public class CompradorDAO {
         stmt.setString(1, senha);
         stmt.setInt(2, comprador.getId());
         stmt.executeUpdate();
+    }
+    
+    public void deleteCompradorById(int id) throws SQLException {		
+            		
+                        String sql2 = "DELETE FROM tb_usuario "		
+                + "WHERE tipo_usuario = 'c' AND id_referencia=(?);";		
+        PreparedStatement stmt = conn.prepareStatement(sql2);		
+        stmt.setInt(1, id);		
+        stmt.executeUpdate();   		
+        		
+                              String sql3 = "DELETE FROM tb_endereco "		
+                + "WHERE referencia_endereco = 'comprador' AND id_referencia=(?);";		
+        PreparedStatement stmt2 = conn.prepareStatement(sql3);		
+        stmt2.setInt(1, id);		
+        stmt2.executeUpdate();  		
+            		
+            		
+            		
+        String sql = "DELETE FROM tb_comprador "		
+                + "WHERE id_comprador = (?);";		
+        PreparedStatement st = conn.prepareStatement(sql);		
+        		
+        st.setInt(1, id);		
+        		
+        st.executeUpdate();		
+          		
+        		
+    }		
+        		
+            public int selectCountCompradores() throws SQLException {		
+        String sql = "SELECT COUNT(*) "		
+                + "FROM tb_comprador;";		
+        PreparedStatement st = conn.prepareStatement(sql);		
+        ResultSet rs = st.executeQuery();		
+        int total = 0;		
+        while (rs.next()) {		
+            total = rs.getInt(1);		
+        }		
+        return total;		
+    }		
+        		
+         public List<Comprador> selectCompradores(int pagina) throws SQLException {		
+        		
+        String sql = "SELECT * "		
+                + "FROM tb_comprador "		
+                + "INNER JOIN tb_usuario ON id_comprador = id_referencia AND tipo_usuario = 'c'"		
+                + "ORDER BY nome_comprador, id_comprador "		
+                + "LIMIT 9 OFFSET (?);";		
+        PreparedStatement st = conn.prepareStatement(sql);		
+        int start = (pagina - 1) * 9; 		
+        st.setInt(1, start);		
+        ResultSet rs = st.executeQuery();		
+        List<Comprador> resultado = new ArrayList<>();		
+        		
+        while (rs.next()) {		
+            Comprador comprador = new Comprador();		
+            comprador.setIdComprador(rs.getInt("id_comprador"));		
+            comprador.setId(rs.getInt("id_usuario"));		
+            comprador.setEmail(rs.getString("email_usuario"));		
+            comprador.setSenha(rs.getString("senha_usuario"));		
+            comprador.setAtivo(rs.getBoolean("ativo_usuario"));		
+            comprador.setNome(rs.getString("nome_comprador"));		
+            comprador.setSobrenome(rs.getString("sobrenome_comprador"));		
+            comprador.setCpf(rs.getString("cpf_comprador"));		
+            comprador.setRg(rs.getString("rg_comprador"));		
+            comprador.setDataNascimento(rs.getDate("data_nascimento_comprador"));		
+            resultado.add(comprador);		
+            		
+  		
+        }		
+        return resultado;		
     }
 }

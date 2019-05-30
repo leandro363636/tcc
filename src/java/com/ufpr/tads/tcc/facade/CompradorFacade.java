@@ -37,6 +37,17 @@ public class CompradorFacade {
         CompradorDAO comp = new CompradorDAO();
         return comp.selectIdByData(comprador);
     }
+    
+    public static int buscarTotal() throws SQLException, ClassNotFoundException {
+        CompradorDAO comp = new CompradorDAO();
+        return comp.selectCountCompradores();
+    }
+    
+        
+    public static List<Comprador> buscarTodosCompradores(int pagina) throws SQLException, ClassNotFoundException {
+        CompradorDAO comp = new CompradorDAO();
+        return comp.selectCompradores(pagina);
+    }
 
     public static void inserir(Comprador comprador) throws ClassNotFoundException, SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         CompradorDAO comp = new CompradorDAO();
@@ -71,5 +82,10 @@ public class CompradorFacade {
     public static void ativar(int id) throws SQLException, ClassNotFoundException {
         CompradorDAO comp = new CompradorDAO();
         comp.activeCompradorById(id);
+    }
+    
+    public static void deletar(int id) throws SQLException, ClassNotFoundException {		
+        CompradorDAO comp = new CompradorDAO();		
+        comp.deleteCompradorById(id);		
     }
 }

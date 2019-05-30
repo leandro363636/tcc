@@ -62,4 +62,19 @@ public class OrganizadorFacade {
         OrganizadorDAO orgs = new OrganizadorDAO();
         orgs.activeOrganizdorById(id);
     }
+    
+    public static List<Organizador> selectOrganizadores(int pagina) throws SQLException, ClassNotFoundException {		
+        OrganizadorDAO comp = new OrganizadorDAO();		
+        return comp.selectOrganizadores(pagina);		
+    }		
+            		
+    public static int buscarTotal() throws SQLException, ClassNotFoundException {		
+        OrganizadorDAO comp = new OrganizadorDAO();		
+        return comp.selectCountOrganizadores();		
+    }		
+                		
+    public static void deletar(int id) throws SQLException, ClassNotFoundException {		
+        OrganizadorDAO comp = new OrganizadorDAO();		
+        comp.deleteOrganizadorById(id);		
+    }
 }

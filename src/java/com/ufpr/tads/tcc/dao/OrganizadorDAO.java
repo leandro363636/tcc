@@ -260,4 +260,87 @@ public class OrganizadorDAO {
         stmt.setInt(2, organizador.getId());
         stmt.executeUpdate();
     }
+    
+    public List<Organizador> selectOrganizadores(int pagina) throws SQLException {		
+        		
+        String sql = "SELECT * "		
+                + "FROM tb_organizador "		
+                + "INNER JOIN tb_usuario ON id_organizador = id_referencia AND tipo_usuario = 'o'"		
+                + "ORDER BY nome_organizador, id_organizador "		
+                + "LIMIT 9 OFFSET (?);";		
+        PreparedStatement st = conn.prepareStatement(sql);		
+        int start = (pagina - 1) * 9; 		
+        st.setInt(1, start);		
+        ResultSet rs = st.executeQuery();		
+        List<Organizador> resultado = new ArrayList<>();		
+        		
+        while (rs.next()) {		
+            Organizador organizador = new Organizador();		
+            organizador.setIdOrganizador(rs.getInt("id_organizador"));		
+            organizador.setId(rs.getInt("id_organizador"));		
+            organizador.setEmail(rs.getString("email_usuario"));		
+            organizador.setSenha(rs.getString("senha_usuario"));		
+            organizador.setAtivo(rs.getBoolean("ativo_usuario"));		
+            organizador.setNomeOrganizador(rs.getString("nome_organizador"));		
+            organizador.setNomeResponsavel(rs.getString("nome_responsavel_organizador"));		
+            organizador.setSobrenome(rs.getString("sobrenome_responsavel_organizador"));		
+            organizador.setCnpj(rs.getString("cnpj_organizador"));		
+            organizador.setRg(rs.getString("rg_responsavel_organizador"));		
+            resultado.add(organizador);		
+            		
+  		
+        }		
+        return resultado;		
+    }  		
+             		
+    public int selectCountOrganizadores() throws SQLException {		
+        String sql = "SELECT COUNT(*) "		
+                + "FROM tb_organizador;";		
+        PreparedStatement st = conn.prepareStatement(sql);		
+        ResultSet rs = st.executeQuery();		
+        int total = 0;		
+        while (rs.next()) {		
+            total = rs.getInt(1);		
+        }		
+        return total;		
+    }		
+    		
+    public void deleteOrganizadorById(int id) throws SQLException {		
+            		
+        String sql2 = "DELETE FROM tb_usuario "		
+                + "WHERE tipo_usuario = 'o' AND id_referencia=(?);";		
+        PreparedStatement stmt = conn.prepareStatement(sql2);		
+        stmt.setInt(1, id);		
+        stmt.executeUpdate();   		
+        		
+        String sql3 = "DELETE FROM tb_endereco "		
+                + "WHERE referencia_endereco = 'organizador' AND id_referencia=(?);";		
+        PreparedStatement stmt2 = conn.prepareStatement(sql3);		
+        stmt2.setInt(1, id);		
+        stmt2.executeUpdate();  		
+            		
+            		
+            		
+        String sql = "DELETE FROM tb_organizador "		
+                + "WHERE id_organizador = (?);";		
+        PreparedStatement st = conn.prepareStatement(sql);		
+        		
+        st.setInt(1, id);		
+        		
+        st.executeUpdate();		
+          		
+        		
+    }		
+        		
+    public int selectCountCompradores() throws SQLException {		
+        String sql = "SELECT COUNT(*) "		
+                + "FROM tb_comprador;";		
+        PreparedStatement st = conn.prepareStatement(sql);		
+        ResultSet rs = st.executeQuery();		
+        int total = 0;		
+        while (rs.next()) {		
+            total = rs.getInt(1);		
+        }		
+        return total;		
+    }
 }
