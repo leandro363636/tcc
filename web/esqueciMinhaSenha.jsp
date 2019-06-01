@@ -7,7 +7,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="UTF-8">
-        <title>Criar conta</title>
+        <title>Esqueci minha senha</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/clientesAlterar.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -37,7 +37,7 @@
             <c:if test="${(param.form == \"recuperar\" || param.form == \"erro\")}" >
                 <form action="RecuperarSenhaServlet?action=recuperar" method="POST">
                     <div class="form-row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-3 offset-md-6">
                             <label>Email da conta:</label>
                             <input class="form-control" type="email" name="email" maxlength="100" value="" required/><br/>
                         </div>
