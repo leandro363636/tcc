@@ -138,17 +138,17 @@
       <div class="col-md-4">
         <div class="card">
           <header class="card-header">
-            <a href="" class="float-right btn btn-outline-primary mt-1">Cadastro</a>
+            <a href="CadastrarServlet?action=formNew" class="float-right btn btn-outline-primary mt-1">Cadastro</a>
             <h4 class="card-title mt-2">Login</h4>
           </header>
 
           <article class="card-body">
 
-            <form method="" action="">
+            <form method="POST" action="LoginServlet?action=login">
 
               <div class="form-group">
                 <label>Email </label>
-                <input type="email" class="form-control" id="email" placeholder="">
+                <input type="email" name="email" class="form-control" id="email" placeholder="">
               </div> <!-- form-group end.// -->
 
               <div class="form-group">
@@ -157,7 +157,7 @@
               </div> <!-- form-group end.// -->
 
               <div class="form-group">
-                <a href="#" class="center">Esqueci a senha</a>
+                <a href="RecuperarSenhaServlet?action=formNew" class="center">Esqueci a senha</a>
               </div>
 
               <div class="form-group">
