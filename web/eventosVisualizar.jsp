@@ -4,8 +4,10 @@
     Author     : mateus
 --%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@page import="com.ufpr.tads.tcc.beans.Usuario"%>
+<%@page import="com.ufpr.tads.tcc.beans.Evento"%>
+<%@page import="com.ufpr.tads.tcc.beans.Lote"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -34,123 +36,110 @@
         </c:if>
         
         <div id="visualizaevento">
-		
-		<!-- NAVBAR TOPO -->
-		<div class="row1">
-			<div class="container-fluid">
-				<div class="row align-items-center">
-					<div class="col-12">
-						<nav class="navbar navbar-expand-sm navbar-light bg-light">
-							<a href="EventoServlet" class="navbar-brand">fastTicket</a>
-							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTopo" aria-controls="navbarSupportedContent" aria-expanded="false">
-								<span class="navbar-toggler-icon"></span>
-							</button>
-							<div class="collapse navbar-collapse" id="navbarTopo">
-								<ul class="navbar-nav mr-auto">
-									<li class="nav-item">
-										<a class="nav-link right" href="EventoServlet?action=formNew">Criar Evento</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="EventoServlet?action=listSelf">Meus Eventos</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="#">Meus Ingressos</a>
-									</li>
-								</ul>
-								<span class="nav-item dropdown">
-									<span class="nav-link dropdown-toggle" href="#" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-										Bem vindo, <c:out value="${usuario.nome}"/> <span class="caret"></span>
-									</span>
-									<div class="dropdown-menu dropdown-menu-top" aria-labelledby="navbarDropdown">
-										<button class="dropdown-item" href="UsuarioServlet?action=formUpdate&id=<c:out value="${usuario.id}"/>">Minha Conta</button>
-										<button class="dropdown-item" href="#">Meus Ingressos</button>
-										<button class="dropdown-item" href="index.jsp">Login</button>
-										<button class="dropdown-item" href="UsuarioServlet?action=formNew">Criar Conta</button>
-										<div class="dropdown-divider"></div>
-										<button class="dropdown-item" href="LoginServlet?action=logout">Logout</button>
-										<form id="form-logout" action="" method="" style="display: none;"></form>
-									</div>
-								</span>
-							</div>
-						</nav>
-					</div>
-				</div>
-			</div>
-		</div>
 
-		<div class="row2 mb-2">
-                    <div class="container">
-                        <div class="row align-items-center">
-                                <div class="col-12" id="divNome">
-                                        <h1 class="center" id="nomeEvento"><c:out value="${visualizarevento.nome}"/></h1>
+            <!-- NAVBAR TOPO -->
+            <div class="row1">
+                    <div class="container-fluid">
+                            <div class="row align-items-center">
+                                    <div class="col-12">
+                                            <nav class="navbar navbar-expand-sm navbar-light bg-light">
+                                                    <a href="EventoServlet" class="navbar-brand">fastTicket</a>
+                                                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTopo" aria-controls="navbarSupportedContent" aria-expanded="false">
+                                                            <span class="navbar-toggler-icon"></span>
+                                                    </button>
+                                                    <div class="collapse navbar-collapse" id="navbarTopo">
+                                                            <ul class="navbar-nav mr-auto">
+                                                                    <li class="nav-item">
+                                                                            <a class="nav-link right" href="EventoServlet?action=formNew">Criar Evento</a>
+                                                                    </li>
+                                                                    <li class="nav-item">
+                                                                            <a class="nav-link" href="EventoServlet?action=listSelf">Meus Eventos</a>
+                                                                    </li>
+                                                                    <li class="nav-item">
+                                                                            <a class="nav-link" href="#">Meus Ingressos</a>
+                                                                    </li>
+                                                            </ul>
+                                                            <div>
+                                                                <ul class="navbar-nav ml-auto">
+                                                                    <li class="nav-item"><a class="nav-link" href="LoginServlet?action=logout">Sair</a></li>
+                                                                </ul>
+                                                            </div>
+                                                    </div>
+                                            </nav>
+                                    </div>
+                            </div>
+                    </div>
+            </div>
+
+            <div class="row2 mb-2">
+                <div class="container">
+                    <div class="row align-items-center">
+                            <div class="col-12" id="divNome">
+                                    <h1 class="center" id="nomeEvento"><c:out value="${visualizarevento.nome}"/></h1>
+                            </div>
+
+                            <div class="image">
+                                <img src="<c:out value="${(!(empty visualizarevento.imagem) && visualizarevento.imagem != \"\" && visualizarevento.imagem != null) ? visualizarevento.imagem : \"img/130816-FM-Festa-Paradiso-089-840x560.jpg\"}"/>" alt="" width="100%">
+                            </div>﻿
+
+                    </div>
+                </div>
+            </div>
+
+
+        <div class="row3">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-md-7 order-2 order-md-1">
+                                <h2 class="center">Sobre o Evento</h2>
+                                <div class="row align-items-center">
+                                        <div class="col-12" id="divForm">
+                                                <form id="formNome" class="formNome center" action="#">
+                                                    <input class="inputNome center" value="<c:out value="${visualizarevento.descrição}"/>" disabled="true" outline="0">
+                                                </form>
+                                        </div>
                                 </div>
-                                <!--<div class="col-12 esconde" id="divForm">
-                                        <form id="formNome" class="formNome center" action="#">
-                                                <input type="text" name="" id="inputNome" class="inputNome center" value="<c:out value="${visualizarevento.nome}"/>">
-                                                <h1 class="center"><i class="fas fa-save" id="salvaNomeEvento"></i></h1>
-                                        </form>
-                                </div>-->
-                                <div class="image">
-                                    <img src="<c:out value="${(!(empty visualizarevento.imagem) && visualizarevento.imagem != \"\" && visualizarevento.imagem != null) ? visualizarevento.imagem : \"img/130816-FM-Festa-Paradiso-089-840x560.jpg\"}"/>" alt="" width="100%">
-                                </div>﻿
+                        </div>
+                        <div class="col-12 col-md-4 offset-md-1 order-1 order-md-2">
+                            <!--<div class="row align-items-center">
+                                    <div class="col-12">
+                                        <h2>Lotes</h2>
+                                            <input type="radio" id="lote1" name="lote" value="lote1"
+                                            checked>
+                                            <label for="lote1"><span>Lote 1 </span><span>R$ 100,00</span></label>
+                                    </div>
+                                    <div class="col-12">
+                                            <input type="radio" id="lote2" name="lote" value="lote2">
+                                            <label for="lote2"><span>Lote 2 </span><span>R$ 100,00</span></label>
+                                    </div>
+                                    <div class="col-12">
+                                            <input type="radio" id="lote3" name="lote" value="lote3">
+                                            <label for="lote3"><span>Lote 3 </span><span>R$ 100,00</span></label>
+                                    </div>
+                            </div>-->
+                            <div class="row align-items-center">
+                                <c:if test="${!(empty lotes)}" >
+                                    <form class="list-group" id="lotesList">
+                                        <h2 class="center">Lotes</h2>
+                                        <c:forEach items="${lotes}" var="lote">
+                                            <div class="col-12">
+                                                <!-- adicionar verificação de disponibilidade do lote -->
+                                                <!--<input checked="checked" type="radio" id="<c:out value="${lote.nome}"/>" name="lote" value="<c:out value="${lote.nome}"/>" <c:out value="(1==2) ? \"\" :disabled"/>-->
+                                                <fmt:setLocale value = "en_US"/>
+                                                <fmt:parseNumber var="preço" type="number" value="${lote.preço}"/>
+                                                <label for="<c:out value="${lote.nome}"/>"><span><c:out value="${lote.nome}"/> - </span><span><c:out value="${preço}"/></span></label>
+                                            </div>
+                                        </c:forEach>
+                                        <!-- como mandar o id do lote pegando o radio button marcado? --> 
+                                        <a class="btn btn-success" href="EventoServlet?action=carrinho&id=<c:out value="${visualizarevento.id}"/>">PAGINA DE COMPRA</a>
+                                    </form>
 
+                                </c:if>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-
-            <div class="row3">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-md-7 order-2 order-md-1">
-                                    <h2 class="center">Sobre o Evento</h2>
-                                    <div class="row align-items-center">
-                                            <div class="col-12" id="divForm">
-                                                    <form id="formNome" class="formNome center" action="#">
-                                                        <input class="inputNome center" value="<c:out value="${visualizarevento.descrição}"/>" disabled="true" outline="0">
-                                                    </form>
-                                            </div>
-                                    </div>
-                            </div>
-                            <div class="col-12 col-md-4 offset-md-1 order-1 order-md-2">
-                                <!--<div class="row align-items-center">
-                                        <div class="col-12">
-                                            <h2>Lotes</h2>
-                                                <input type="radio" id="lote1" name="lote" value="lote1"
-                                                checked>
-                                                <label for="lote1"><span>Lote 1 </span><span>R$ 100,00</span></label>
-                                        </div>
-                                        <div class="col-12">
-                                                <input type="radio" id="lote2" name="lote" value="lote2">
-                                                <label for="lote2"><span>Lote 2 </span><span>R$ 100,00</span></label>
-                                        </div>
-                                        <div class="col-12">
-                                                <input type="radio" id="lote3" name="lote" value="lote3">
-                                                <label for="lote3"><span>Lote 3 </span><span>R$ 100,00</span></label>
-                                        </div>
-                                </div>-->
-                                <div class="row align-items-center">
-                                    <c:if test="${!(empty lotes)}" >
-                                        <form class="list-group" id="lotesList">
-                                            <h2 class="center">Lotes</h2>
-                                            <c:forEach items="${lotes}" var="lote">
-                                                <div class="col-12">
-                                                    <!-- adicionar verificação de disponibilidade do lote -->
-                                                    <input checked="checked" type="radio" id="<c:out value="${lote.nome}"/>" name="lote" value="<c:out value="${lote.nome}"/>" <c:out value="(1==2) ? \"\" :disabled"/> />
-                                                    <label for="<c:out value="${lote.nome}"/>"><span><c:out value="${lote.nome}"/> - </span><span>R$ 100,00</span></label>
-                                                </div>
-                                            </c:forEach>
-                                            <!-- como mandar o id do lote pegando o radio button marcado? -->
-                                            <a class="btn btn-success" href="EventoServlet?action=carrinho&id=<c:out value="${vizualizarevento.id}"/>">COMPRAR</a>
-                                            
-                                        </form>
-                                    </c:if>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-		</div>
-
+            </div>
 	</div>
         
         <div class="container">
@@ -174,7 +163,6 @@
                     <label for="aprovado">Validado:</label>
                     <input class="form-control" type="text" name="aprovado" value="<c:out value="${(visualizarevento.aprovado == true) ? \"Sim\" : \"Não\"}"/>" disabled/><br/>
                 </div>
-                
             </div>
             <a class="btn btn-primary" href="EventoServlet">VOLTAR</a>
         </div>

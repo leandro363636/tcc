@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import static java.lang.System.out;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.sql.Date;
@@ -411,9 +412,16 @@ public class EventoServlet extends HttpServlet {
                                 }else{
                                     if(acao.equals("carrinho")){
                                         try {
-                                            /* pegar id do lote, id do evento;
-                                            consultar preço do lote usando id lote
-                                            mandar essas informações todas para carrinho jsp via requestDispatcher*/
+                                            int id = Integer.parseInt(request.getParameter("id"));
+                                            Evento evento = EventoFacade.buscar(id);
+                                            List<Lote> lotes = new ArrayList();
+                                            lotes = LoteFacade.buscarTodosLotesPorIdEvento(id);
+                                            //request.setAttribute("id",id);
+                                            //request.setAttribute("evento",evento);
+                                            out.println("id");
+                                            request.setAttribute("lotes",lotes);
+                                            request.getSession().setAttribute("lotecarrinho", lotes);
+                                            request.getSession().setAttribute("idevento", "3");
                                         } catch (Exception ex) {
                                             request.setAttribute("exception", ex);
                                             RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
