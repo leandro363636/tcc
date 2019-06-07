@@ -15,3 +15,6 @@ CREATE TABLE tb_compra (
     id_usuario INT,
     CONSTRAINT fk_compra_usuario FOREIGN KEY (id_usuario) REFERENCES tb_usuario(id_usuario)
 );
+
+INSERT INTO tb_compra (status_compra, valor_total_compra, id_usuario) VALUES ('finalizado', 100.40, 1);
+INSERT INTO tb_compra (status_compra, valor_total_compra, id_usuario) VALUES ('finalizado', 120.50, 1);

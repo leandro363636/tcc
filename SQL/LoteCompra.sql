@@ -15,3 +15,6 @@ CREATE TABLE tb_lote_compra (
     CONSTRAINT fk_lote_compra FOREIGN KEY (id_compra) REFERENCES tb_compra(id_compra),
     CONSTRAINT fk_compra_lote FOREIGN KEY (id_lote) REFERENCES tb_lote(id_lote)
 );
+
+INSERT INTO tb_lote_compra VALUES (1, 1, 1);
+INSERT INTO tb_lote_compra VALUES (1, 2, 2);

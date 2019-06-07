@@ -5,13 +5,22 @@
  */
 package com.ufpr.tads.tcc.servlets;
 
+import com.ufpr.tads.tcc.beans.Usuario;
+import com.ufpr.tads.tcc.facade.RelatorioFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,18 +40,34 @@ public class RelatorioServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RelatorioServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RelatorioServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        String acao = request.getParameter("action");
+        Usuario us = (Usuario) session.getAttribute("usuario");
+        if (us == null) {
+            request.setAttribute("msg", "Usuário deve se autenticar para acessar o sistema.");
+
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+            rd.forward(request, response);
+            return;
+        }
+        if (acao != null && acao.equals("dashboard")) {
+            try {
+                int total = RelatorioFacade.totalVendas(us.getId());
+                double media = RelatorioFacade.mediaVendas(us.getId());
+                System.out.println(media);
+                ArrayList<HashMap<String, String>> totalEventos = RelatorioFacade.vendasEventos(us.getId());
+                System.out.println(totalEventos.toString());
+                request.setAttribute("total", total);
+                request.setAttribute("media", media);
+                request.setAttribute("totalEventos", totalEventos);
+            } catch (SQLException | ClassNotFoundException ex) {
+                request.setAttribute("exception", ex);
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                rd.forward(request, response);
+            }
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/dashboard.jsp");
+            rd.forward(request, response);
         }
     }
 

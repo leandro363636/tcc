@@ -34,7 +34,7 @@
                     <div class="row align-items-center">
                         <div class="col-12">
                             <nav class="navbar navbar-expand-sm navbar-light bg-light">
-                                <a href="#" class="navbar-brand">fastTicket</a>
+                                <a href="EventoServlet?action=list" class="navbar-brand">fastTicket</a>
                                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTopo" aria-controls="navbarSupportedContent" aria-expanded="false">
                                     <span class="navbar-toggler-icon"></span>
                                 </button>

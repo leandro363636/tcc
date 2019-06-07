@@ -33,26 +33,41 @@
 				<div class="row align-items-center">
 					<div class="col-12">
 						<nav class="navbar navbar-expand-sm navbar-light bg-light">
-							<a href="#" class="navbar-brand">fastTicket</a>
+							<a href="EventoServlet?action=list" class="navbar-brand">fastTicket</a>
 							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTopo" aria-controls="navbarSupportedContent" aria-expanded="false">
 								<span class="navbar-toggler-icon"></span>
 							</button>
 							<div class="collapse navbar-collapse" id="navbarTopo">
-								<ul class="navbar-nav mr-auto">
-									<c:if test="${sessionScope.usuario.tipo.equals(\"a\") || sessionScope.usuario.tipo.equals(\"o\")}">
-                                                                            <li class="nav-item">
-										<a class="nav-link right" href="EventoServlet?action=formNew">Criar Evento</a>
-                                                                            </li>
-                                                                        </c:if>
-                                                                        <c:if test="${sessionScope.usuario.tipo.equals(\"a\") || sessionScope.usuario.tipo.equals(\"o\")}">
-                                                                            <li class="nav-item">
-                                                                                    <a class="nav-link" href="EventoServlet?action=listSelf">Meus Eventos</a>
-                                                                            </li>
-                                                                        </c:if>
-									<li class="nav-item">
-										<a class="nav-link" href="#">Meus Ingressos</a>
-									</li>
-								</ul>
+								    <ul class="navbar-nav mr-auto">
+                                        <c:if test="${sessionScope.usuario.tipo.equals(\"a\") || sessionScope.usuario.tipo.equals(\"o\")}">
+                                            <li class="nav-item">
+                                                <a class="nav-link right" href="EventoServlet?action=formNew">Criar Evento</a>
+                                            </li>
+                                        </c:if>
+                                        <c:if test="${sessionScope.usuario.tipo.equals(\"a\") || sessionScope.usuario.tipo.equals(\"o\")}">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="EventoServlet?action=listSelf">Meus Eventos</a>
+                                            </li>
+                                        </c:if>
+                                        <c:if test="${sessionScope.usuario.tipo.equals(\"a\")}">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="DeletarSuspenderCompradorServlet?action=list">Compradores</a>
+                                            </li>
+                                        </c:if>   
+                                        <c:if test="${sessionScope.usuario.tipo.equals(\"a\")}">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="DeletarSuspenderOrganizadorServlet?action=list">Organizadores</a>
+                                            </li>
+                                        </c:if>   
+                                                            <c:if test="${sessionScope.usuario.tipo.equals(\"a\")}">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="DeletarSuspenderEventoServlet?action=list">Eventos</a>
+                                            </li>
+                                        </c:if> 
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">Meus Ingressos</a>
+                                        </li>
+                                    </ul>
 								<span class="nav-item dropdown">
 									<span class="nav-link dropdown-toggle" href="#" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
 										Bem vindo, <c:out value="${nome}"/> <span class="caret"></span>

@@ -8,22 +8,14 @@
  * Created: 23/02/2019
  */
 
-/* MySQL */
-CREATE TABLE tb_ingresso (
-    id_ingresso INT SERIAL PRIMARY KEY,
-    serial_ingresso CHAR(10),
-    id_lote INT,
-    id_usuario INT,
-    CONSTRAINT fk_ingresso_lote FOREIGN KEY (id_lote) REFERENCES tb_lote(id_lote),
-    CONSTRAINT fk_ingresso_usuario FOREIGN KEY (id_usuario) REFERENCES tb_usuario(id_usuario)
-);
-/* PostegreSQL*/
 CREATE TABLE tb_ingresso (
     id_ingresso SERIAL PRIMARY KEY,
     serial_ingresso CHAR(10),
-    id_evento INT,
+    id_lote INT,
     id_usuario INT,
-    FOREIGN KEY (id_evento) REFERENCES tb_evento(id_evento),
+    acesso_ingresso BOOLEAN,
+    FOREIGN KEY (id_lote) REFERENCES tb_lote(id_lote),
     FOREIGN KEY (id_usuario) REFERENCES tb_usuario(id_usuario)
 );
 
+INSERT INTO tb_ingresso (serial_ingresso, id_lote, id_usuario, acesso_ingresso) VALUES ('1234567891', 1, 1, false);
