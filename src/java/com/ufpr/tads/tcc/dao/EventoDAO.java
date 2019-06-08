@@ -121,7 +121,35 @@ public class EventoDAO {
         this.conn.close();
         return resultado;
     }
-    
+       public List<Evento> selectEventosIdPag(int pagina, int id) throws SQLException {
+        
+        String sql = "SELECT * "
+                + "FROM tb_evento "
+                + "WHERE id_usuario = (?) "
+                + "ORDER BY data_fim_evento "
+                + "LIMIT 9 OFFSET (?);";
+        PreparedStatement st = conn.prepareStatement(sql);
+        int start = (pagina - 1) * 9;
+        st.setInt(1, id);
+        st.setInt(2, start);
+        ResultSet rs = st.executeQuery();
+        List<Evento> resultado = new ArrayList<>();
+        
+        while (rs.next()) {
+            Evento evento = new Evento();
+            evento.setId(rs.getInt("id_evento"));
+            evento.setNome(rs.getString("nome_evento"));
+            evento.setDataInicio(rs.getTimestamp("data_inicio_evento"));
+            evento.setDataFim(rs.getTimestamp("data_fim_evento"));
+            evento.setDescrição(rs.getString("descricao_evento"));
+            evento.setImagem(rs.getString("imagem_evento"));
+            evento.setAprovado(rs.getBoolean("aprovacao_evento"));
+            
+            resultado.add(evento);
+        }
+        this.conn.close();
+        return resultado;
+    }
     public List<Evento> selectEventosWithFilters(int pagina, String nomeEvento, int cidade, Date data) throws SQLException {
         String where = "";
         if ( (nomeEvento != null && !nomeEvento.equals("")) ) {
