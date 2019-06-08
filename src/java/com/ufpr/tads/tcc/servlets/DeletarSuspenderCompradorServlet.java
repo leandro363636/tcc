@@ -5,29 +5,12 @@
  */
 package com.ufpr.tads.tcc.servlets;
 
-import com.ufpr.tads.tcc.beans.Cidade;
-import com.ufpr.tads.tcc.beans.Comprador;
-import com.ufpr.tads.tcc.beans.Endereço;
-import com.ufpr.tads.tcc.beans.Estado;
-import com.ufpr.tads.tcc.beans.Usuario;
-import com.ufpr.tads.tcc.exceptions.EmailDuplicadoException;
-import com.ufpr.tads.tcc.facade.CidadeFacade;
-import com.ufpr.tads.tcc.facade.CompradorFacade;
-import com.ufpr.tads.tcc.facade.EndereçoFacade;
-import com.ufpr.tads.tcc.facade.EstadoFacade;
-import com.ufpr.tads.tcc.facade.UsuarioFacade;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import static java.lang.System.console;
 
-import java.security.NoSuchAlgorithmException;
-import java.sql.Date;
+import com.ufpr.tads.tcc.beans.Comprador;
+import com.ufpr.tads.tcc.beans.Usuario;
+import com.ufpr.tads.tcc.facade.CompradorFacade;
+import java.io.IOException;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import javax.servlet.RequestDispatcher;
@@ -38,10 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author Tiago
- */
 @WebServlet(name = "DeletarSuspenderCompradorServlet", urlPatterns = {"/DeletarSuspenderCompradorServlet"})
 public class DeletarSuspenderCompradorServlet extends HttpServlet {
 
@@ -79,15 +58,10 @@ public class DeletarSuspenderCompradorServlet extends HttpServlet {
                 int total = CompradorFacade.buscarTotal();
 
                 int numeroPaginas = (int) Math.ceil(total * 1.0 / 9);
+                                if(numeroPaginas == 1)
+                    pg =1;
+                                
 
-                ListIterator<Comprador> compradorIterator = compradores.listIterator();
-
-                while (compradorIterator.hasNext()) {
-                    // Need to call next, before set.
-                    Comprador comprador = compradorIterator.next();
-                    // Replace item returned from next()
-                    compradorIterator.set(comprador);
-                }
 
                 request.setAttribute("total", total);
                 request.setAttribute("numeroPaginas", numeroPaginas);

@@ -5,33 +5,13 @@
  */
 package com.ufpr.tads.tcc.servlets;
 
-import com.ufpr.tads.tcc.beans.Cidade;
 import com.ufpr.tads.tcc.beans.Comprador;
-import com.ufpr.tads.tcc.beans.Endereço;
-import com.ufpr.tads.tcc.beans.Estado;
-import com.ufpr.tads.tcc.beans.Evento;
-import com.ufpr.tads.tcc.beans.Organizador;
+import com.ufpr.tads.tcc.beans.Evento;;
 import com.ufpr.tads.tcc.beans.Usuario;
-import com.ufpr.tads.tcc.exceptions.EmailDuplicadoException;
-import com.ufpr.tads.tcc.facade.CidadeFacade;
-import com.ufpr.tads.tcc.facade.CompradorFacade;
-import com.ufpr.tads.tcc.facade.EndereçoFacade;
-import com.ufpr.tads.tcc.facade.EstadoFacade;
-import com.ufpr.tads.tcc.facade.EventoFacade;
-import com.ufpr.tads.tcc.facade.OrganizadorFacade;
-import com.ufpr.tads.tcc.facade.UsuarioFacade;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import static java.lang.System.console;
 
-import java.security.NoSuchAlgorithmException;
-import java.sql.Date;
+import com.ufpr.tads.tcc.facade.EventoFacade;
+import java.io.IOException;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import javax.servlet.RequestDispatcher;
@@ -83,7 +63,8 @@ public class DeletarSuspenderEventoServlet extends HttpServlet {
                 int total = EventoFacade.buscarTotal();
 
                 int numeroPaginas = (int) Math.ceil(total * 1.0 / 9);
-
+                                   if(numeroPaginas == 1)
+                    pg =1;
  
 
                 request.setAttribute("total", total);
@@ -131,9 +112,20 @@ public class DeletarSuspenderEventoServlet extends HttpServlet {
                 int total = EventoFacade.buscarTotal();
 
                 int numeroPaginas = (int) Math.ceil(total * 1.0 / 9);
-
+      if(numeroPaginas == 1)
+                    pg =1;
  
 
+                      ListIterator<Evento> eventoIterator = eventos.listIterator();
+
+                while (eventoIterator.hasNext()) {
+                    // Need to call next, before set.
+                    Evento evento = eventoIterator.next();
+                    // Replace item returned from next()
+                    eventoIterator.set(evento);
+                }
+      
+      
                 request.setAttribute("total", total);
                 request.setAttribute("numeroPaginas", numeroPaginas);
                 request.setAttribute("pagina", pg);
