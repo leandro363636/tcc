@@ -20,7 +20,10 @@ public class EventoFacade {
         EventoDAO eventodao = new EventoDAO();
         return eventodao.selectEventos(pagina);
     }
-    
+        public static List<Evento> buscarTodosEventosPorIdUsuarioPag(int pagina, int id) throws SQLException, ClassNotFoundException {
+        EventoDAO eventodao = new EventoDAO();
+        return eventodao.selectEventosIdPag(pagina, id);
+    }
     public static List<Evento> buscarTodosEventosPorComFiltros(int pagina, String nomeEvento, int cidade, Date data) throws SQLException, ClassNotFoundException {
         EventoDAO eventodao = new EventoDAO();
         return eventodao.selectEventosWithFilters(pagina, nomeEvento, cidade, data);
