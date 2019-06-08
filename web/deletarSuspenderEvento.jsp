@@ -91,7 +91,7 @@
                 </div>
             </div>
         <c:choose>
-            <c:when test="${eventos.size() gt 0}">
+            <c:when test="${eventos.size() > 0}">
             <div class="row2">
                 <div class="container">
                     <div class="row align-items-center my-5">
@@ -156,7 +156,7 @@
                         <nav aria-label="Navegação pelos eventos">
                             <ul class="pagination">
                                 <li class="page-item <c:out value="${(pagina == 1) ? \"disabled\" : \"\"}"/>">
-                                    <a class="page-link" href="DeletarSuspenderOrganizadorServlet?action=list&pagina=<c:out value="${pagina - 1}"/>" aria-label="Previous">
+                                    <a class="page-link" href="DeletarSuspenderEventoServlet?action=list&pagina=<c:out value="${pagina - 1}"/>" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
@@ -166,12 +166,12 @@
                                             <li class="page-item active"><a class="page-link" href="#"><c:out value="${i}"/></a></li>
                                             </c:when>
                                             <c:otherwise>
-                                            <li class="page-item"><a class="page-link" href="DeletarSuspenderOrganizadorServlet?action=list&pagina=<c:out value="${i}"/>"><c:out value="${i}"/></a></li>
+                                            <li class="page-item"><a class="page-link" href="DeletarSuspenderEventoServlet?action=list&pagina=<c:out value="${i}"/>"><c:out value="${i}"/></a></li>
                                             </c:otherwise>
                                         </c:choose>
                                     </c:forEach>
                                 <li class="page-item <c:out value="${(pagina == numeroPaginas) ? \"disabled\" : \"\"}"/>">
-                                    <a class="page-link" href="DeletarSuspenderOrganizadorServlet?action=list&pagina=<c:out value="${pagina + 1}"/>" aria-label="Previous">
+                                    <a class="page-link" href="DeletarSuspenderEventoServlet?action=list&pagina=<c:out value="${pagina + 1}"/>" aria-label="Previous">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>

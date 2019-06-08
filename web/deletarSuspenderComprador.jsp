@@ -94,7 +94,7 @@
                 </div>
             </div>
   <c:choose>
-            <c:when test="${compradores.size() gt 0}">
+            <c:when test="${compradores.size() > 0}">
             <div class="row2">
                 <div class="container">
                     <div class="row align-items-center my-5">
