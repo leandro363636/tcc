@@ -47,7 +47,7 @@
                                         </c:if>
                                         <c:if test="${sessionScope.usuario.tipo.equals(\"a\") || sessionScope.usuario.tipo.equals(\"o\")}">
                                             <li class="nav-item">
-                                                <a class="nav-link" href="EventoServlet?action=listSelf">Meus Eventos</a>
+                                                <a class="nav-link" href="EventoServlet?action=list">Meus Eventos</a>
                                             </li>
                                         </c:if>
                                         <c:if test="${sessionScope.usuario.tipo.equals(\"a\")}">
