@@ -26,19 +26,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import static java.lang.System.out;
-import java.nio.charset.Charset;
-import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Random;
-import java.util.logging.Level;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -48,9 +43,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -70,7 +62,6 @@ public class EventosListarUsuarioServlet extends HttpServlet {
 
             List<Evento> eventos;
             try {
-                //eventos = EventoFacade.buscarTodosEventosPorIdUsuario(lb.getId());
                 String pagina = request.getParameter("pagina");
                 int pg = 1;
                 if (pagina != null && !pagina.equals("")) {
@@ -88,8 +79,8 @@ public class EventosListarUsuarioServlet extends HttpServlet {
                 id = us.getId();
                 int total = 0;
 
-                total = EventoFacade.buscarTotalPorIdUsuario(id);
-                eventos = EventoFacade.buscarTodosEventosPorIdUsuarioPag(pg, id);
+                total = EventoFacade.buscarTotalPorIdUsuarioAprovado(id);
+                eventos = EventoFacade.buscarTodosEventosPorIdUsuarioPagAprovado(pg, id);
 
                 int numeroPaginas = (int) Math.ceil(total * 1.0 / 9);
 
@@ -105,9 +96,6 @@ public class EventosListarUsuarioServlet extends HttpServlet {
                     eventoIterator.set(evento);
                 }
 
-                List<Estado> estados = new ArrayList<>();
-                estados = EstadoFacade.buscarTodosEstados();
-
                 request.setAttribute("total", total);
                 request.setAttribute("numeroPaginas", numeroPaginas);
                 request.setAttribute("pagina", pg);
@@ -119,255 +107,6 @@ public class EventosListarUsuarioServlet extends HttpServlet {
             }
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/listarEventosUsuario.jsp");
             rd.forward(request, response);
-        } else {
-            if (acao.equals("show")) {
-                try {
-                    int id = Integer.parseInt(request.getParameter("id"));
-                    Evento evento = EventoFacade.buscar(id);
-                    List<Lote> lotes = new ArrayList();
-                    lotes = LoteFacade.buscarTodosLotesPorIdEvento(id);
-                    request.setAttribute("visualizarevento", evento);
-                    request.setAttribute("lotes", lotes);
-                } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
-                    System.out.println(ex.getMessage());
-                    request.setAttribute("exception", ex);
-                    request.setAttribute("javax.servlet.error.status_code", 500);
-                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                    rd.forward(request, response);
-                }
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/eventosVisualizar.jsp");
-                rd.forward(request, response);
-            } else {
-                if (acao.equals("formUpdate")) {
-                    try {
-                        int id = Integer.parseInt(request.getParameter("id"));
-                        Evento evento = EventoFacade.buscar(id);
-                        Endereço endereço = EndereçoFacade.buscarPorReferencia(id, "evento");
-                        endereço.setCidade(CidadeFacade.buscarCidade(endereço.getCidade().getId()));
-                        evento.setEndereco(endereço);
-                        List<Estado> estados = new ArrayList<>();
-                        estados = EstadoFacade.buscarTodosEstados();
-                        request.setAttribute("alterarevento", evento);
-                        request.setAttribute("estados", estados);
-                    } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
-                        request.setAttribute("exception", ex);
-                        request.setAttribute("javax.servlet.error.status_code", 500);
-                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                        rd.forward(request, response);
-                    }
-
-                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/eventosForm.jsp?form=alterar");
-                    rd.forward(request, response);
-                } else {
-                    if (acao.equals("remove")) {
-                        try {
-                            int id = Integer.parseInt(request.getParameter("id"));
-                            EventoFacade.remover(id);
-                        } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
-                            request.setAttribute("exception", ex);
-                            request.setAttribute("javax.servlet.error.status_code", 500);
-                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                            rd.forward(request, response);
-                        }
-                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/EventoServlet?action=list");
-                        rd.forward(request, response);
-                    } else {
-                        if (acao.equals("update")) {
-                            Evento evento = new Evento();
-                            try {
-                                int id = Integer.parseInt(request.getParameter("id"));
-                                evento.setId(id);
-                                String currentPath = "";
-                                final Part filePart = request.getPart("img");
-                                final String fileName = getFileName(filePart);
-                                if (filePart.getSize() > 0) {
-                                    String path = request.getServletContext().getRealPath("img") + File.separator;
-                                    String totalPath = path + fileName;
-                                    currentPath = "/tcc/img/" + fileName;
-                                    OutputStream out = null;
-                                    InputStream filecontent = null;
-                                    final PrintWriter writer = response.getWriter();
-
-                                    try {
-                                        out = new FileOutputStream(new File(totalPath));
-                                        filecontent = filePart.getInputStream();
-
-                                        int read = 0;
-                                        final byte[] bytes = new byte[1024];
-
-                                        while ((read = filecontent.read(bytes)) != -1) {
-                                            out.write(bytes, 0, read);
-                                        }
-                                    } catch (FileNotFoundException ex) {
-                                        request.setAttribute("exception", ex);
-                                        request.setAttribute("javax.servlet.error.status_code", 500);
-                                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                                        rd.forward(request, response);
-                                    }
-                                }
-
-                                evento.setImagem(currentPath);
-                                evento.setNome(request.getParameter("nome"));
-                                evento.setDescrição(request.getParameter("desc"));
-                                evento.setDescrição(request.getParameter("desc"));
-                                Endereço endereço = new Endereço();
-                                endereço.setRua(request.getParameter("rua"));
-                                endereço.setCep(request.getParameter("cep"));
-                                endereço.setReferencia("evento");
-                                try {
-                                    endereço.setNumero(Integer.parseInt(request.getParameter("numero")));
-                                    Cidade cidade = new Cidade();
-                                    cidade.setId(Integer.parseInt(request.getParameter("cidade")));
-                                    endereço.setCidade(cidade);
-                                } catch (NumberFormatException ex) {
-                                    request.setAttribute("exception", ex);
-                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                                    rd.forward(request, response);
-                                }
-
-                                String dataInicioString = request.getParameter("dataInicio");
-                                String dataFimString = request.getParameter("dataFim");
-                                DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                                Date data = new Date(fmt.parse(dataInicioString).getTime());
-                                evento.setDataInicio(data);
-                                data = new Date(fmt.parse(dataFimString).getTime());
-                                evento.setDataFim(data);
-                                if (evento.getImagem() != null && !evento.getImagem().equals("")) {
-                                    EventoFacade.alterar(evento);
-                                } else {
-                                    EventoFacade.alterarSemImagem(evento);
-                                }
-
-                                endereço.setIdReferencia(evento.getId());
-                                EndereçoFacade.alterarPorIdReferencia(endereço);
-
-                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/EventoServlet?action=list");
-                                rd.forward(request, response);
-                            } catch (NumberFormatException | ParseException | SQLException | ClassNotFoundException ex) {
-                                request.setAttribute("exception", ex);
-                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                                rd.forward(request, response);
-                            }
-                        } else {
-                            if (acao.equals("formNew")) {
-                                try {
-                                    List<Estado> estados = new ArrayList<>();
-                                    estados = EstadoFacade.buscarTodosEstados();
-                                    request.setAttribute("estados", estados);
-                                } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
-                                    request.setAttribute("exception", ex);
-                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                                    rd.forward(request, response);
-                                }
-                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/eventosForm.jsp");
-                                rd.forward(request, response);
-                            } else {
-                                if (acao.equals("new")) {
-                                    Evento evento = new Evento();
-                                    String currentPath = "";
-                                    final Part filePart = request.getPart("img");
-                                    final String fileName = getFileName(filePart);
-                                    if (filePart.getSize() > 0) {
-                                        String path = request.getServletContext().getRealPath("img") + File.separator;
-                                        String totalPath = path + fileName;
-                                        currentPath = "/tcc/img/" + fileName;
-                                        OutputStream out = null;
-                                        InputStream filecontent = null;
-                                        final PrintWriter writer = response.getWriter();
-
-                                        try {
-                                            out = new FileOutputStream(new File(totalPath));
-                                            filecontent = filePart.getInputStream();
-
-                                            int read = 0;
-                                            final byte[] bytes = new byte[1024];
-
-                                            while ((read = filecontent.read(bytes)) != -1) {
-                                                out.write(bytes, 0, read);
-                                            }
-                                        } catch (FileNotFoundException ex) {
-                                            request.setAttribute("exception", ex);
-                                            request.setAttribute("javax.servlet.error.status_code", 500);
-                                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                                            rd.forward(request, response);
-                                        }
-                                    }
-                                    evento.setImagem(currentPath);
-                                    evento.setNome(request.getParameter("nome"));
-                                    evento.setDescrição(request.getParameter("desc"));
-                                    Endereço endereço = new Endereço();
-                                    endereço.setRua(request.getParameter("rua"));
-                                    endereço.setCep(request.getParameter("cep"));
-                                    endereço.setReferencia("evento");
-                                    try {
-                                        endereço.setNumero(Integer.parseInt(request.getParameter("numero")));
-                                        Cidade cidade = new Cidade();
-                                        cidade.setId(Integer.parseInt(request.getParameter("cidade")));
-                                        endereço.setCidade(cidade);
-                                    } catch (NumberFormatException ex) {
-                                        request.setAttribute("exception", ex);
-                                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                                        rd.forward(request, response);
-                                    }
-                                    evento.setAprovado(false);
-                                    Comprador comprador = new Comprador();
-                                    comprador.setId(1);
-                                    evento.setUsuario(comprador);
-
-                                    String dataInicioString = request.getParameter("dataInicio");
-                                    String dataFimString = request.getParameter("dataFim");
-                                    DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                                    try {
-                                        Date data = new Date(fmt.parse(dataInicioString).getTime());
-                                        evento.setDataInicio(data);
-                                        data = new Date(fmt.parse(dataFimString).getTime());
-                                        evento.setDataFim(data);
-                                    } catch (ParseException ex) {
-                                        request.setAttribute("exception", ex);
-                                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                                        rd.forward(request, response);
-                                    }
-
-                                    try {
-                                        EventoFacade.inserir(evento);
-                                        evento = EventoFacade.buscarPorDadosEvento(evento);
-                                        endereço.setIdReferencia(evento.getId());
-                                        EndereçoFacade.inserir(endereço);
-                                    } catch (SQLException | ClassNotFoundException ex) {
-                                        request.setAttribute("exception", ex);
-                                        request.setAttribute("javax.servlet.error.status_code", 500);
-                                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                                        rd.forward(request, response);
-                                    }
-                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/EventoServlet?action=list");
-                                    rd.forward(request, response);
-                                } else {
-                                    if (acao.equals("carrinho")) {
-                                        try {
-                                            int id = Integer.parseInt(request.getParameter("id"));
-                                            Evento evento = EventoFacade.buscar(id);
-                                            List<Lote> lotes = new ArrayList();
-                                            lotes = LoteFacade.buscarTodosLotesPorIdEvento(id);
-                                            //request.setAttribute("id",id);
-                                            //request.setAttribute("evento",evento);
-                                            out.println("id");
-                                            request.setAttribute("lotes", lotes);
-                                            request.getSession().setAttribute("lotecarrinho", lotes);
-                                            request.getSession().setAttribute("idevento", "3");
-                                        } catch (Exception ex) {
-                                            request.setAttribute("exception", ex);
-                                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                                            rd.forward(request, response);
-                                        }
-                                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/carrinho.jsp");
-                                        rd.forward(request, response);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 
