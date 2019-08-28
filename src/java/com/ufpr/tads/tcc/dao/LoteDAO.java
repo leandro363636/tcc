@@ -39,6 +39,7 @@ public class LoteDAO {
         st.setInt(4, lote.getEvento().getId());
         
         st.executeUpdate();
+        this.conn.close();
     }
     
     public void updateLoteById(Lote lote) throws SQLException {
@@ -55,6 +56,7 @@ public class LoteDAO {
         st.setInt(5, lote.getId());
         
         st.executeUpdate();
+        this.conn.close();
     }
     
     public void deleteLoteById(int id) throws SQLException {
@@ -66,31 +68,8 @@ public class LoteDAO {
         st.setInt(1, id);
         
         st.executeUpdate();
+        this.conn.close();
     }
-    
-    /*public List<Evento> selectEventos() throws SQLException {
-        
-        String sql = "SELECT * "
-                + "FROM tb_evento "
-                + "ORDER BY id_evento;";
-        PreparedStatement st = conn.prepareStatement(sql);
-        ResultSet rs = st.executeQuery();
-        List<Evento> resultado = new ArrayList<>();
-        
-        while (rs.next()) {
-            Evento evento = new Evento();
-            evento.setId(rs.getInt("id_evento"));
-            evento.setNome(rs.getString("id_evento"));
-            evento.setDataInicio(rs.getDate("inicio_evento"));
-            evento.setDataFim(rs.getDate("fim_evento"));
-            evento.setEndereco(rs.getString("endereco_evento"));
-            evento.setDesc(rs.getString("desc_evento"));
-            evento.setAprovado(rs.getBoolean("aprovado"));
-            
-            resultado.add(evento);
-        }
-        return resultado;
-    }*/
     
     public List<Lote> selectLotesByIdEvento(int id) throws SQLException {
         
@@ -115,6 +94,7 @@ public class LoteDAO {
             
             resultado.add(lote);
         }
+        this.conn.close();
         return resultado;
     }
     
@@ -137,6 +117,7 @@ public class LoteDAO {
             evento.setId(rs.getInt("id_evento"));
             lote.setEvento(evento);
         }
+        this.conn.close();
         return lote;
     }
 }

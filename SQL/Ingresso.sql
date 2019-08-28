@@ -9,11 +9,13 @@
  */
 
 CREATE TABLE tb_ingresso (
-    id_ingresso INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_ingresso SERIAL PRIMARY KEY,
     serial_ingresso CHAR(10),
-    id_evento INT(6) UNSIGNED,
-    id_usuario INT(6) UNSIGNED,
-    FOREIGN KEY (id_evento) REFERENCES tb_evento(id_evento),
+    id_lote INT,
+    id_usuario INT,
+    acesso_ingresso BOOLEAN,
+    FOREIGN KEY (id_lote) REFERENCES tb_lote(id_lote),
     FOREIGN KEY (id_usuario) REFERENCES tb_usuario(id_usuario)
 );
 
+INSERT INTO tb_ingresso (serial_ingresso, id_lote, id_usuario, acesso_ingresso) VALUES ('1234567891', 1, 1, false);

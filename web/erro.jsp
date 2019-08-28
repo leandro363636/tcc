@@ -19,7 +19,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a class="nav-link" href="UsuarioServlet">Cadastro de Usuários</a></li>
+                    <li class="nav-item"><a class="nav-link" href="EventoServlet">Página inicial</a></li>
                 </ul>
             </div>
             <div class="navbar-collapse collapse w-100 order-2 dual-collapse2">

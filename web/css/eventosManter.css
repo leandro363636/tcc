@@ -1,0 +1,75 @@
+@font-face {
+	font-family: 'opensans';
+	src: url('fonts/opensans/OpenSans-Regular.tff') format('tff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+#manterevento body {
+	font-family: 'opensans', sans-serif;
+}
+
+#manterevento .inputInf {
+	border-width: 0 0 2px 0;
+	border-color: black;
+	width: 100%;
+	text-align: center;
+}
+
+#manterevento input:focus {
+	border-color: black;
+	outline: none;
+}
+
+#manterevento .center {
+	text-align: center;
+	align-self: center;
+	align-content: center;
+	vertical-align: center;
+}
+
+#manterevento .inputNome {
+	font-size: 1.5em;
+}
+
+#manterevento .esquerda {
+	text-align: left;
+}
+
+#manterevento textarea {
+	width: 100%;
+	border: 2px solid black;
+}
+
+#manterevento .picker {
+	width: 25%;
+	border-width: 0 0 2px 0;
+	border-color: black;
+	text-align: center;
+}
+
+#manterevento .nome {
+	font-size: 40px;
+}
+
+
+@media screen and (max-width: 767px) {
+
+	#manterevento .container {
+		width: 100% !important;
+		min-width: 100% !important;
+		max-width: 100% !important
+	}
+
+	#manterevento .picker {
+		width: 100%;
+	}
+
+	#manterevento .banner {
+		width: 100%;
+	}
+
+	#manterevento .horarios {
+		text-align: center;
+	}
+}

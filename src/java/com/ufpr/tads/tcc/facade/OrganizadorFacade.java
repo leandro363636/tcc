@@ -17,40 +17,33 @@ import java.util.List;
  * @author Gabriel
  */
 public class OrganizadorFacade {
-        
     
-    public static List<Organizador> getOrganizador() throws SQLException, ClassNotFoundException {
+    public static List<Organizador> buscarTodosOrganizadores() throws SQLException, ClassNotFoundException {
         OrganizadorDAO orgs = new OrganizadorDAO();
-        return orgs.getOrganizador();
-     }
-   
-    public static Organizador buscar(int idOrganizador) throws SQLException, ClassNotFoundException {
-        OrganizadorDAO orgs = new OrganizadorDAO();
-        return orgs.getBuscarDadosId(idOrganizador);
-    }
-    /*
-    
-     public static Admin buscarDados(int id) throws SQLException, ClassNotFoundException {
-        AdminDAO adm = new AdminDAO();
-        return adm.getBuscarDadosId(id);
-    }
-     */
-    public static Organizador selectOrganizadorById(int idOrganizador) throws SQLException, ClassNotFoundException {
-        OrganizadorDAO orgs = new OrganizadorDAO();
-        return orgs.selectOrganizadorById(idOrganizador);
-    }
-            
-    public static List<Organizador> getOrganizador(int idOrganizador) throws SQLException, ClassNotFoundException {
-        OrganizadorDAO orgs = new OrganizadorDAO();
-        return orgs.selectOrganizadorByIdAdm(idOrganizador);
+        return orgs.selectOrganizadores();
     }
     
-    public static void insertOrganizador(Organizador org) throws ClassNotFoundException, SQLException {
+    public static Organizador buscar(int id) throws SQLException, ClassNotFoundException {
         OrganizadorDAO orgs = new OrganizadorDAO();
-        orgs.insertOrganizador(org);    
- }
+        return orgs.selectOrganizadorById(id);
+    }
     
-        public static void alterar(Organizador org) throws SQLException, ClassNotFoundException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    public static String buscarNomePorId(int id) throws SQLException, ClassNotFoundException {
+        OrganizadorDAO orgs = new OrganizadorDAO();
+        return orgs.selectNameById(id);
+    }
+    
+    public static int buscarIdPorDadosOrganizador(Organizador org) throws SQLException, ClassNotFoundException {
+        OrganizadorDAO orgs = new OrganizadorDAO();
+        return orgs.selectIdByData(org);
+    }
+    
+    public static void inserir(Organizador org) throws ClassNotFoundException, SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        OrganizadorDAO orgs = new OrganizadorDAO();
+        orgs.insertOrganizador(org);        
+    }
+    
+    public static void alterar(Organizador org) throws SQLException, ClassNotFoundException, UnsupportedEncodingException, NoSuchAlgorithmException {
         OrganizadorDAO orgs = new OrganizadorDAO();
         orgs.updateOrganizadorById(org);
     }
@@ -60,8 +53,28 @@ public class OrganizadorFacade {
         orgs.updateOrganizadorByIdWithoutSenha(org);
     }
     
-    public static Organizador getOrganizadorEmail(String email) throws SQLException, ClassNotFoundException {
+    public static void suspender(int id) throws SQLException, ClassNotFoundException {
         OrganizadorDAO orgs = new OrganizadorDAO();
-        return orgs.getOrganizadorEmail(email);
+        orgs.suspendOrganizadorById(id);
+    }
+    
+    public static void ativar(int id) throws SQLException, ClassNotFoundException {
+        OrganizadorDAO orgs = new OrganizadorDAO();
+        orgs.activeOrganizdorById(id);
+    }
+    
+    public static List<Organizador> selectOrganizadores(int pagina) throws SQLException, ClassNotFoundException {		
+        OrganizadorDAO comp = new OrganizadorDAO();		
+        return comp.selectOrganizadores(pagina);		
+    }		
+            		
+    public static int buscarTotal() throws SQLException, ClassNotFoundException {		
+        OrganizadorDAO comp = new OrganizadorDAO();		
+        return comp.selectCountOrganizadores();		
+    }		
+                		
+    public static void deletar(int id) throws SQLException, ClassNotFoundException {		
+        OrganizadorDAO comp = new OrganizadorDAO();		
+        comp.deleteOrganizadorById(id);		
     }
 }

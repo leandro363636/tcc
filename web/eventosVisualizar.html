@@ -6,13 +6,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/eventosVisualizar.css"/>
+	<link rel="stylesheet" type="text/css" href="css/eventosManter.css"/>
 
 	<title>Nome Evento | fastTicket</title>
 </head>
 <body>
 
-	<div id="visualizaevento">
+	<div id="manterevento">
 		
 		<!-- NAVBAR TOPO -->
 		<div class="row1">
@@ -57,18 +57,11 @@
 			</div>
 		</div>
 
-		<div class="row2 mb-2">
+		<div class="row2 mb-4">
 			<div class="container">
 				<div class="row align-items-center">
-					<div class="col-12" id="divNome">
+					<div class="col-10 offset-1" id="divNome">
 						<h1 class="center" id="nomeEvento">Nome do Evento</h1>
-						<h1 class="center"><i class="fas fa-edit" id="editaNomeEvento"></i></h1>
-					</div>
-					<div class="col-12 esconde" id="divForm">
-						<form id="formNome" class="formNome center" action="#">
-							<input type="text" name="" id="inputNome" class="inputNome center" value="Nome do Evento">
-							<h1 class="center"><i class="fas fa-save" id="salvaNomeEvento"></i></h1>
-						</form>
 					</div>
 				</div>
 			</div>
@@ -76,46 +69,54 @@
 
 		<div class="row3">
 			<div class="container">
-				<div class="row align-items-center">
-					<div class="col-12 col-md-7 order-2 order-md-1">
-						<h2 class="center" id="nomeEvento">Informações</h2>
-						<div class="row align-items-center">
-							<div class="col-12" id="divForm">
-								<form id="formNome" class="formNome center" action="#">
-									<input type="text" name="" id="inputNome" class="inputNome center" value="Nome do Evento">
-								</form>
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-md-4 offset-md-1 order-1 order-md-2">
-						<div class="row align-items-center">
-							<div class="col-12">
-								<input type="radio" id="lote1" name="lote" value="lote1"
-								checked>
-								<label for="lote1"><span>Lote 1 </span><span>R$ 100,00</span></label>
-							</div>
-							<div class="col-12">
-								<input type="radio" id="lote2" name="lote" value="lote2">
-								<label for="lote2"><span>Lote 2 </span><span>R$ 100,00</span></label>
-							</div>
-							<div class="col-12">
-								<input type="radio" id="lote3" name="lote" value="lote3">
-								<label for="lote3"><span>Lote 3 </span><span>R$ 100,00</span></label>
-							</div>
-						</div>
+				<div class="row">
+					<div class="col-12 col-md-8 offset-md-2 align-items-center center">
+						<img src="img/slider-img.jpg" class="banner">
 					</div>
 				</div>
 			</div>
 		</div>
 
-	</div>
+		<div class="row4 my-4">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-12 col-md-8">
+						<h2 class="center mb-5" id="nomeEvento">Informações do evento</h2>
+						<p>Abertura: 01/01/19, 21:00</p>
+						<p>Fechamento: 02/01/19, 03:00</p>
+						<p>Local: Rua Irati, Colombo - PR - 83410340</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates quaerat cumque eum assumenda est id dolorum obcaecati nam at! Nihil, rem, autem. Similique sapiente facilis atque blanditiis quibusdam ut nostrum! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum suscipit nisi culpa nostrum hic ex cumque molestiae, temporibus impedit, dicta, corrupti eligendi vero? Repellat alias praesentium magnam dolores fugit soluta.</p>
+					</div>
+					<div class="col-12 col-md-3">
+						<div class="row align-items-center">
+							<div class="col-12">
+								<input type="radio" id="lote1" name="lote" value="lote1"
+								checked>
+								<label for="lote1"><span>1º lote </span><span>R$ 100,00</span></label>
+							</div>
+							<div class="col-12">
+								<input type="radio" id="lote2" name="lote" value="lote2">
+								<label for="lote2"><span>2º lote </span><span>R$ 100,00</span></label>
+							</div>
+							<div class="col-12">
+								<input type="radio" id="lote3" name="lote" value="lote3">
+								<label for="lote3"><span>3º lote </span><span>R$ 100,00</span></label>
+							</div>
+							<div class="col-12">
+								<a href="#"><button class="btn btn-primary">Adicionar ao carrinho</button></a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
 
 
 
-	<!-- SCRIPTS -->
-	<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
-	<script type="text/javascript" src="js/popper/popper.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/eventosVisualizar.js"></script>
-</body>
-</html>
+			<!-- SCRIPTS -->
+			<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
+			<script type="text/javascript" src="js/popper/popper.min.js"></script>
+			<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+			<script type="text/javascript" src="js/eventosVisualizar.js"></script>
+		</body>
+		</html>

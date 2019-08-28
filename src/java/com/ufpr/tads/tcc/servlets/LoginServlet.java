@@ -5,16 +5,21 @@ package com.ufpr.tads.tcc.servlets;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import com.ufpr.tads.tcc.beans.Comprador;
 import com.ufpr.tads.tcc.beans.Usuario;
 import com.ufpr.tads.tcc.dao.UsuarioDAO;
 import com.ufpr.tads.tcc.exceptions.EmailDuplicadoException;
 import com.ufpr.tads.tcc.exceptions.UsuarioSenhaInvalidosException;
+import com.ufpr.tads.tcc.facade.AdministradorFacade;
+import com.ufpr.tads.tcc.facade.CompradorFacade;
+import com.ufpr.tads.tcc.facade.OrganizadorFacade;
 import com.ufpr.tads.tcc.facade.UsuarioFacade;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -80,16 +85,41 @@ public class LoginServlet extends HttpServlet {
                 rd.forward(request, response);
             }
             try {
-                //System.out.println(hexString.toString());
-                //System.out.println(usuario.getSenha());
                 if (usuario != null && usuario.getEmail().equals(email) && usuario.getSenha().equals(hexString.toString())) {
                     Usuario us = new Usuario();
                     us.setId(usuario.getId());
-                    us.setNome(usuario.getNome());
+                    us.setEmail(usuario.getEmail());
+                    us.setTipo(usuario.getTipo());
+                    us.setIdReferencia(usuario.getIdReferencia());
+                    String nome             = "";
+                    String redirecionamento   = "";
+                    try {
+                        switch (us.getTipo()) {
+
+                            case "a" :
+                                nome                = AdministradorFacade.buscarNomePorId(us.getIdReferencia());
+                                redirecionamento    = "/EventoServlet?action=list";
+                                break;
+                            case "o" : 
+                                nome                = OrganizadorFacade.buscarNomePorId(us.getIdReferencia());
+                                redirecionamento    = "/EventoServlet?action=list";
+                                break;
+                            case "c" :
+                                nome = CompradorFacade.buscarNomePorId(us.getIdReferencia());
+                                redirecionamento    = "/EventoServlet?action=list";
+                                break;
+
+                        }
+                    } catch (SQLException | ClassNotFoundException ex) {
+                        request.setAttribute("javax.servlet.jsp.jspException", ex);
+                        request.setAttribute("javax.servlet.error.status_code", 500);
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                        rd.forward(request, response);
+                    }
                     HttpSession session = request.getSession();
                     session.setAttribute("usuario", us);
-                    //RequestDispatcher rd = getServletContext().getRequestDispatcher("/portal.jsp");
-                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/UsuarioServlet?action=list");
+                    session.setAttribute("nome", nome);
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher(redirecionamento);
                     rd.forward(request, response);
 
                 } else {
@@ -105,28 +135,27 @@ public class LoginServlet extends HttpServlet {
             String nome = request.getParameter("nome");
             String email = request.getParameter("email");
             String sobrenome = request.getParameter("sobrenome");
-            Usuario usuario = new Usuario();
+            Comprador usuario = new Comprador();
             usuario.setNome(nome);
             usuario.setEmail(email);
             usuario.setSobrenome(sobrenome);
-            usuario.setSenha("");
+            /*usuario.setSenha("");
+            usuario.setRg("");
+            usuario.setCpf("");
+            usuario.setDataNascimento(new Date());*/
             
             try {
-                Usuario us = UsuarioFacade.buscarUsuarioByEmail(email);
-                                                            
-                                               
-                                            
+                Usuario us = UsuarioFacade.buscarUsuarioByEmail(email);                      
                 if (us != null && (us.getEmail() == null ? usuario.getEmail() == null : us.getEmail().equals(usuario.getEmail()))) {
-                    
-
                     HttpSession session = request.getSession();
                     session.setAttribute("usuario", usuario);
-                   RequestDispatcher rd = getServletContext().getRequestDispatcher("/UsuarioServlet?action=list");
+                    session.setAttribute("nome", usuario.getNome());
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/EventoServlet?action=list");
                     rd.forward(request, response);
                     
                 } else {
                     try {
-                        UsuarioFacade.inserir(usuario);
+                        CompradorFacade.inserirSocial(usuario);
                     } catch (SQLException | ClassNotFoundException | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
                         request.setAttribute("javax.servlet.jsp.jspException", ex);
                         request.setAttribute("javax.servlet.error.status_code", 500);
@@ -135,8 +164,10 @@ public class LoginServlet extends HttpServlet {
                     }
                      HttpSession session = request.getSession();
                     session.setAttribute("usuario", usuario);
-                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/UsuarioServlet?action=list");
+                    session.setAttribute("nome", usuario.getNome());
+                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/CompradorServlet?action=list");
                                     rd.forward(request, response);
+                    
                 }
             }
                   catch (NumberFormatException | SQLException | ClassNotFoundException ex) {

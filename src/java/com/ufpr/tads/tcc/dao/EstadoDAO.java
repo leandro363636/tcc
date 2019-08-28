@@ -41,6 +41,7 @@ public class EstadoDAO {
             estado.setSigla(sigla);
             estados.add(estado);
         }
+        this.conn.close();
         return estados;
     }
 
@@ -60,8 +61,10 @@ public class EstadoDAO {
             estado.setId(idestado);
             estado.setNome(nomeest);
             estado.setSigla(sigla);
+            this.conn.close();
             return estado;
         }
+        this.conn.close();
         return null;
     }
 }

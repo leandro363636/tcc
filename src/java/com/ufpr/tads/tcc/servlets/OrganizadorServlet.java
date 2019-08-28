@@ -5,12 +5,22 @@
  */
 package com.ufpr.tads.tcc.servlets;
 
-import com.ufpr.tads.tcc.beans.Admin;
+import com.ufpr.tads.tcc.beans.Administrador;
+import com.ufpr.tads.tcc.beans.Cidade;
+import com.ufpr.tads.tcc.beans.Endereço;
+import com.ufpr.tads.tcc.beans.Estado;
+import com.ufpr.tads.tcc.beans.Evento;
 import com.ufpr.tads.tcc.beans.Organizador;
+import com.ufpr.tads.tcc.beans.Comprador;
 import com.ufpr.tads.tcc.beans.Usuario;
 import com.ufpr.tads.tcc.exceptions.EmailDuplicadoException;
-import com.ufpr.tads.tcc.facade.AdminFacade;
+import com.ufpr.tads.tcc.facade.AdministradorFacade;
+import com.ufpr.tads.tcc.facade.CidadeFacade;
+import com.ufpr.tads.tcc.facade.EndereçoFacade;
+import com.ufpr.tads.tcc.facade.EstadoFacade;
+import com.ufpr.tads.tcc.facade.EventoFacade;
 import com.ufpr.tads.tcc.facade.OrganizadorFacade;
+import com.ufpr.tads.tcc.facade.UsuarioFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -19,6 +29,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,24 +61,24 @@ public class OrganizadorServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-         HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         String acao = request.getParameter("action");
-        
+
         String email = request.getParameter("email");
         System.out.print(email);
-        
-        Usuario lb = (Usuario) session.getAttribute("usuario");
-        if (lb == null) {
+
+        Usuario us = (Usuario) session.getAttribute("usuario");
+        if (us == null) {
             request.setAttribute("msg", "Usuário deve se autenticar para acessar o sistema.");
 
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
             rd.forward(request, response);
             return;
-        }  
-            if (acao == null || acao.equals("list")) {
+        }
+        if (acao == null || acao.equals("list")) {
             List<Organizador> org;
-            try {             
-                org = OrganizadorFacade.getOrganizador();
+            try {
+                org = OrganizadorFacade.buscarTodosOrganizadores();
                 request.setAttribute("organizador", org);
             } catch (SQLException | ClassNotFoundException ex) {
                 request.setAttribute("exception", ex);
@@ -76,14 +87,21 @@ public class OrganizadorServlet extends HttpServlet {
             }
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/OrganizadorList.jsp");
             rd.forward(request, response);
-        }else{
+        } else {
             if (acao.equals("show")) {
-                         
-                try{
-                  int idOrganizador = Integer.parseInt(request.getParameter("idOrganizador"));
+
+                try {
+                    int id = Integer.parseInt(request.getParameter("id"));
                     Organizador org;
-                    
-                    org = OrganizadorFacade.buscar(idOrganizador);
+                    org = OrganizadorFacade.buscar(id);
+                    Endereço endereço = EndereçoFacade.buscarPorReferencia(id, "organizador");
+                    if (endereço.getId() != 0 ) {
+                        endereço.setCidade(CidadeFacade.buscarCidade(endereço.getCidade().getId()));
+                        org.setEndereco(endereço);
+                    } else {
+                        endereço = new Endereço();
+                        org.setEndereco(endereço);
+                    }
                     request.setAttribute("visualizarorganizador", org);
                 } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
                     request.setAttribute("javax.servlet.jsp.jspException", ex);
@@ -91,115 +109,187 @@ public class OrganizadorServlet extends HttpServlet {
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
                     rd.forward(request, response);
                 }
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/organizadorVisualizar.jsp");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/OrganizadorVisualizar.jsp");
                 rd.forward(request, response);
-                
-            } else { 
-              if (acao.equals("formUpdate")) {
+
+            } else {
+                if (acao.equals("formUpdate")) {
                     try {
-                        int idOrganizador = Integer.parseInt(request.getParameter("idOrganizador"));
-                        Organizador org = OrganizadorFacade.buscar(idOrganizador);
+                        int id = Integer.parseInt(request.getParameter("id"));
+                        Organizador org = OrganizadorFacade.buscar(id);
+                        Endereço endereço = EndereçoFacade.buscarPorReferencia(id, "organizador");
+                        if (endereço.getId() != 0 ) {
+                            endereço.setCidade(CidadeFacade.buscarCidade(endereço.getCidade().getId()));
+                            org.setEndereco(endereço);
+                        } else {
+                            endereço = new Endereço();
+                            org.setEndereco(endereço);
+                        }
+                        List<Estado> estados = new ArrayList<>();
+                        estados = EstadoFacade.buscarTodosEstados();
                         request.setAttribute("alterarOrg", org);
+                        request.setAttribute("estados", estados);
                     } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
                         request.setAttribute("exception", ex);
                         request.setAttribute("javax.servlet.error.status_code", 500);
                         RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
                         rd.forward(request, response);
                     }
-                    
+
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/OrganizadorForm.jsp?form=alterar");
                     rd.forward(request, response);
-              
-                      } else {
-                        if (acao.equals("update")) {
-                                  Organizador org = new Organizador();
-                            try {
-                                int idOrganizador = Integer.parseInt(request.getParameter("idOrganizador"));
-                                org.setIdOrganizador(idOrganizador);
-                                
-                             /*   String email = request.getParameter("email");*/
-                                     
-                                Organizador us = OrganizadorFacade.getOrganizadorEmail(request.getParameter("email"));
-                                try {
-                                    if (us != null && us.getIdOrganizador() != org.getIdOrganizador()) {
-                                        throw new EmailDuplicadoException("E-mail já cadastrado no sistema.");
-                                    }
-                                } catch (EmailDuplicadoException ex) {
-                                    request.setAttribute("msg", ex.getMessage());
 
-                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/UsuarioServlet?action=list");
+                } else {
+                    if (acao.equals("update")) {
+                        Organizador org = new Organizador();
+                        try {
+                            int id = Integer.parseInt(request.getParameter("id"));
+                            org.setIdOrganizador(id);
+
+                            /*   String email = request.getParameter("email");*/
+                            us = (Usuario) UsuarioFacade.buscarUsuarioByEmail(request.getParameter("email"));
+                            try {
+                                if (us != null && us.getIdReferencia() != org.getIdOrganizador()) {
+                                    throw new EmailDuplicadoException("E-mail já cadastrado no sistema.");
+                                }
+                            } catch (EmailDuplicadoException ex) {
+                                request.setAttribute("msg", ex.getMessage());
+
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/UsuarioServlet?action=list");
+                                rd.forward(request, response);
+                            }
+
+                            org.setEmail(email);
+                        } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
+                            request.setAttribute("exception", ex);
+                            request.setAttribute("javax.servlet.error.status_code", 500);
+                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                            rd.forward(request, response);
+                        }
+
+                        org.setCnpj(request.getParameter("cnpj"));
+                        org.setRg(request.getParameter("rg"));
+                        org.setNomeOrganizador(request.getParameter("nomeDaOrganizacao"));
+                        org.setNomeResponsavel(request.getParameter("nomeDoResponsavel"));
+                        org.setSobrenome(request.getParameter("sobrenome"));
+                        
+                        Endereço endereço = new Endereço();
+                        endereço.setRua(request.getParameter("rua"));
+                        endereço.setCep(request.getParameter("cep"));
+                        endereço.setReferencia("organizador");
+                        try {
+                            endereço.setNumero(Integer.parseInt(request.getParameter("numero")));
+                            Cidade cidade = new Cidade();
+                            cidade.setId(Integer.parseInt(request.getParameter("cidade")));
+                            endereço.setCidade(cidade);
+                        } catch (NumberFormatException ex) {
+                            request.setAttribute("exception", ex);
+                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                            rd.forward(request, response);
+                        }
+                        org.setSenha(request.getParameter("senha"));
+                        try {
+                            if (org.getSenha() != null || org.getSenha().equals("")) {
+                                OrganizadorFacade.alterarSemSenha(org);
+                            } else {
+                                OrganizadorFacade.alterar(org);
+                            }
+                            endereço.setIdReferencia(org.getIdOrganizador());
+                            EndereçoFacade.alterarPorIdReferencia(endereço);
+                        } catch (SQLException | ClassNotFoundException | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+                            request.setAttribute("exception", ex);
+                            System.out.println(ex.getMessage());
+                            request.setAttribute("javax.servlet.error.status_code", 500);
+                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                            rd.forward(request, response);
+                        }
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/OrganizadorServlet?action=list");
+                        rd.forward(request, response);
+
+                    } else {
+                        if (acao.equals("formNew")) {
+                            try {
+                                List<Estado> estados = new ArrayList<>();
+                                estados = EstadoFacade.buscarTodosEstados();
+                                request.setAttribute("estados", estados);
+                            } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
+                                request.setAttribute("exception", ex);
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                rd.forward(request, response);
+                            }
+                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/OrganizadorForm.jsp");
+                            rd.forward(request, response);
+                        } else {
+                            if (acao.equals("new")) {
+                                Organizador org = new Organizador();
+                                org.setCnpj(request.getParameter("cnpj"));
+                                org.setRg(request.getParameter("rg"));
+                                org.setNomeOrganizador(request.getParameter("nomeDaOrganizacao"));
+                                org.setNomeResponsavel(request.getParameter("nomeDoResponsavel"));
+                                org.setSobrenome(request.getParameter("sobrenome"));
+                                org.setEmail(request.getParameter("email"));
+                                org.setSenha(request.getParameter("senha"));
+
+                                Endereço endereço = new Endereço();
+                                endereço.setRua(request.getParameter("rua"));
+                                endereço.setCep(request.getParameter("cep"));
+                                endereço.setReferencia("organizador");
+                                try {
+                                    endereço.setNumero(Integer.parseInt(request.getParameter("numero")));
+                                    Cidade cidade = new Cidade();
+                                    cidade.setId(Integer.parseInt(request.getParameter("cidade")));
+                                    endereço.setCidade(cidade);
+                                } catch (NumberFormatException ex) {
+                                    request.setAttribute("exception", ex);
+                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
                                     rd.forward(request, response);
                                 }
-                                
-                                org.setEmail(email);
-                            } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
-                                request.setAttribute("javax.servlet.jsp.jspException", ex);
-                                request.setAttribute("javax.servlet.error.status_code", 500);
-                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                                rd.forward(request, response);
-                            }
-                            
-                                    org.setCnpj(request.getParameter("cnpj"));
-                                    org.setNomeDaOrganizacao(request.getParameter("NomedaOrganizacao"));
-                                    org.setNomeDoResponsavel(request.getParameter("NomeDoResponsavel"));
-                                    org.setRgDoResponsavel(request.getParameter("rgDoResponsavel"));
-                                    org.setEndereco(request.getParameter("endereco"));
-                                    int tipo = Integer.parseInt(request.getParameter("tipo"));
-                                    org.setTipo(tipo);
 
-                        
-                            try {
-                                if (org.getSenha() != null || org.getSenha().equals("")) {
-                                    OrganizadorFacade.alterarSemSenha(org);
-                                } else {
-                                    OrganizadorFacade.alterar(org);
+                                try {
+                                    OrganizadorFacade.inserir(org);
+                                    org.setIdOrganizador(OrganizadorFacade.buscarIdPorDadosOrganizador(org));
+                                    endereço.setIdReferencia(org.getIdOrganizador());
+                                    EndereçoFacade.inserir(endereço);
+                                } catch (SQLException | ClassNotFoundException | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+                                    request.setAttribute("exception", ex);
+                                    request.setAttribute("javax.servlet.error.status_code", 500);
+                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                    rd.forward(request, response);
                                 }
-                            } catch (SQLException | ClassNotFoundException | NoSuchAlgorithmException | UnsupportedEncodingException  ex) {
-                                request.setAttribute("javax.servlet.jsp.jspException", ex);
-                                request.setAttribute("javax.servlet.error.status_code", 500);
-                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/OrganizadorServlet?action=list");
+                                rd.forward(request, response);
+                            } else if (acao.equals("suspend")) {
+                                try {
+                                    int id = Integer.parseInt(request.getParameter("id"));
+                                    OrganizadorFacade.suspender(id);
+                                } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
+                                    request.setAttribute("exception", ex);
+                                    request.setAttribute("javax.servlet.error.status_code", 500);
+                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                    rd.forward(request, response);
+                                }
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/OrganizadorServlet?action=list");
+                                rd.forward(request, response);
+                            }  else if (acao.equals("active")) {
+                                try {
+                                    int id = Integer.parseInt(request.getParameter("id"));
+                                    OrganizadorFacade.ativar(id);
+                                } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
+                                    request.setAttribute("exception", ex);
+                                    request.setAttribute("javax.servlet.error.status_code", 500);
+                                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                    rd.forward(request, response);
+                                }
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/OrganizadorServlet?action=list");
                                 rd.forward(request, response);
                             }
-                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/OrganizadorServlet?action=list");
-                            rd.forward(request, response);
-                       
-                    } else { if (acao.equals("formNew")) {
-                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/OrganizadorForm.jsp");
-                                rd.forward(request, response);
-                            } else {
-                                if (acao.equals("new")) {
-                                  Organizador org = new Organizador();
-                                    org.setCnpj(request.getParameter("cnpj"));
-                                    org.setNomeDaOrganizacao(request.getParameter("nomeDaOrganizacao"));
-                                    org.setNomeDoResponsavel(request.getParameter("nomeDoResponsavel"));
-                                    org.setRgDoResponsavel(request.getParameter("rgDoResponsavel"));
-                                    org.setEmail(request.getParameter("email"));
-                                    org.setSenha(request.getParameter("senha"));
-                                    org.setEndereco(request.getParameter("endereco"));
-                                    int tipo = Integer.parseInt(request.getParameter("tipo"));
-                                    org.setTipo(tipo);
-                                    org.setEndereco(request.getParameter("endereco"));
-                                    try{
-                                        
-                                    OrganizadorFacade.insertOrganizador(org);
-                                  
-                                    } catch (SQLException | ClassNotFoundException  ex) {
-                                        request.setAttribute("exception", ex);
-                                        request.setAttribute("javax.servlet.error.status_code", 500);
-                                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-                                        rd.forward(request, response);
-                                    }
-                                    
-                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/admList.jsp");
-                                rd.forward(request, response);  
-                                }
-        
-                         
-                            }
+
                         }
                     }
                 }
             }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

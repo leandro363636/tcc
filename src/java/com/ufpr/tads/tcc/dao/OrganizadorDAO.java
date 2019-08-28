@@ -3,9 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
-/*
+ /*
 BANCO DE DADOS
 
 CREATE TABLE organizador(
@@ -18,11 +16,12 @@ email varchar(500),
 senha varchar(20),
 endereco varchar(200),
 tipo int);
-*/
+ */
 package com.ufpr.tads.tcc.dao;
 
 import com.ufpr.tads.tcc.beans.Organizador;
 import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,126 +35,113 @@ import java.util.List;
  * @author Gabriel
  */
 public class OrganizadorDAO {
+
     private Connection conn;
 
     public OrganizadorDAO() throws SQLException, ClassNotFoundException {
         this.conn = ConnectionFactory.getConnection();
     }
     
-        public void insertOrganizador (Organizador organizador) throws SQLException {
-        String sql = "INSERT INTO organizador (cnpj, nomeDaOrganizacao, nomeDoResponsavel, rgResponsavel, email, senha, endereco, tipo) VALUES ((?), (?), (?), (?), (?), (?), (?), (?))";
-        PreparedStatement st = conn.prepareStatement(sql);
-        //try {
-      /*  md = MessageDigest.getInstance("MD5");
-        byte[] hash = md.digest(admin.getSenha().getBytes("UTF-8"));
-        for (int i = 0; i < hash.length; i++) {
-            if ((0xff & hash[i]) < 0x10) {
-                hexString.append("0"
-                        + Integer.toHexString((0xFF & hash[i])));
-            } else {
-                hexString.append(Integer.toHexString(0xFF & hash[i]));
-            }
-        }*/
-        /*} catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-            request.setAttribute("javax.servlet.jsp.jspException", ex);
-            request.setAttribute("javax.servlet.error.status_code", 500);
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
-            rd.forward(request, response);
-        }*/
-        st.setString(1, organizador.getCnpj());
-        st.setString(2, organizador.getNomeDaOrganizacao());
-        st.setString(3, organizador.getNomeDoResponsavel());
-        st.setString(4, organizador.getRgDoResponsavel());
-        st.setString(5, organizador.getEmail());
-        st.setString(6, organizador.getSenha());
-        st.setString(7, organizador.getEndereco());
-        st.setInt(8, organizador.getTipo());
-        st.executeUpdate();
-    }
-      
+    public String selectNameById (int id) throws SQLException {
+        String sql = "SELECT nome_responsavel_organizador "
+                + "FROM tb_organizador "
+                + "WHERE id_organizador = (?);";
         
-     public Organizador selectOrganizadorById(int idOrganizador) throws SQLException {
-       
-        String sql = "SELECT * "
-                + "FROM organizador "
-                + "WHERE idOrganizador = (?);";
         PreparedStatement st = conn.prepareStatement(sql);
-        st.setInt(1, idOrganizador);
+        st.setInt(1, id);
         ResultSet rs = st.executeQuery();
-        Organizador org = new Organizador();
+        String nome = "";
         
         while (rs.next()) {
-            org.setIdOrganizador(rs.getInt("idOrganizador"));
-            org.setNomeDaOrganizacao(rs.getString("nomeDaOrganizacao"));
-            org.setNomeDoResponsavel(rs.getString("nomeDoResponsavel"));
-            org.setRgDoResponsavel(rs.getString("rgDoResponsavel"));
-            org.setEmail(rs.getString("email"));
-            org.setSenha(rs.getString("senha"));
-            org.setEndereco(rs.getString("endereco"));
-            org.setTipo(rs.getInt("tipo"));
+            nome = rs.getString("nome_responsavel_organizador");
         }
-        return org;
+        this.conn.close();
+        return nome;
     }
-     
-     
-        public List<Organizador> selectOrganizadorByIdAdm(int idOrganizador) throws SQLException {
-        
-        String sql = "SELECT * "
-                + "FROM organizador "
-                + "WHERE idOrganizador = (?) "
-                + "ORDER BY idOrganizador DESC;";
-        PreparedStatement st = conn.prepareStatement(sql);
-        st.setInt(1, idOrganizador);
-        ResultSet rs = st.executeQuery();
-        List<Organizador> resultado = new ArrayList<>();
-        
-        while (rs.next()) {
-            Organizador org = new Organizador();
-            
-            org.setIdOrganizador(rs.getInt("idOrganizador"));
-            org.setNomeDaOrganizacao(rs.getString("nomeDaOrganizacao"));
-            org.setNomeDoResponsavel(rs.getString("nomeDoResponsavel"));
-            org.setRgDoResponsavel(rs.getString("rgDoResponsavel"));
-            org.setEndereco(rs.getString("endereco"));
-           
-            resultado.add(org);
+    
+    public int selectIdByData(Organizador organizador) throws SQLException {
+        String sql = "SELECT id_organizador from tb_organizador WHERE nome_organizador=(?) AND nome_responsavel_organizador=(?) AND sobrenome_responsavel_organizador=(?) AND rg_responsavel_organizador=(?) AND cnpj_organizador=(?) LIMIT 1;";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, organizador.getNomeOrganizador());
+        stmt.setString(2, organizador.getNomeResponsavel());
+        stmt.setString(3, organizador.getSobrenome());
+        stmt.setString(4, organizador.getRg());
+        stmt.setString(5, organizador.getCnpj());
+
+        ResultSet res = stmt.executeQuery();
+        int id = 0;
+        while (res.next()) {
+            id = res.getInt("id_organizador");
         }
-        return resultado;
+        return id;
     }
-        
-            
-    public List<Organizador> getOrganizador() throws SQLException {
+
+    public Organizador selectOrganizadorById(int id) throws SQLException {
+        String sql = "SELECT * from tb_organizador "
+                + "INNER JOIN tb_usuario ON id_organizador = id_referencia AND tipo_usuario = 'o'"
+                + "WHERE id_organizador=(?) LIMIT 1;";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, id);
+
+        ResultSet res = stmt.executeQuery();
+        Organizador organizador = new Organizador();
+
+        while (res.next()) {
+            organizador.setIdOrganizador(res.getInt("id_organizador"));
+            organizador.setId(res.getInt("id_organizador"));
+            organizador.setEmail(res.getString("email_usuario"));
+            organizador.setSenha(res.getString("senha_usuario"));
+            organizador.setAtivo(res.getBoolean("ativo_usuario"));
+            organizador.setNomeOrganizador(res.getString("nome_organizador"));
+            organizador.setNomeResponsavel(res.getString("nome_responsavel_organizador"));
+            organizador.setSobrenome(res.getString("sobrenome_responsavel_organizador"));
+            organizador.setCnpj(res.getString("cnpj_organizador"));
+            organizador.setRg(res.getString("rg_responsavel_organizador"));
+            this.conn.close();
+            return organizador;
+        }
+        this.conn.close();
+        return null;
+    }
+
+    public List<Organizador> selectOrganizadores() throws SQLException {;;
 
         List<Organizador> resultados = new ArrayList<>();
 
-        String sql = "SELECT * FROM organizador";
+        String sql = "SELECT * FROM tb_organizador "
+                + "INNER JOIN tb_usuario ON id_organizador = id_referencia AND tipo_usuario = 'o'";
         PreparedStatement st = conn.prepareStatement(sql);
 
-        ResultSet rs = st.executeQuery();
+        ResultSet res = st.executeQuery();
 
-        while (rs.next()) {
-            Organizador org = new Organizador();
-            org.setIdOrganizador(rs.getInt("idOrganizador"));
-            org.setNomeDaOrganizacao(rs.getString("nomeDaOrganizacao"));
-            org.setNomeDoResponsavel(rs.getString("nomeDoResponsavel"));
-            org.setRgDoResponsavel(rs.getString("rgDoResponsavel"));
-            org.setEmail(rs.getString("email"));
-            org.setSenha(rs.getString("senha"));
-            org.setEndereco(rs.getString("endereco"));
-            org.setTipo(rs.getInt("tipo"));
-            resultados.add(org);
+        while (res.next()) {
+            Organizador organizador = new Organizador();
+            organizador.setIdOrganizador(res.getInt("id_organizador"));
+            organizador.setId(res.getInt("id_organizador"));
+            organizador.setEmail(res.getString("email_usuario"));
+            organizador.setSenha(res.getString("senha_usuario"));
+            organizador.setAtivo(res.getBoolean("ativo_usuario"));
+            organizador.setNomeOrganizador(res.getString("nome_organizador"));
+            organizador.setNomeResponsavel(res.getString("nome_responsavel_organizador"));
+            organizador.setSobrenome(res.getString("sobrenome_responsavel_organizador"));
+            organizador.setCnpj(res.getString("cnpj_organizador"));
+            organizador.setRg(res.getString("rg_responsavel_organizador"));
+            resultados.add(organizador);
         }
+        this.conn.close();
         return resultados;
     }
-    
 
-public void updateOrganizadorById(Organizador org) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
-        String sql = "UPDATE tb_usuario SET cnpj=(?), nomeDaOrganizacao=(?), nomeDoResponsavel=(?), rgResponsavel=(?), email=(?), senha=(?), endereco=(?), tipo=(?) where idOrganizador=(?);";
+    public void insertOrganizador(Organizador organizador) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        String sql = "INSERT INTO tb_organizador (nome_organizador, nome_responsavel_organizador, sobrenome_responsavel_organizador, cnpj_organizador, rg_responsavel_organizador) VALUES ((?), (?), (?), (?), (?))";
+        PreparedStatement st = conn.prepareStatement(sql);
 
-        /*StringBuffer hexString = new StringBuffer();
+        StringBuffer hexString = new StringBuffer();
         MessageDigest md;
         md = MessageDigest.getInstance("MD5");
-        byte[] hash = md.digest(adm.getSenha().getBytes("UTF-8"));
+        byte[] hash = md.digest(organizador.getSenha().getBytes("UTF-8"));
         for (int i = 0; i < hash.length; i++) {
             if ((0xff & hash[i]) < 0x10) {
                 hexString.append("0"
@@ -163,108 +149,210 @@ public void updateOrganizadorById(Organizador org) throws SQLException, NoSuchAl
             } else {
                 hexString.append(Integer.toHexString(0xFF & hash[i]));
             }
-        }*/
+        }
+        String senha = hexString.toString();
+
+        st.setString(1, organizador.getNomeOrganizador());
+        st.setString(2, organizador.getNomeResponsavel());
+        st.setString(3, organizador.getSobrenome());
+        st.setString(4, organizador.getCnpj());
+        st.setString(5, organizador.getRg());
+        st.executeUpdate();
+
+        organizador.setIdOrganizador(selectIdByData(organizador));
+
+        sql = "INSERT INTO tb_usuario (email_usuario, senha_usuario, id_referencia, tipo_usuario) VALUES ((?), (?), (?), 'o')";
+        st = conn.prepareStatement(sql);
+
+        st.setString(1, organizador.getEmail());
+        st.setString(2, senha);
+        st.setInt(3, organizador.getIdOrganizador());
+        st.executeUpdate();
+        this.conn.close();
+    }
+
+    public void suspendOrganizadorById(int id) throws SQLException {
+        String sql = "UPDATE tb_usuario SET ativo_usuario = FALSE where id_referencia=(?) AND tipo_usuario = 'o';";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setString(1, org.getNomeDaOrganizacao());
-        stmt.setString(2, org.getNomeDoResponsavel());
-        stmt.setString(3, org.getRgDoResponsavel());
-        stmt.setString(4, org.getEmail());
-        stmt.setString(5, org.getSenha());
-        stmt.setString(6, org.getEndereco());
-        stmt.setInt(7, org.getTipo());
-        stmt.setInt(8, org.getIdOrganizador());
+        stmt.setInt(1, id);
         stmt.executeUpdate();
+        this.conn.close();
     }
-    
-        
-        public void updateOrganizadorByIdWithoutSenha(Organizador org) throws SQLException {
-        String sql = "UPDATE tb_usuario SET nomeDaOrganizacao=(?), nomeDoResponsavel=(?), email=(?) where idOrganizador=(?);";
+
+    public void activeOrganizdorById(int id) throws SQLException {
+        String sql = "UPDATE tb_usuario SET ativo_usuario = TRUE where id_referencia=(?) AND tipo_usuario = 'o';";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setString(1, org.getNomeDaOrganizacao());
-        stmt.setString(2, org.getNomeDoResponsavel());
-        stmt.setString(4, org.getEmail());
-        stmt.setInt(4, org.getIdOrganizador());
+        stmt.setInt(1, id);
         stmt.executeUpdate();
+        this.conn.close();
     }
-    
-    
-        
-        
-      public Organizador getOrganizadorEmail(String email) throws SQLException {
-        String sql = "SELECT * from organizador where email=(?) LIMIT 1;";
-		
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setString(1,email);
 
-        ResultSet res = stmt.executeQuery();
-        Organizador org = new Organizador();
+    public void updateOrganizadorById(Organizador organizador) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        String sql = "UPDATE tb_organizador SET nome_organizador=(?), nome_responsavel_organizador=(?), sobrenome_responsavel_organizador=(?), cnpj_organizador=(?), rg_responsavel_organizador=(?) where id_organizador=(?);";
 
-        while (res.next())
-        { 
-            
-            org.setIdOrganizador(res.getInt(1));
-            org.setEmail(res.getString(2));
-            org.setSenha(res.getString(3));
-            org.setNomeDaOrganizacao(res.getString(4));            
-            org.setNomeDoResponsavel(res.getString(5));
-            org.setRgDoResponsavel(res.getString(6));
-            return org;
+        StringBuffer hexString = new StringBuffer();
+        MessageDigest md;
+        md = MessageDigest.getInstance("MD5");
+        byte[] hash = md.digest(organizador.getSenha().getBytes("UTF-8"));
+        for (int i = 0; i < hash.length; i++) {
+            if ((0xff & hash[i]) < 0x10) {
+                hexString.append("0"
+                        + Integer.toHexString((0xFF & hash[i])));
+            } else {
+                hexString.append(Integer.toHexString(0xFF & hash[i]));
+            }
         }
-        //System.out.println("Executed: "+ usuario.toString());
-
-        return null;
-    }
-        
-      
-          
-    public Organizador getOrganizadorById(int idOrganizador) throws SQLException {
-        String sql = "SELECT * from organizador where idOrganizador=(?) LIMIT 1;";
+        String senha = hexString.toString();
 
         PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, idOrganizador);
+        stmt.setString(1, organizador.getNomeOrganizador());
+        stmt.setString(2, organizador.getNomeResponsavel());
+        stmt.setString(3, organizador.getSobrenome());
+        stmt.setString(4, organizador.getCnpj());
+        stmt.setString(5, organizador.getRg());
+        stmt.setInt(6, organizador.getIdOrganizador());
+        stmt.executeUpdate();
 
-        ResultSet res = stmt.executeQuery();
-        Organizador  org = new Organizador();
+        sql = " UPDATE tb_usuario SET email_usuario=(?), senha_usuario=(?) where id_referencia=(?) AND tipo_usuario = 'o';";
 
-        while (res.next()) {
-            org.setIdOrganizador(res.getInt(1));
-            org.setEmail(res.getString(2));
-            org.setSenha(res.getString(3));
-            org.setNomeDaOrganizacao(res.getString(4));
-            org.setNomeDoResponsavel(res.getString(5));
-            return org;
-        }
-        //System.out.println("Executed: "+ usuario.toString());
-
-        return null;
+        stmt = conn.prepareStatement(sql);
+        stmt.setString(1, organizador.getEmail());
+        stmt.setString(2, senha);
+        stmt.setInt(3, organizador.getIdOrganizador());
+        stmt.executeUpdate();
+        this.conn.close();
     }
-    
-    
-      public Organizador getBuscarDadosId(int idOrganizador) throws SQLException {
-        String sql = "SELECT * from organizador where idOrganizador=(?) LIMIT 1;";
+
+    public void updateOrganizadorByIdWithoutSenha(Organizador organizador) throws SQLException {
+        String sql = "UPDATE tb_organizador SET nome_organizador=(?), nome_responsavel_organizador=(?), sobrenome_responsavel_organizador=(?), cnpj_organizador=(?), rg_responsavel_organizador=(?) where id_organizador=(?);";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, idOrganizador);
+        stmt.setString(1, organizador.getNomeOrganizador());
+        stmt.setString(2, organizador.getNomeResponsavel());
+        stmt.setString(3, organizador.getSobrenome());
+        stmt.setString(4, organizador.getCnpj());
+        stmt.setString(5, organizador.getRg());
+        stmt.setInt(6, organizador.getIdOrganizador());
+        stmt.executeUpdate();
 
-        ResultSet res = stmt.executeQuery();
-        Organizador  org = new Organizador();
+        sql = " UPDATE tb_usuario SET email_usuario=(?) where id_referencia=(?) AND tipo_usuario = 'o';";
 
-        while (res.next()) {
-            org.setIdOrganizador(res.getInt(1));
-            org.setCnpj(res.getString(2));
-            org.setNomeDaOrganizacao(res.getString(3));
-            org.setNomeDoResponsavel(res.getString(4));
-            org.setRgDoResponsavel(res.getString(5));
-            org.setEmail(res.getString(6));
-            org.setSenha(res.getString(7));
-            org.setEndereco(res.getString(8));
-            org.setTipo(res.getInt(1));
-            return org;
+        stmt = conn.prepareStatement(sql);
+        stmt.setString(1, organizador.getEmail());
+        stmt.setInt(2, organizador.getIdOrganizador());
+        stmt.executeUpdate();
+        this.conn.close();
+    }
+
+    public void updateSenhaById(Organizador organizador) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        String sql = "UPDATE tb_usuario SET senha_usuario=(?) where id_referencia=(?) AND tipo_usuario = 'o';";
+
+        StringBuffer hexString = new StringBuffer();
+        MessageDigest md;
+        md = MessageDigest.getInstance("MD5");
+        byte[] hash = md.digest(organizador.getSenha().getBytes("UTF-8"));
+        for (int i = 0; i < hash.length; i++) {
+            if ((0xff & hash[i]) < 0x10) {
+                hexString.append("0"
+                        + Integer.toHexString((0xFF & hash[i])));
+            } else {
+                hexString.append(Integer.toHexString(0xFF & hash[i]));
+            }
         }
-        //System.out.println("Executed: "+ usuario.toString());
+        String senha = hexString.toString();
 
-        return null;
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, senha);
+        stmt.setInt(2, organizador.getId());
+        stmt.executeUpdate();
+        this.conn.close();
+    }
+    
+    public List<Organizador> selectOrganizadores(int pagina) throws SQLException {		
+        		
+        String sql = "SELECT * "		
+                + "FROM tb_organizador "		
+                + "INNER JOIN tb_usuario ON id_organizador = id_referencia AND tipo_usuario = 'o'"		
+                + "ORDER BY nome_organizador, id_organizador "		
+                + "LIMIT 9 OFFSET (?);";		
+        PreparedStatement st = conn.prepareStatement(sql);		
+        int start = (pagina - 1) * 9; 		
+        st.setInt(1, start);		
+        ResultSet rs = st.executeQuery();		
+        List<Organizador> resultado = new ArrayList<>();		
+        		
+        while (rs.next()) {		
+            Organizador organizador = new Organizador();		
+            organizador.setIdOrganizador(rs.getInt("id_organizador"));		
+            organizador.setId(rs.getInt("id_organizador"));		
+            organizador.setEmail(rs.getString("email_usuario"));		
+            organizador.setSenha(rs.getString("senha_usuario"));		
+            organizador.setAtivo(rs.getBoolean("ativo_usuario"));		
+            organizador.setNomeOrganizador(rs.getString("nome_organizador"));		
+            organizador.setNomeResponsavel(rs.getString("nome_responsavel_organizador"));		
+            organizador.setSobrenome(rs.getString("sobrenome_responsavel_organizador"));		
+            organizador.setCnpj(rs.getString("cnpj_organizador"));		
+            organizador.setRg(rs.getString("rg_responsavel_organizador"));		
+            resultado.add(organizador);		
+            		
+  		
+        }
+        this.conn.close();
+        return resultado;		
+    }  		
+             		
+    public int selectCountOrganizadores() throws SQLException {		
+        String sql = "SELECT COUNT(*) "		
+                + "FROM tb_organizador;";		
+        PreparedStatement st = conn.prepareStatement(sql);		
+        ResultSet rs = st.executeQuery();		
+        int total = 0;		
+        while (rs.next()) {		
+            total = rs.getInt(1);		
+        }
+        this.conn.close();
+        return total;		
+    }		
+    		
+    public void deleteOrganizadorById(int id) throws SQLException {		
+            		
+        String sql2 = "DELETE FROM tb_usuario "		
+                + "WHERE tipo_usuario = 'o' AND id_referencia=(?);";		
+        PreparedStatement stmt = conn.prepareStatement(sql2);		
+        stmt.setInt(1, id);		
+        stmt.executeUpdate();   		
+        		
+        String sql3 = "DELETE FROM tb_endereco "		
+                + "WHERE referencia_endereco = 'organizador' AND id_referencia=(?);";		
+        PreparedStatement stmt2 = conn.prepareStatement(sql3);		
+        stmt2.setInt(1, id);		
+        stmt2.executeUpdate();  		
+            		
+            		
+            		
+        String sql = "DELETE FROM tb_organizador "		
+                + "WHERE id_organizador = (?);";		
+        PreparedStatement st = conn.prepareStatement(sql);		
+        		
+        st.setInt(1, id);		
+        		
+        st.executeUpdate();		
+          		
+        this.conn.close();
+    }		
+        		
+    public int selectCountCompradores() throws SQLException {		
+        String sql = "SELECT COUNT(*) "		
+                + "FROM tb_comprador;";		
+        PreparedStatement st = conn.prepareStatement(sql);		
+        ResultSet rs = st.executeQuery();		
+        int total = 0;		
+        while (rs.next()) {		
+            total = rs.getInt(1);		
+        }
+        this.conn.close();
+        return total;		
     }
 }

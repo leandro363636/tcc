@@ -10,7 +10,7 @@
         <head>
               <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <meta charset="UTF-8">
-            <title>Usuários Listar</title>
+            <title>Administradores Listar</title>
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
             <link rel="stylesheet" type="text/css" href="css/clienteListar.css">
             <link rel="stylesheet" type="text/css" href="css/ionicons.css">
@@ -30,18 +30,24 @@
                     <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
                 </jsp:forward>
             </c:if>
+            <c:if test="${sessionScope.usuario.tipo.equals(\"c\") || sessionScope.usuario.tipo.equals(\"o\")}">
+                <jsp:forward page="EventoServlet?action=list">
+                    <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
+                </jsp:forward>
+            </c:if>
 
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
                 <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item"><a class="nav-link" href="UsuarioServlet">Cadastro de Usuários</a></li>
+                        <li class="nav-item"><a class="nav-link" href="CompradorServlet">Cadastro de Usuários</a></li>
                         <li class="nav-item"><a class="nav-link" href="EventoServlet">Cadastro de Eventos</a></li>
-                         <li class="nav-item"><a class="nav-link" href="AdminServlet">Cadastro de Admin</a></li>
+                         <li class="nav-item"><a class="nav-link" href="AdministradorServlet">Cadastro de Admin</a></li>
+                         <li class="nav-item"><a class="nav-link" href="OrganizadorServlet">Cadastro de Organizador</a></li>                         
                     </ul>
                 </div>
                 <div class="navbar-collapse collapse w-100 order-2 dual-collapse2">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item"><p class="nav-link active">Nome: <c:out value="${usuario.nome}"/></p></li>
+                        <li class="nav-item"><p class="nav-link active">Nome: <c:out value="${nome}"/></p></li>
                         <li class="nav-item" onclick="checkLoginState()"><a class="nav-link" href="LoginServlet?action=logout"  >Sair</a></li>
                     </ul>
                 </div>
@@ -62,23 +68,18 @@
                             </div>
                         </c:if>
 
-            <a class="btn btn-outline-success" href="AdminServlet?action=formNew">Novo</a>
+            <a class="btn btn-outline-success" href="AdministradorServlet?action=formNew">Novo</a>
             <table class="table table-striped"><tr><th>Nome</th><th>E-mail</th><th>Visualizar</th><th>Alterar</th><th>Remover</th></tr>
 
             <c:forEach items="${admin}" var="admin">
                 <tr>
                     <td><c:out value="${admin.nome}"/></td>
                     <td><c:out value="${admin.email}"/></td>
-                    <td><a href="AdminServlet?action=show&id=<c:out value="${admin.id}"/>"><i class="ion-person"></i></a></td>
-                    <td><a href="AdminServlet?action=formUpdate&id=<c:out value="${admin.id}"/>"><i class="ion-edit"></i></a></td>
-                    <td><a href="AdminServlet?action=remove&id=<c:out value="${admin.id}"/>"><i class="ion-trash-a"></i></a></td>
+                    <td><a href="AdministradorServlet?action=show&id=<c:out value="${admin.idAdministrador}"/>">Visualizar</a></td>
+                    <td><a href="AdministradorServlet?action=formUpdate&id=<c:out value="${admin.idAdministrador}"/>">Alterar</a></td>
+                    <td><a href="AdministradorServlet?action=<c:out value="${admin.ativo == true ? \"suspend\" : \"active\" }"/>&id=<c:out value="${admin.idAdministrador}"/>"><c:out value="${admin.ativo == true ? \"Suspender\" : \"Ativar\" }"/></a></td>
                 </tr>
             </c:forEach>
             </table>
-
-
-            <!--<footer>
-                <p class="small font-weight-light">Em caso de problemas contactar o administrador: <strong><c:out value="${configuracao.email}" /></strong></p>  
-            </footer>-->
         </body>
     </html>

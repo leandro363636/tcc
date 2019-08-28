@@ -30,6 +30,11 @@
                 <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
             </jsp:forward>
         </c:if>
+        <c:if test="${sessionScope.usuario.tipo.equals(\"c\")}">
+            <jsp:forward page="EventoServlet?action=list">
+                <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
+            </jsp:forward>
+        </c:if>
         <div class="container">
             <jsp:useBean id="now" class="java.util.Date" />
             <fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${alterarevento.dataInicio}" var="dataInicio" />
@@ -95,6 +100,7 @@
                             <img src="${alterarevento.imagem}">
                         </c:if>
                     </div>
+                    <div class="col-md-4"></div>
                     <c:if test="${(!(empty param.form) || param.form == \"alterar\") }" >
                         <div id="nomeLoteForm" class="form-group col-md-4">
                             <label for="nomeLote">Lote:</label>

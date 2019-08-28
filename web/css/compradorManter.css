@@ -1,0 +1,29 @@
+@font-face {
+	font-family: 'opensans';
+	src: url('fonts/opensans/OpenSans-Regular.tff') format('tff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+#cadastroComprador body {
+	font-family: 'opensans', sans-serif;
+}
+
+#cadastroComprador .center {
+	text-align: center;
+	align-content: center;
+	align-items: center;
+}
+
+#cadastroComprador input {
+	width: 100%;
+}
+
+#cadastroComprador fieldset {
+	border: 1px solid black;
+	border-radius: 10px;
+}
+
+#cadastroComprador label {
+	margin-bottom: 0;
+}

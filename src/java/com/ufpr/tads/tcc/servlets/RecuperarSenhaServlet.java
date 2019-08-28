@@ -5,9 +5,13 @@
  */
 package com.ufpr.tads.tcc.servlets;
 
+import com.ufpr.tads.tcc.beans.Comprador;
 import com.ufpr.tads.tcc.beans.Usuario;
 import com.ufpr.tads.tcc.exceptions.EmailDuplicadoException;
 import com.ufpr.tads.tcc.exceptions.EmailNaoExisteException;
+import com.ufpr.tads.tcc.facade.AdministradorFacade;
+import com.ufpr.tads.tcc.facade.CompradorFacade;
+import com.ufpr.tads.tcc.facade.OrganizadorFacade;
 import com.ufpr.tads.tcc.facade.UsuarioFacade;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -46,29 +50,46 @@ public class RecuperarSenhaServlet extends HttpServlet {
         } else {
             if (acao.equals("recuperar")) {
 
-                Usuario usuario = new Usuario();
-                usuario.setEmail(request.getParameter("email"));
+                Comprador comprador = new Comprador();
+                comprador.setEmail(request.getParameter("email"));
                 String cpf;
                 cpf = request.getParameter("cpf");
-                usuario.setCpf(cpf.replaceAll("[.-]", ""));
+                comprador.setCpf(cpf.replaceAll("[.-]", ""));
                 String email = request.getParameter("email");
 
                 try {
 
-                    Usuario us = UsuarioFacade.buscarUsuarioByEmail(email);
+                    Usuario us = (Usuario) UsuarioFacade.buscarUsuarioByEmail(email);
 
                     try {
 
-                        if (us == null || (us.getEmail() == null ? usuario.getEmail() != null : !us.getEmail().equals(usuario.getEmail()))) {
+                        if (us == null || (us.getEmail() == null ? comprador.getEmail() != null : !us.getEmail().equals(comprador.getEmail()))) {
 
                             throw new EmailNaoExisteException("E-mail não esta cadastrado no sistema.");
 
-                        } else if ((us.getCpf() == null ? usuario.getCpf() != null : !us.getCpf().equals(usuario.getCpf()))) {
-
-                            throw new EmailNaoExisteException("Cpf não confere com ao atribuído ao email.");
                         } else {
-                            usuario.setNome(us.getNome());
-                            usuario.setId(us.getId());
+                            String nome = "";
+                            try {
+                                switch (us.getTipo()) {
+                                    case "a" :
+                                        nome = AdministradorFacade.buscarNomePorId(us.getIdReferencia());
+                                        break;
+                                    case "o" : 
+                                        nome = OrganizadorFacade.buscarNomePorId(us.getIdReferencia());
+                                        break;
+                                    case "c" :
+                                        nome = CompradorFacade.buscarNomePorId(us.getIdReferencia());
+                                        break;
+
+                                }
+                            } catch (SQLException | ClassNotFoundException ex) {
+                                request.setAttribute("javax.servlet.jsp.jspException", ex);
+                                request.setAttribute("javax.servlet.error.status_code", 500);
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                rd.forward(request, response);
+                            }
+                            comprador.setNome(nome);
+                            comprador.setId(us.getIdReferencia());
                         }
                     } catch (EmailNaoExisteException ex) {
                         request.setAttribute("msg", ex.getMessage());
@@ -110,7 +131,7 @@ public class RecuperarSenhaServlet extends HttpServlet {
                     int ch = rand.nextInt(letras.length);
                     sb.append(letras[ch]);
                 }
-                usuario.setSenha(sb.toString());
+                comprador.setSenha(sb.toString());
 
                 try {
 
@@ -118,13 +139,13 @@ public class RecuperarSenhaServlet extends HttpServlet {
                     message.setFrom(new InternetAddress("fasticketads@gmail.com")); //Remetente
 
                     Address[] toUser = InternetAddress //Destinatário(s)
-                            .parse(usuario.getEmail());
+                            .parse(comprador.getEmail());
                     message.setRecipients(Message.RecipientType.TO, toUser);
 
 //message.setContent("Enviei este email utilizando JavaMail com minha conta GMail!     Essa é sua senha:" + senha, "text/html; charset=utf-8"); 
                     message.setRecipients(Message.RecipientType.TO, toUser);
                     message.setSubject("Recuperação de senha");//Assunto
-                    message.setText("Olá " + usuario.getNome() + "! foi solicitado uma nova senha para acesso ao FasTicket com a sua conta. Essa é a sua nova senha: '" + usuario.getSenha() + "'. Caso não tenha solicitado a redefinição de senha, por favor entre em contato com a nossa equipe por este email");
+                    message.setText("Olá " + comprador.getNome() + "! foi solicitado uma nova senha para acesso ao FasTicket com a sua conta. Essa é a sua nova senha: '" + comprador.getSenha() + "'. Caso não tenha solicitado a redefinição de senha, por favor entre em contato com a nossa equipe por este email");
                     /**
                      * Método para enviar a mensagem criada
                      */
@@ -135,7 +156,7 @@ public class RecuperarSenhaServlet extends HttpServlet {
                 }
 
                 try {
-                    UsuarioFacade.alterarSenha(usuario);
+                    CompradorFacade.alterarSenha(comprador);
                 } catch (SQLException | ClassNotFoundException | NoSuchAlgorithmException | UnsupportedEncodingException ex) {
                     request.setAttribute("javax.servlet.jsp.jspException", ex);
                     request.setAttribute("javax.servlet.error.status_code", 500);

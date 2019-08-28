@@ -11,6 +11,7 @@ import com.ufpr.tads.tcc.beans.Endereço;
 import com.ufpr.tads.tcc.beans.Estado;
 import com.ufpr.tads.tcc.beans.Evento;
 import com.ufpr.tads.tcc.beans.Lote;
+import com.ufpr.tads.tcc.beans.Comprador;
 import com.ufpr.tads.tcc.beans.Usuario;
 import com.ufpr.tads.tcc.facade.CidadeFacade;
 import com.ufpr.tads.tcc.facade.EndereçoFacade;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import static java.lang.System.out;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.sql.Date;
@@ -73,15 +75,7 @@ public class EventoServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String acao = request.getParameter("action");
         
-        Usuario lb = (Usuario) session.getAttribute("usuario");
-        if (lb == null) {
-            request.setAttribute("msg", "Usuário deve se autenticar para acessar o sistema.");
-
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
-            rd.forward(request, response);
-            return;
-        }
-        
+       
         if (acao == null || acao.equals("list")) {
             String filtroNome = null;
             if ( session.getAttribute("filtroNome") != null ) {
@@ -306,15 +300,14 @@ public class EventoServlet extends HttpServlet {
                                 evento.setDataInicio(data);
                                 data = new Date(fmt.parse(dataFimString).getTime());
                                 evento.setDataFim(data);
-                                if (evento.getImagem() != null && evento.getImagem() != "") {
+                                if (evento.getImagem() != null && !evento.getImagem().equals("")) {
                                     EventoFacade.alterar(evento);
-                                    endereço.setIdReferencia(evento.getId());
-                                    EndereçoFacade.alterarPorIdReferencia(endereço);
                                 } else {
                                     EventoFacade.alterarSemImagem(evento);
-                                    endereço.setIdReferencia(evento.getId());
-                                    EndereçoFacade.alterarPorIdReferencia(endereço);
                                 }
+                                
+                                endereço.setIdReferencia(evento.getId());
+                                EndereçoFacade.alterarPorIdReferencia(endereço);
                                 
                                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/EventoServlet?action=list");
                                 rd.forward(request, response);
@@ -385,7 +378,9 @@ public class EventoServlet extends HttpServlet {
                                         rd.forward(request, response);
                                     }
                                     evento.setAprovado(false);
-                                    evento.setUsuario(lb);
+                                    Comprador comprador = new Comprador ();
+                                    comprador.setId(1);
+                                    evento.setUsuario(comprador);
 
                                     String dataInicioString = request.getParameter("dataInicio");
                                     String dataFimString = request.getParameter("dataFim");
@@ -414,6 +409,27 @@ public class EventoServlet extends HttpServlet {
                                     }
                                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/EventoServlet?action=list");
                                     rd.forward(request, response);
+                                }else{
+                                    if(acao.equals("carrinho")){
+                                        try {
+                                            int id = Integer.parseInt(request.getParameter("id"));
+                                            Evento evento = EventoFacade.buscar(id);
+                                            List<Lote> lotes = new ArrayList();
+                                            lotes = LoteFacade.buscarTodosLotesPorIdEvento(id);
+                                            //request.setAttribute("id",id);
+                                            //request.setAttribute("evento",evento);
+                                            out.println("id");
+                                            request.setAttribute("lotes",lotes);
+                                            request.getSession().setAttribute("lotecarrinho", lotes);
+                                            request.getSession().setAttribute("idevento", "3");
+                                        } catch (Exception ex) {
+                                            request.setAttribute("exception", ex);
+                                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/erro.jsp");
+                                            rd.forward(request, response);
+                                        }
+                                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/carrinho.jsp");
+                                        rd.forward(request, response);
+                                    }
                                 }
                             }
                         }

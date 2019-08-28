@@ -14,7 +14,10 @@ import java.io.Serializable;
 public class Ingresso implements Serializable{
     
     private int id;
-    private int serial;
+    private String serial;
+    private boolean acesso;
+    private Usuario usuario;
+    private Lote lote;
     
     public Ingresso() {
         
@@ -28,13 +31,36 @@ public class Ingresso implements Serializable{
         this.id = id;
     }
 
-    public int getSerial() {
+    public String getSerial() {
         return serial;
     }
 
-    public void setSerial(int serial) {
+    public void setSerial(String serial) {
         this.serial = serial;
     }
-    
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Lote getLote() {
+        return lote;
+    }
+
+    public void setLote(Lote lote) {
+        this.lote = lote;
+    }
+
+    public boolean isAcesso() {
+        return acesso;
+    }
+
+    public void setAcesso(boolean acesso) {
+        this.acesso = acesso;
+    }
     
 }

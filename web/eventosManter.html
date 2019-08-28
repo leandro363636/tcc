@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" href="css/datepicker/datepicker.min.css">
+	<link rel="stylesheet" href="css/datepicker/jquery-ui.min.css">
+	<link rel="stylesheet" href="css/timepicker/jquery.timepicker.min.css">
+	<link rel="stylesheet" type="text/css" href="css/eventosManter.css"/>
+
+	<title>Nome Evento | fastTicket</title>
+</head>
+<body>
+
+	<div id="manterevento">
+		
+		<!-- NAVBAR TOPO -->
+		<div class="row1">
+			<div class="container-fluid">
+				<div class="row align-items-center">
+					<div class="col-12">
+						<nav class="navbar navbar-expand-sm navbar-light bg-light">
+							<a href="#" class="navbar-brand">fastTicket</a>
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTopo" aria-controls="navbarSupportedContent" aria-expanded="false">
+								<span class="navbar-toggler-icon"></span>
+							</button>
+							<div class="collapse navbar-collapse" id="navbarTopo">
+								<ul class="navbar-nav mr-auto">
+									<li class="nav-item">
+										<a class="nav-link right" href="#">Criar Evento</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">Meus Eventos</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">Meus Ingressos</a>
+									</li>
+								</ul>
+								<span class="nav-item dropdown">
+									<span class="nav-link dropdown-toggle" href="#" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+										Bem vindo, Ronaldo <span class="caret"></span>
+									</span>
+									<div class="dropdown-menu dropdown-menu-top" aria-labelledby="navbarDropdown">
+										<button class="dropdown-item" href="#">Minha Conta</button>
+										<button class="dropdown-item" href="#">Meus Ingressos</button>
+										<button class="dropdown-item" href="#">Login</button>
+										<button class="dropdown-item" href="#">Criar Conta</button>
+										<div class="dropdown-divider"></div>
+										<button class="dropdown-item" href="#">Logout</button>
+										<form id="form-logout" action="" method="" style="display: none;"></form>
+									</div>
+								</span>
+							</div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- FIM NAVBAR TOPO -->
+
+		<div class="row2 mb-4">
+			<div class="container">
+				<div class="row align-items-center center">
+					<div class="col-12" id="divNome">
+						<input type="text" value="Nome atual" class="inputInf nome">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<form action="#" method="post" enctype="multipart/form-data">
+
+			<div class="row3">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 col-md-8 offset-md-2 align-items-center center">
+							<button class="btn btn-info mb-3 banner"><input type="file" accept=".jpg,.jpeg,.png" class="banner"></button><br>
+							<img src="img/slider-img.jpg" class="banner">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row4 my-4">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 col-md-8 offset-md-0">
+							<h2 class="center mb-5" id="nomeEvento">Informações do evento</h2>
+							<div class="row align-items-center">
+								<div class="col-6 offset-0 col-md-6 offset-md-0">
+									<p class="horarios">Data de abertura: <input type="text" class="datepicker picker"></p>
+								</div>
+								<div class="col-6 offset-0 col-md-6 offset-md-0">
+									<p class="horarios">Hora de abertura: <input type="text" class="timepicker picker"></p>
+								</div>
+								<div class="col-6 offset-0 col-md-6 offset-md-0">
+									<p class="horarios">Data <span class="d-none d-md-inline">de</span> fechamento: <input type="text" class="datepicker picker"></p>
+								</div>
+								<div class="col-6 offset-0 col-md-6 offset-md-0">
+									<p class="horarios">Hora <span class="d-none d-md-inline">de</span> fechamento: <input type="text" class="timepicker picker"></p>
+								</div>
+							</div>
+							<p>Local: <input type="text" name="" value="Rua Irati, Colombo - PR - 83410340" class="inputInf esquerda"></p>
+							<p class="inputevento">Descrição:<textarea name="" class="inputevento" rows="6">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi porro, tenetur cumque in amet sunt suscipit hic assumenda, obcaecati adipisci voluptatum illo aperiam dicta ut et vero impedit est necessitatibus! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa laboriosam, excepturi est quasi rerum ullam labore deleniti suscipit non, omnis animi incidunt temporibus. Reiciendis dolorum id neque dolore maxime. </textarea></p>
+						</div>
+
+						<!-- INÍCIO LOTES -->
+						<div class="col-12 col-md-3 offset-md-0">
+							<!-- INÍCIO ROW BOTÕES -->
+							<div class="row align-items-center mb-3">
+								<div class="col-6">
+									<button class="btn btn-primary addLote" id="addLote">+ LOTE</button>
+								</div>
+								<div class="col-6">
+									<button class="btn btn-danger delLote" id="delLote">- LOTE</button>
+								</div>
+							</div>
+							<!-- FIM ROW BOTÕES -->
+							<!-- INÍCIO LISTAGEM LOTES -->
+							<div class="row align-items-center" id="lotes">
+							</div>
+							<!-- FIM LISTAGEM LOTES -->
+						</div>
+						<!-- FIM LOTES -->
+					</div>
+				</div>
+			</div>
+
+			<div class="row5 myt-4">
+				<div class="container">
+					<div class="row align-items-center">
+						<div class="col-3 offset-0 col-md-1 offset-md-0">
+							<input type="submit" value="Salvar" class="btn btn-primary">
+						</div>
+						<div class="col-3 offset-0 col-md-1 offset-md-0">
+							<button class="btn btn-danger">Deletar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+
+	<!-- SCRIPTS -->
+	<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="js/popper/popper.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="js/datepicker/datepicker.min.js"></script>
+	<script type="text/javascript" src="js/timepicker/jquery.timepicker.min.js"></script>
+	<script type="text/javascript" src="js/eventosManter.js"></script>
+</body>
+</html>
