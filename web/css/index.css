@@ -1,44 +1,170 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 09/04/2018, 10:31:48
-    Author     : mateus.picoloto
-*/
-
-body {
-	padding-top: 50px;
-        /*background-color: #F8F8F8;*/
+@import url('https://fonts.googleapis.com/css?family=Numans');
+html,body{
+    background-image: url('../img/04k0_earth_nightmap.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    font-family: 'Numans', sans-serif;
 }
 .principal {
-	padding: 40px 15px;
 	text-align: center;
+        position: relative;
+        z-index: 100;
 }
-.form-control{
-        text-align: center;
+.container{
+    height: 100%;
+    align-content: center;
 }
-.alert-danger{
+#fastticket::-moz-selection { /* Code for Firefox */
+    background: #A0824A;
+}
+#fastticket::selection {
+    background: #A0824A;
+}
+.card{
+    min-height: 400px;
+    height:30%;
+    margin-top: 15%;
+    margin-bottom: auto;
+    width: 400px;
+    background-color: rgba(0,0,0,0.5) !important;
+}
+
+.social_icon span{
+    font-size: 60px;
+    margin-left: 10px;
+    color: #f0dd92;
+}
+.social_icon span:hover{
+    color: #A0824A;
+    cursor: pointer;
+}
+.social_icon span:focus{
+    color: #A0824A;
+}
+
+/*.fa-bolt{
+    color: yellow;
+    margin: 0 5px 0 0;
+    font-size: 3em;
+}*/
+.card-header h3{
+    color: #FFFFD4;
+    font-size: 2.5em;
+}
+
+.social_icon{
+    position: absolute;
+    right: 20px;
+    top: -45px;
+}
+
+.input-group-prepend span{
+    width: 50px;
+    background-color: #f0dd92;    
+    color: #0C0F1C;
+    border:0 !important;
+}
+
+input:focus{
+    outline: 0 0 0 0  !important;
+    box-shadow: 0 0 0 0 !important;
+}
+
+.remember{
+    color: whitesmoke;
+    width: 160px;
+    height: 40px;
+    outline: none;
     padding-bottom: 0;
 }
-.senha {
-    height: 38px;
+.remember:focus{
+    border-bottom: 1px solid whitesmoke;
+}
+.remember:hover{
+    cursor: pointer;
+}
+.remember:focus:hover{
+    border-bottom: none;
+}
+.fa-bookmark{
+    margin: -10% 15px 0 22px;
+    padding-bottom: 0;
+    font-size:1.2em;
+}
+#lembrar{
+    margin-top: -2%;
+    padding-bottom: 0;
+}
+#lembrar::-moz-selection { /* Code for Firefox */
+    background: transparent;
+}
+#lembrar::selection {
+    background: transparent;
 }
 
-.login {
-    margin-top: 15px;
+.login_btn{
+    color: #f0dd92;
+    font-size: 1.3em;
+    font-weight: 600;
+    background-color: transparent;
+    border: 2px solid #A0824A;
+    width: 142px;
+    margin-bottom: -15%;
+    -webkit-box-shadow: 5px 5px 5px -6px #f0dd92;
+       -moz-box-shadow: 5px 5px 5px -6px #f0dd92;
+            box-shadow: 5px 5px 5px -6px #f0dd92;
+}
+.login_btn:active{
+    color: #f0dd92;
+    -webkit-box-shadow: 0 8px 6px -6px #f0dd92;
+       -moz-box-shadow: 0 8px 6px -6px #f0dd92;
+            box-shadow: 0 8px 6px -6px #f0dd92;
+}
+.login_btn:hover{
+    color: #f0dd92;
+    -webkit-box-shadow: 0 8px 6px -6px #f0dd92;
+       -moz-box-shadow: 0 8px 6px -6px #f0dd92;
+            box-shadow: 0 8px 6px -6px #f0dd92;
+}
+.login_btn:focus{
+    color: #f0dd92;
+    -webkit-box-shadow: 0 8px 6px -6px red;
+       -moz-box-shadow: 0 8px 6px -6px red;
+            box-shadow: 0 8px 6px -6px red;
+}
+.login_btn:active:hover{
+    color: #f0dd92;
+    -webkit-box-shadow: 0 8px 6px -6px blue;
+       -moz-box-shadow: 0 8px 6px -6px blue;
+            box-shadow: 0 8px 6px -6px blue;
+}
+.login_btn:focus:active{
+    color: #f0dd92;
+    border: 2px solid #f0dd92;
+    -webkit-box-shadow: 0 8px 6px -6px hotpink;
+       -moz-box-shadow: 0 8px 6px -6px hotpink;
+            box-shadow: 0 8px 6px -6px hotpink;
+    
 }
 
-.btn-outline-secondary {
-    width: 100px;
+.links{
+    color: #A0824A;
+}
+.links a{
+    margin-left: 4px;
+}
+.links::-moz-selection { /* Code for Firefox */
+    background: whitesmoke;
+}
+.links::selection {
+    background: whitesmoke;
+}
+.links a::-moz-selection { /* Code for Firefox */
+    background: whitesmoke;
+}
+.links a::selection {
+    background: whitesmoke;
 }
 
-footer {
-    margin-top: 225px;
-    padding-left: 10px;
-    padding-bottom: 5px;
-    padding-top: 15px;
-    background-color: #343a40;
-    color: #fff;
-}
+
